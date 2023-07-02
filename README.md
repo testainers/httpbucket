@@ -1,4 +1,14 @@
-# httpbucket
+<h1>
+<img src="helpers/testainers-100.png" alt="Testainers" title="Testainers">
+httpbucket
+</h1>
+
+---
+
+[![BuildWithLove](https://img.shields.io/badge/%20built%20with-%20%E2%9D%A4-ff69b4.svg "build with love")](https://github.com/testainers/httpbucket/stargazers)
+[![Docker Image Version](https://img.shields.io/docker/v/testainers/httpbucket)](https://github.com/testainers/httpbucket)
+[![Licence](https://img.shields.io/github/license/testainers/httpbucket?color=blue)](https://github.com/testainers/httpbucket)
+[![Build](https://img.shields.io/github/actions/workflow/status/testainers/httpbucket/main.yml?branch=main)](https://github.com/testainers/httpbucket)
 
 **httpucket** is a powerful microservice designed specifically for testing HTTP
 requests with a wide range of request URLs. It serves as a valuable tool for
