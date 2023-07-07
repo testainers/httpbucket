@@ -1,4 +1,4 @@
-package com.testainers.v1;
+package com.testainers;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

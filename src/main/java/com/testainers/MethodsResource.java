@@ -1,4 +1,4 @@
-package com.testainers.v1;
+package com.testainers;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.inject.Inject;
