@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+quarkus-application,com.testainers,MethodsResource,0,17,0,0,0,3,0,3,0,3
+quarkus-application,com.testainers,StatusResource,0,58,0,8,0,11,0,8,0,4
+quarkus-application,com.testainers,ResponseBody,0,42,0,0,0,12,0,1,0,1

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseBody.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">quarkus-application</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">ResponseBody.java</span></div><h1>ResponseBody.java</h1><pre class="source lang-java linenums">package com.testainers;
+
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.PathSegment;
+import jakarta.ws.rs.core.UriInfo;
+import org.jboss.resteasy.spi.HttpRequest;
+
+import java.net.URI;
+import java.util.List;
+
+/**
+ * @author Eduardo Folly
+ */
+@RegisterForReflection
+public class ResponseBody {
+
+    public URI uri;
+    public String method;
+    public String remoteAddress;
+    public String remoteHost;
+    public MultivaluedMap&lt;String, String&gt; headers;
+    public MultivaluedMap&lt;String, String&gt; pathParameters;
+    public List&lt;PathSegment&gt; pathSegments;
+    public MultivaluedMap&lt;String, String&gt; queryParameters;
+
+    public Object body;
+
+<span class="fc" id="L29">    public ResponseBody(HttpRequest request, Object body) {</span>
+<span class="fc" id="L30">        this.method = request.getHttpMethod();</span>
+<span class="fc" id="L31">        this.remoteAddress = request.getRemoteAddress();</span>
+<span class="fc" id="L32">        this.remoteHost = request.getRemoteHost();</span>
+<span class="fc" id="L33">        this.headers = request.getHttpHeaders().getRequestHeaders();</span>
+
+<span class="fc" id="L35">        UriInfo uriInfo = request.getUri();</span>
+<span class="fc" id="L36">        this.uri = uriInfo.getAbsolutePath();</span>
+<span class="fc" id="L37">        this.pathParameters = uriInfo.getPathParameters();</span>
+<span class="fc" id="L38">        this.pathSegments = uriInfo.getPathSegments();</span>
+<span class="fc" id="L39">        this.queryParameters = uriInfo.getQueryParameters();</span>
+
+<span class="fc" id="L41">        this.body = body;</span>
+<span class="fc" id="L42">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
