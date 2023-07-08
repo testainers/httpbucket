@@ -32,7 +32,29 @@ será apreciada. Obrigado pelo seu apoio contínuo!
 
 [![PIX](helpers/pix.png)](https://nubank.com.br/pagar/2bt2q/RBr4Szfuwr)
 
+## Environment variables
+
+| Variable                             | Description | Default  |
+|--------------------------------------|-------------|----------|
+| HTTPBUCKET_SSL_CERTIFICATE_FILES     | _*TODO*_    | cert.pem |
+| HTTPBUCKET_SSL_CERTIFICATE_KEY_FILES | _*TODO*_    | key.pem  |
+
 ## How to use
+
 ```shell
-docker run -d --rm --name httpbucket -p 8080:8080 testainers/httpbucket:latest
+docker run -d --rm --name httpbucket -p 8080:8080 -p 8443:8443 testainers/httpbucket:latest
+```
+
+## Self-signed certificate
+
+```shell
+openssl req \
+    -newkey rsa:2048 \
+    -new \
+    -nodes \
+    -x509 \
+    -days 3650 \
+    -keyout key.pem \
+    -out cert.pem \
+    -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
 ```
