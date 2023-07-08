@@ -25,7 +25,7 @@ jobs:
         id: version-step
         run: |
           VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_ENV
           echo "REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
           echo "OWNER=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
 
@@ -68,3 +68,9 @@ jobs:
         with:
           tag: v${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publishing to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./build/coverage
+          github_token: ${{ secrets.GITHUB_TOKEN }}
