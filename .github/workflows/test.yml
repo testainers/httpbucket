@@ -18,5 +18,17 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
+      - name: Generating self-signed certificate
+        run: |
+          openssl req \
+            -newkey rsa:2048 \
+            -new \
+            -nodes \
+            -x509 \
+            -days 2 \
+            -keyout key.pem \
+            -out cert.pem \
+            -subj "/CN=localhost"
+
       - name: Tests
         run: ./gradlew test --no-daemon
