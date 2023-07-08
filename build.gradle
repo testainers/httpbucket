@@ -16,13 +16,14 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-resteasy-jackson'
     implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.smallrye.config:smallrye-config-source-file-system'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.quarkus:quarkus-jacoco'
 }
 
 group 'com.testainers'
-version '0.0.1'
+version '0.0.2'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

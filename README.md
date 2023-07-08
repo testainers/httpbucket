@@ -34,10 +34,10 @@ será apreciada. Obrigado pelo seu apoio contínuo!
 
 ## Environment variables
 
-| Variable                             | Description | Default  |
-|--------------------------------------|-------------|----------|
-| HTTPBUCKET_SSL_CERTIFICATE_FILES     | _*TODO*_    | cert.pem |
-| HTTPBUCKET_SSL_CERTIFICATE_KEY_FILES | _*TODO*_    | key.pem  |
+| Variable            | Description | Default  |
+|---------------------|-------------|----------|
+| HTTPBUCKET_SSL_CERT | _*TODO*_    | cert.pem |
+| HTTPBUCKET_SSL_KEY  | _*TODO*_    | key.pem  |
 
 ## How to use
 
@@ -45,7 +45,7 @@ será apreciada. Obrigado pelo seu apoio contínuo!
 docker run -d --rm --name httpbucket -p 8080:8080 -p 8443:8443 testainers/httpbucket:latest
 ```
 
-### How to test
+## How to test
 
 ```shell
 curl http://localhost:8080/methods
@@ -63,7 +63,7 @@ curl -k https://localhost:8443/methods
 docker build . -f src/main/docker/Dockerfile.native-micro --no-cache -t httpbucket
 ```
 
-### Run
+## Run
 
 ```shell
 docker run --rm --name httpbucket -p 8080:8080 -p 8443:8443 -d httpbucket
@@ -84,3 +84,12 @@ openssl req \
     -out cert.pem \
     -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
 ```
+
+----
+
+## Extra endpoints
+
+- /openapi
+- /swagger-ui
+- /health
+- /metrics
