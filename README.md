@@ -45,6 +45,32 @@ será apreciada. Obrigado pelo seu apoio contínuo!
 docker run -d --rm --name httpbucket -p 8080:8080 -p 8443:8443 testainers/httpbucket:latest
 ```
 
+### How to test
+
+```shell
+curl http://localhost:8080/methods
+```
+
+```shell
+curl -k https://localhost:8443/methods
+```
+
+----
+
+## Build
+
+```shell
+docker build . -f src/main/docker/Dockerfile.native-micro --no-cache -t httpbucket
+```
+
+### Run
+
+```shell
+docker run --rm --name httpbucket -p 8080:8080 -p 8443:8443 -d httpbucket
+```
+
+----
+
 ## Self-signed certificate
 
 ```shell
