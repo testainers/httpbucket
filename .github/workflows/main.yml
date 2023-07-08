@@ -25,7 +25,7 @@ jobs:
         id: version-step
         run: |
           VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")
-          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
           echo "OWNER=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
 
@@ -33,7 +33,7 @@ jobs:
       #        run: |
       #          URL=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/latest
       #          LATEST=$(curl --silent "$URL" | jq -r .name)
-      #          if [ "$LATEST" == "v$VERSION" ]; then
+      #          if [ "$LATEST" == "$VERSION" ]; then
       #            echo "Version is used."
       #            exit 1
       #          fi
@@ -66,7 +66,7 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ env.VERSION }}
+          tag: ${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publishing to GitHub Pages
