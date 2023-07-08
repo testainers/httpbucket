@@ -16,6 +16,11 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 public class MethodsResourceTest {
 
+    private static final Map<String, Object> BODY = Map
+            .of("test_string", "test",
+                "test_int", 1,
+                "test_boolean", true);
+
     @Test
     public void testMethodsGet() {
         given().when()
@@ -33,15 +38,11 @@ public class MethodsResourceTest {
 
     @Test
     public void testMethodsPost() {
-        Map<String, Object> body = Map.of("test_string", "test",
-                                          "test_int", 1,
-                                          "test_boolean", true);
-
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
                .contentType(ContentType.JSON)
-               .body(body)
+               .body(BODY)
                .post("/methods")
                .then()
                .statusCode(200)
@@ -49,21 +50,17 @@ public class MethodsResourceTest {
                      "queryParameters",
                      is(Map.of("test", List.of("test"))),
                      "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(body)
+                     "body", is(BODY)
                );
     }
 
     @Test
     public void testMethodsPut() {
-        Map<String, Object> body = Map.of("test_string", "test",
-                                          "test_int", 1,
-                                          "test_boolean", true);
-
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
                .contentType(ContentType.JSON)
-               .body(body)
+               .body(BODY)
                .put("/methods")
                .then()
                .statusCode(200)
@@ -71,21 +68,35 @@ public class MethodsResourceTest {
                      "queryParameters",
                      is(Map.of("test", List.of("test"))),
                      "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(body)
+                     "body", is(BODY)
+               );
+    }
+
+    @Test
+    public void testMethodsPatch() {
+        given().when()
+               .headers("test-header", "test-header-value")
+               .queryParam("test", "test")
+               .contentType(ContentType.JSON)
+               .body(BODY)
+               .patch("/methods")
+               .then()
+               .statusCode(200)
+               .body("method", is("PATCH"),
+                     "queryParameters",
+                     is(Map.of("test", List.of("test"))),
+                     "headers.test-header", is(List.of("test-header-value")),
+                     "body", is(BODY)
                );
     }
 
     @Test
     public void testMethodsDelete() {
-        Map<String, Object> body = Map.of("test_string", "test",
-                                          "test_int", 1,
-                                          "test_boolean", true);
-
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
                .contentType(ContentType.JSON)
-               .body(body)
+               .body(BODY)
                .delete("/methods")
                .then()
                .statusCode(200)
@@ -93,7 +104,7 @@ public class MethodsResourceTest {
                      "queryParameters",
                      is(Map.of("test", List.of("test"))),
                      "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(body)
+                     "body", is(BODY)
                );
     }
 

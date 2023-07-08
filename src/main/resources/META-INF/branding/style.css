@@ -33,7 +33,19 @@ body{
 }
 
 .swagger-ui .opblock.opblock-post .opblock-summary-method {
-    background: #2d5eab;
+    background: #0d5aa7;
+}
+
+.swagger-ui .opblock.opblock-put .opblock-summary-method {
+    background: #fca130;
+}
+
+.swagger-ui .opblock.opblock-patch .opblock-summary-method {
+    background: #9012fe;
+}
+
+.swagger-ui .opblock.opblock-delete .opblock-summary-method {
+    background: #f93e3e;
 }
 
 #footer {

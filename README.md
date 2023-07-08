@@ -31,3 +31,8 @@ qualidade para a comunidade de desenvolvedores Flutter e Dart. Qualquer quantia
 será apreciada. Obrigado pelo seu apoio contínuo!
 
 [![PIX](helpers/pix.png)](https://nubank.com.br/pagar/2bt2q/RBr4Szfuwr)
+
+## How to use
+```shell
+docker run -d --rm --name httpbucket -p 8080:8080 testainers/httpbucket:latest
+```
