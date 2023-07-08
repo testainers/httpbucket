@@ -32,7 +32,64 @@ será apreciada. Obrigado pelo seu apoio contínuo!
 
 [![PIX](helpers/pix.png)](https://nubank.com.br/pagar/2bt2q/RBr4Szfuwr)
 
+## Environment variables
+
+| Variable            | Description | Default  |
+|---------------------|-------------|----------|
+| HTTPBUCKET_SSL_CERT | _*TODO*_    | cert.pem |
+| HTTPBUCKET_SSL_KEY  | _*TODO*_    | key.pem  |
+
 ## How to use
+
 ```shell
-docker run -d --rm --name httpbucket -p 8080:8080 testainers/httpbucket:latest
+docker run -d --rm --name httpbucket -p 8080:8080 -p 8443:8443 testainers/httpbucket:latest
 ```
+
+## How to test
+
+```shell
+curl http://localhost:8080/methods
+```
+
+```shell
+curl -k https://localhost:8443/methods
+```
+
+----
+
+## Build
+
+```shell
+docker build . -f src/main/docker/Dockerfile.native-micro --no-cache -t httpbucket
+```
+
+## Run
+
+```shell
+docker run --rm --name httpbucket -p 8080:8080 -p 8443:8443 -d httpbucket
+```
+
+----
+
+## Self-signed certificate
+
+```shell
+openssl req \
+    -newkey rsa:2048 \
+    -new \
+    -nodes \
+    -x509 \
+    -days 3650 \
+    -keyout key.pem \
+    -out cert.pem \
+    -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
+```
+
+----
+
+## Extra endpoints
+
+- /openapi
+- /swagger-ui
+- /health
+- /metrics
