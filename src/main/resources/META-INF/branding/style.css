@@ -1,0 +1,55 @@
+html{
+    box-sizing: border-box;
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
+*,
+*:before,
+*:after
+{
+    box-sizing: inherit;
+}
+
+body{
+    margin:0;
+}
+
+.swagger-ui .topbar {
+    background-color: #C38FA3;
+}
+
+#swaggerUiTitleLink:before {
+    content: 'Testainers';
+    font-weight: normal;
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+    display: none;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: #4caf08;
+}
+
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+    background: #0d5aa7;
+}
+
+.swagger-ui .opblock.opblock-put .opblock-summary-method {
+    background: #fca130;
+}
+
+.swagger-ui .opblock.opblock-patch .opblock-summary-method {
+    background: #9012fe;
+}
+
+.swagger-ui .opblock.opblock-delete .opblock-summary-method {
+    background: #f93e3e;
+}
+
+#footer {
+    background-color: #C38FA3;
+    color: #0E1216;
+    text-align: center;
+}

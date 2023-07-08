@@ -1,8 +1,8 @@
-package com.testainers.v1;
+package com.testainers;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
 @QuarkusIntegrationTest
-public class MethodsResourceIT extends MethodsResourceTest {
+public class StatusResourceDeleteIT extends StatusResourceDeleteTest {
     // Execute the same tests but in packaged mode.
 }
