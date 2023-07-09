@@ -23,7 +23,7 @@ public class StatusResourceDeleteTest {
                 "test_boolean", true);
 
     @Test
-    public void testMethodsDeleteString() {
+    public void testStatusDeleteString() {
         given().when()
                .delete("/status/a")
                .then()
@@ -32,7 +32,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDeleteDouble() {
+    public void testStatusDeleteDouble() {
         given().when()
                .delete("/status/1.8")
                .then()
@@ -41,7 +41,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDeleteNegative() {
+    public void testStatusDeleteNegative() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -54,7 +54,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete0() {
+    public void testStatusDelete0() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -67,7 +67,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete99() {
+    public void testStatusDelete99() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -80,7 +80,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete100() {
+    public void testStatusDelete100() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -94,7 +94,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete199() {
+    public void testStatusDelete199() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -108,7 +108,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete200() {
+    public void testStatusDelete200() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -126,7 +126,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete204() {
+    public void testStatusDelete204() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -139,7 +139,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete205() {
+    public void testStatusDelete205() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -153,7 +153,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete304() {
+    public void testStatusDelete304() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -166,7 +166,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete599() {
+    public void testStatusDelete599() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -185,7 +185,7 @@ public class StatusResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete600() {
+    public void testStatusDelete600() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)

@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class StatusResourceGetTest {
 
     @Test
-    public void testMethodsGetString() {
+    public void testStatusGetString() {
         given().when()
                .get("/status/a")
                .then()
@@ -26,7 +26,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGetDouble() {
+    public void testStatusGetDouble() {
         given().when()
                .get("/status/1.8")
                .then()
@@ -35,7 +35,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGetNegative() {
+    public void testStatusGetNegative() {
         given().when()
                .get("/status/-1")
                .then()
@@ -46,7 +46,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet0() {
+    public void testStatusGet0() {
         given().when()
                .get("/status/0")
                .then()
@@ -57,7 +57,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet99() {
+    public void testStatusGet99() {
         given().when()
                .get("/status/99")
                .then()
@@ -68,7 +68,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet100() {
+    public void testStatusGet100() {
         given().when()
                .get("/status/100")
                .then()
@@ -80,7 +80,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet199() {
+    public void testStatusGet199() {
         given().when()
                .get("/status/199")
                .then()
@@ -92,7 +92,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet200() {
+    public void testStatusGet200() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -107,7 +107,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet204() {
+    public void testStatusGet204() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -118,7 +118,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet205() {
+    public void testStatusGet205() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -130,7 +130,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet304() {
+    public void testStatusGet304() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -141,7 +141,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet599() {
+    public void testStatusGet599() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -156,7 +156,7 @@ public class StatusResourceGetTest {
     }
 
     @Test
-    public void testMethodsGet600() {
+    public void testStatusGet600() {
         given().when()
                .get("/status/600")
                .then()
