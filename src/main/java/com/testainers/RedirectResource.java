@@ -34,8 +34,8 @@ public class RedirectResource {
             @QueryParam("url") String url,
             @Parameter(description = "Response status code.",
                        schema = @Schema(minimum = "300", maximum = "399"))
-            @QueryParam("status_code")
-            @DefaultValue("302") Integer statusCode) {
+            @QueryParam("code")
+            @DefaultValue("302") Integer code) {
 
         if (url == null) {
             return Response
@@ -55,16 +55,15 @@ public class RedirectResource {
                     .build();
         }
 
-        if (statusCode < 300 || statusCode > 399) {
+        if (code < 300 || code > 399) {
             return Response
                     .status(500)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                    .entity(String.format("Invalid status code: %d",
-                                          statusCode))
+                    .entity(String.format("Invalid status code: %d", code))
                     .build();
         }
 
-        return Response.status(statusCode)
+        return Response.status(code)
                        .header(HttpHeaders.LOCATION, uri.toASCIIString())
                        .build();
     }

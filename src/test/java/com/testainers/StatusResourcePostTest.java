@@ -23,7 +23,7 @@ public class StatusResourcePostTest {
                 "test_boolean", true);
 
     @Test
-    public void testMethodsPostString() {
+    public void testStatusPostString() {
         given().when()
                .post("/status/a")
                .then()
@@ -32,7 +32,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPostDouble() {
+    public void testStatusPostDouble() {
         given().when()
                .post("/status/1.8")
                .then()
@@ -41,7 +41,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPostNegative() {
+    public void testStatusPostNegative() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -54,7 +54,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost0() {
+    public void testStatusPost0() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -67,7 +67,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost99() {
+    public void testStatusPost99() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -80,7 +80,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost100() {
+    public void testStatusPost100() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -94,7 +94,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost199() {
+    public void testStatusPost199() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -108,7 +108,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost200() {
+    public void testStatusPost200() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -126,7 +126,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost204() {
+    public void testStatusPost204() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -139,7 +139,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost205() {
+    public void testStatusPost205() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -153,7 +153,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost304() {
+    public void testStatusPost304() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -166,7 +166,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost599() {
+    public void testStatusPost599() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -185,7 +185,7 @@ public class StatusResourcePostTest {
     }
 
     @Test
-    public void testMethodsPost600() {
+    public void testStatusPost600() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)

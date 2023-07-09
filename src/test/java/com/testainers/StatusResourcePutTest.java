@@ -23,7 +23,7 @@ public class StatusResourcePutTest {
                 "test_boolean", true);
 
     @Test
-    public void testMethodsPutString() {
+    public void testStatusPutString() {
         given().when()
                .put("/status/a")
                .then()
@@ -32,7 +32,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPutDouble() {
+    public void testStatusPutDouble() {
         given().when()
                .put("/status/1.8")
                .then()
@@ -41,7 +41,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPutNegative() {
+    public void testStatusPutNegative() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -54,7 +54,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut0() {
+    public void testStatusPut0() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -67,7 +67,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut99() {
+    public void testStatusPut99() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -80,7 +80,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut100() {
+    public void testStatusPut100() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -94,7 +94,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut199() {
+    public void testStatusPut199() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)
@@ -108,7 +108,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut200() {
+    public void testStatusPut200() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -126,7 +126,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut204() {
+    public void testStatusPut204() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -139,7 +139,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut205() {
+    public void testStatusPut205() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -153,7 +153,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut304() {
+    public void testStatusPut304() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -166,7 +166,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut599() {
+    public void testStatusPut599() {
         given().when()
                .headers("test-header", "test-header-value")
                .queryParam("test", "test")
@@ -185,7 +185,7 @@ public class StatusResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut600() {
+    public void testStatusPut600() {
         given().when()
                .contentType(ContentType.JSON)
                .body(BODY)

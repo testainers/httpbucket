@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class LengthResourcePutTest {
 
     @Test
-    public void testMethodsPut0() {
+    public void testLengthPut0() {
         given().when()
                .put("/length/0")
                .then()
@@ -26,7 +26,7 @@ public class LengthResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut5() {
+    public void testLengthPut5() {
         given().when()
                .put("/length/5")
                .then()
@@ -37,7 +37,7 @@ public class LengthResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut10() {
+    public void testLengthPut10() {
         given().when()
                .accept(MediaType.TEXT_PLAIN)
                .put("/length/10")
@@ -49,7 +49,7 @@ public class LengthResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut1024() {
+    public void testLengthPut1024() {
         given().when()
                .accept(MediaType.APPLICATION_OCTET_STREAM)
                .put("/length/1024")
@@ -61,7 +61,7 @@ public class LengthResourcePutTest {
     }
 
     @Test
-    public void testMethodsPut2049() {
+    public void testLengthPut2049() {
         given().when()
                .accept(MediaType.APPLICATION_OCTET_STREAM)
                .put("/length/2049")

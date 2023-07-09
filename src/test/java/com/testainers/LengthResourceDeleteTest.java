@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class LengthResourceDeleteTest {
 
     @Test
-    public void testMethodsDelete0() {
+    public void testLengthDelete0() {
         given().when()
                .delete("/length/0")
                .then()
@@ -26,7 +26,7 @@ public class LengthResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete5() {
+    public void testLengthDelete5() {
         given().when()
                .delete("/length/5")
                .then()
@@ -37,7 +37,7 @@ public class LengthResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete10() {
+    public void testLengthDelete10() {
         given().when()
                .accept(MediaType.TEXT_PLAIN)
                .delete("/length/10")
@@ -49,7 +49,7 @@ public class LengthResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete1024() {
+    public void testLengthDelete1024() {
         given().when()
                .accept(MediaType.APPLICATION_OCTET_STREAM)
                .delete("/length/1024")
@@ -61,7 +61,7 @@ public class LengthResourceDeleteTest {
     }
 
     @Test
-    public void testMethodsDelete2049() {
+    public void testLengthDelete2049() {
         given().when()
                .accept(MediaType.APPLICATION_OCTET_STREAM)
                .delete("/length/2049")
