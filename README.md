@@ -7,6 +7,7 @@ httpbucket
 [![Docker Image Version](https://img.shields.io/docker/v/testainers/httpbucket)](https://hub.docker.com/r/testainers/httpbucket/tags)
 [![Licence](https://img.shields.io/github/license/testainers/httpbucket?color=blue)](https://github.com/testainers/httpbucket/blob/main/LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/testainers/httpbucket/main.yml?branch=main)](https://github.com/testainers/httpbucket/releases/latest)
+[![Coverage Report](https://img.shields.io/badge/coverage-report-C08EA1 "Coverage Report")](https://testainers.github.io/httpbucket/)
 
 **httpucket** is a powerful microservice designed specifically for testing HTTP
 requests with a wide range of request URLs. It serves as a valuable tool for
