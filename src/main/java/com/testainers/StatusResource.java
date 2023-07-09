@@ -4,6 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.jboss.resteasy.spi.HttpRequest;
 
 /**
@@ -17,7 +19,13 @@ public class StatusResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam("code") Integer code) {
+    public Response get(
+            @Parameter(description = "Code must be between 200 and 599. " +
+                                     "Informational responses (1XX) " +
+                                     "are not supported.",
+                       schema = @Schema(minimum = "200", maximum = "599")
+            )
+            @PathParam("code") Integer code) {
         return getResponse(code, null);
     }
 
@@ -26,7 +34,13 @@ public class StatusResource {
     @PATCH
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response others(@PathParam("code") Integer code, Object body) {
+    public Response others(
+            @Parameter(description = "Code must be between 200 and 599. " +
+                                     "Informational responses (1XX) " +
+                                     "are not supported.",
+                       schema = @Schema(minimum = "200", maximum = "599")
+            )
+            @PathParam("code") Integer code, Object body) {
         return getResponse(code, body);
     }
 

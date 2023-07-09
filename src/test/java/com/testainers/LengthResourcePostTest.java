@@ -13,12 +13,12 @@ import static org.hamcrest.CoreMatchers.notNullValue;
  * @author Eduardo Folly
  */
 @QuarkusTest
-public class LengthResourceTest {
+public class LengthResourcePostTest {
 
     @Test
-    public void testMethodsGet0() {
+    public void testMethodsPost0() {
         given().when()
-               .get("/length/0")
+               .post("/length/0")
                .then()
                .statusCode(500)
                .contentType(ContentType.TEXT)
@@ -26,9 +26,9 @@ public class LengthResourceTest {
     }
 
     @Test
-    public void testMethodsGet5() {
+    public void testMethodsPost5() {
         given().when()
-               .get("/length/5")
+               .post("/length/5")
                .then()
                .statusCode(200)
                .contentType(ContentType.TEXT)
@@ -37,10 +37,10 @@ public class LengthResourceTest {
     }
 
     @Test
-    public void testMethodsGet10() {
+    public void testMethodsPost10() {
         given().when()
                .accept(MediaType.TEXT_PLAIN)
-               .get("/length/10")
+               .post("/length/10")
                .then()
                .statusCode(200)
                .contentType(ContentType.TEXT)
@@ -49,10 +49,10 @@ public class LengthResourceTest {
     }
 
     @Test
-    public void testMethodsGet1024() {
+    public void testMethodsPost1024() {
         given().when()
                .accept(MediaType.APPLICATION_OCTET_STREAM)
-               .get("/length/1024")
+               .post("/length/1024")
                .then()
                .statusCode(200)
                .contentType(ContentType.BINARY)
@@ -61,10 +61,10 @@ public class LengthResourceTest {
     }
 
     @Test
-    public void testMethodsGet2049() {
+    public void testMethodsPost2049() {
         given().when()
                .accept(MediaType.APPLICATION_OCTET_STREAM)
-               .get("/length/2049")
+               .post("/length/2049")
                .then()
                .statusCode(500)
                .contentType(ContentType.TEXT)

@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
@@ -29,21 +30,22 @@ public class LengthResource {
                     @Content(mediaType = MediaType.TEXT_PLAIN),
                     @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM)
             }),
-            @APIResponse(responseCode = "500", description = "Invalid size")
+            @APIResponse(responseCode = "500", description = "Invalid size: X.")
     })
-    @Consumes(MediaType.TEXT_PLAIN)
     public Response length(
             @HeaderParam(HttpHeaders.ACCEPT) String accept,
-            @Schema(minimum = "1", maximum = "2048", defaultValue = "10")
-            @PathParam("size") int size
-    ) {
-
+            @Parameter(description = "Size must be between 1 and 2048.",
+                       schema = @Schema(minimum = "1", maximum = "2048",
+                                        defaultValue = "10"
+                       )
+            )
+            @PathParam("size") int size) {
         if (size < 1 || size > 2048) {
-            return Response.status(500)
-                           .header(HttpHeaders.CONTENT_TYPE,
-                                   MediaType.TEXT_PLAIN)
-                           .entity(String.format("Invalid size: %d", size))
-                           .build();
+            return Response
+                    .status(500)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+                    .entity(String.format("Invalid size: %d", size))
+                    .build();
         }
 
         if (MediaType.APPLICATION_OCTET_STREAM.equals(accept)) {
