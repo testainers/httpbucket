@@ -3,30 +3,34 @@
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.spi.HttpRequest;
 
 /**
  * @author Eduardo Folly
  */
 @Path(&quot;/methods&quot;)
-<span class="fc" id="L12">public class MethodsResource {</span>
+<span class="fc" id="L14">public class MethodsResource {</span>
 
     @Inject
     HttpRequest request;
 
     @GET
+    @APIResponses({@APIResponse(responseCode = &quot;200&quot;)})
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseBody get() {
-<span class="fc" id="L20">        return new ResponseBody(request, null);</span>
+<span class="fc" id="L23">        return new ResponseBody(request, null);</span>
     }
 
     @POST
     @PUT
     @PATCH
     @DELETE
+    @APIResponses({@APIResponse(responseCode = &quot;200&quot;)})
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseBody others(Object body) {
-<span class="fc" id="L29">        return new ResponseBody(request, body);</span>
+<span class="fc" id="L33">        return new ResponseBody(request, body);</span>
     }
 
 }

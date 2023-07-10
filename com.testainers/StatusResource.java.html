@@ -4,21 +4,29 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.jboss.resteasy.spi.HttpRequest;
 
 /**
  * @author Eduardo Folly
  */
 @Path(&quot;/status/{code}&quot;)
-<span class="fc" id="L13">public class StatusResource {</span>
+<span class="fc" id="L15">public class StatusResource {</span>
 
     @Inject
     HttpRequest request;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam(&quot;code&quot;) Integer code) {
-<span class="fc" id="L21">        return getResponse(code, null);</span>
+    public Response get(
+            @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
+                                     &quot;Informational responses (1XX) &quot; +
+                                     &quot;are not supported.&quot;,
+                       schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
+            )
+            @PathParam(&quot;code&quot;) Integer code) {
+<span class="fc" id="L29">        return getResponse(code, null);</span>
     }
 
     @POST
@@ -26,27 +34,33 @@ import org.jboss.resteasy.spi.HttpRequest;
     @PATCH
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response others(@PathParam(&quot;code&quot;) Integer code, Object body) {
-<span class="fc" id="L30">        return getResponse(code, body);</span>
+    public Response others(
+            @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
+                                     &quot;Informational responses (1XX) &quot; +
+                                     &quot;are not supported.&quot;,
+                       schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
+            )
+            @PathParam(&quot;code&quot;) Integer code, Object body) {
+<span class="fc" id="L44">        return getResponse(code, body);</span>
     }
 
     private Response getResponse(int code, Object body) {
-<span class="fc" id="L34">        ResponseBody responseBody = new ResponseBody(request, body);</span>
+<span class="fc" id="L48">        ResponseBody responseBody = new ResponseBody(request, body);</span>
 
-<span class="fc bfc" id="L36" title="All 4 branches covered.">        if (code &lt; 200 || code &gt; 599) {</span>
+<span class="fc bfc" id="L50" title="All 4 branches covered.">        if (code &lt; 200 || code &gt; 599) {</span>
             String message;
 
-<span class="fc bfc" id="L39" title="All 4 branches covered.">            if (code &gt; 99 &amp;&amp; code &lt; 200) {</span>
-<span class="fc" id="L40">                message = &quot;Informational responses are not supported: %d&quot;;</span>
+<span class="fc bfc" id="L53" title="All 4 branches covered.">            if (code &gt; 99 &amp;&amp; code &lt; 200) {</span>
+<span class="fc" id="L54">                message = &quot;Informational responses are not supported: %d&quot;;</span>
             } else {
-<span class="fc" id="L42">                message = &quot;Unknown status code: %d&quot;;</span>
+<span class="fc" id="L56">                message = &quot;Unknown status code: %d&quot;;</span>
             }
 
-<span class="fc" id="L45">            responseBody.body = String.format(message, code);</span>
-<span class="fc" id="L46">            code = 500;</span>
+<span class="fc" id="L59">            responseBody.body = String.format(message, code);</span>
+<span class="fc" id="L60">            code = 500;</span>
         }
 
-<span class="fc" id="L49">        return Response.status(code).entity(responseBody).build();</span>
+<span class="fc" id="L63">        return Response.status(code).entity(responseBody).build();</span>
     }
 
 }
