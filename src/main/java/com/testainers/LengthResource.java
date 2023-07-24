@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 public class LengthResource {
 
     @GET
+    @HEAD
     @POST
     @PUT
     @PATCH

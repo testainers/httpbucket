@@ -1,200 +1,130 @@
 package com.testainers;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.containsStringIgnoringCase;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Eduardo Folly
  */
 @QuarkusTest
-public class StatusResourceDeleteTest {
-
-    private static final Map<String, Object> BODY = Map
-            .of("test_string", "test",
-                "test_int", 1,
-                "test_boolean", true);
+public class StatusResourceDeleteTest extends BaseTest {
 
     @Test
     public void testStatusDeleteString() {
-        given().when()
-               .delete("/status/a")
-               .then()
-               .statusCode(404)
-               .statusLine(containsStringIgnoringCase("Not Found"));
+        json().delete("/status/a")
+              .then()
+              .statusCode(404)
+              .statusLine(containsStringIgnoringCase("Not Found"));
     }
 
     @Test
     public void testStatusDeleteDouble() {
-        given().when()
-               .delete("/status/1.8")
-               .then()
-               .statusCode(404)
-               .statusLine(containsStringIgnoringCase("Not Found"));
+        json().delete("/status/1.8")
+              .then()
+              .statusCode(404)
+              .statusLine(containsStringIgnoringCase("Not Found"));
     }
 
     @Test
     public void testStatusDeleteNegative() {
-        given().when()
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/-1")
-               .then()
-               .statusCode(500)
-               .body("method", is("DELETE"),
-                     "body", is("Unknown status code: -1")
-               );
+        json().delete("/status/-1")
+              .then()
+              .statusCode(500)
+              .body("body", is("Unknown status code: -1"),
+                    bodyMatchers("DELETE"));
     }
 
     @Test
     public void testStatusDelete0() {
-        given().when()
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/0")
-               .then()
-               .statusCode(500)
-               .body("method", is("DELETE"),
-                     "body", is("Unknown status code: 0")
-               );
+        json().delete("/status/0")
+              .then()
+              .statusCode(500)
+              .body("body", is("Unknown status code: 0"),
+                    bodyMatchers("DELETE"));
     }
 
     @Test
     public void testStatusDelete99() {
-        given().when()
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/99")
-               .then()
-               .statusCode(500)
-               .body("method", is("DELETE"),
-                     "body", is("Unknown status code: 99")
-               );
+        json().delete("/status/99")
+              .then()
+              .statusCode(500)
+              .body("body", is("Unknown status code: 99"),
+                    bodyMatchers("DELETE"));
     }
 
     @Test
     public void testStatusDelete100() {
-        given().when()
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/100")
-               .then()
-               .statusCode(500)
-               .body("method", is("DELETE"),
-                     "body",
-                     is("Informational responses are not supported: 100")
-               );
+        json().delete("/status/100")
+              .then()
+              .statusCode(500)
+              .body("body",
+                    is("Informational responses are not supported: 100"),
+                    bodyMatchers("DELETE"));
     }
 
     @Test
     public void testStatusDelete199() {
-        given().when()
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/199")
-               .then()
-               .statusCode(500)
-               .body("method", is("DELETE"),
-                     "body",
-                     is("Informational responses are not supported: 199")
-               );
+        json().delete("/status/199")
+              .then()
+              .statusCode(500)
+              .body("body",
+                    is("Informational responses are not supported: 199"),
+                    bodyMatchers("DELETE"));
     }
 
     @Test
     public void testStatusDelete200() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/200")
-               .then()
-               .statusCode(200)
-               .body("method", is("DELETE"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(BODY)
-               );
+        json().delete("/status/200")
+              .then()
+              .statusCode(200)
+              .body("body", is(BODY),
+                    bodyMatchers("DELETE"));
     }
 
     @Test
     public void testStatusDelete204() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/204")
-               .then()
-               .statusCode(204)
-               .body(is(""));
+        json().delete("/status/204")
+              .then()
+              .statusCode(204)
+              .body(is(""));
     }
 
     @Test
     public void testStatusDelete205() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/205")
-               .then()
-               .statusCode(205)
-               .headers("content-length", "0")
-               .body(is(""));
+        json().delete("/status/205")
+              .then()
+              .statusCode(205)
+              .headers("content-length", "0")
+              .body(is(""));
     }
 
     @Test
     public void testStatusDelete304() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/304")
-               .then()
-               .statusCode(304)
-               .body(is(""));
+        json().delete("/status/304")
+              .then()
+              .statusCode(304)
+              .body(is(""));
     }
 
     @Test
     public void testStatusDelete599() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/599")
-               .then()
-               .statusCode(599)
-               .body("method", is("DELETE"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(BODY)
-
-               );
+        json().delete("/status/599")
+              .then()
+              .statusCode(599)
+              .body("body", is(BODY),
+                    bodyMatchers("DELETE")
+              );
     }
 
     @Test
     public void testStatusDelete600() {
-        given().when()
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/status/600")
-               .then()
-               .statusCode(500)
-               .body("method", is("DELETE"),
-                     "body", is("Unknown status code: 600")
-               );
+        json().delete("/status/600")
+              .then()
+              .statusCode(500)
+              .body("body", is("Unknown status code: 600"),
+                    bodyMatchers("DELETE"));
     }
 
 }

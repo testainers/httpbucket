@@ -18,6 +18,7 @@ import java.net.URI;
 public class RedirectResource {
 
     @GET
+    @HEAD
     @POST
     @PUT
     @PATCH

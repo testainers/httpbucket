@@ -17,9 +17,10 @@ public class MethodsResource {
     HttpRequest request;
 
     @GET
+    @HEAD
     @APIResponses({@APIResponse(responseCode = "200")})
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseBody get() {
+    public ResponseBody withoutBody() {
         return new ResponseBody(request, null);
     }
 
@@ -29,7 +30,7 @@ public class MethodsResource {
     @DELETE
     @APIResponses({@APIResponse(responseCode = "200")})
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseBody others(Object body) {
+    public ResponseBody withBody(Object body) {
         return new ResponseBody(request, body);
     }
 

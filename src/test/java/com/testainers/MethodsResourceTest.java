@@ -1,111 +1,96 @@
 package com.testainers;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Eduardo Folly
  */
 @QuarkusTest
-public class MethodsResourceTest {
-
-    private static final Map<String, Object> BODY = Map
-            .of("test_string", "test",
-                "test_int", 1,
-                "test_boolean", true);
+public class MethodsResourceTest extends BaseTest {
 
     @Test
     public void testMethodsGet() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .get("/methods")
-               .then()
-               .statusCode(200)
-               .body("method", is("GET"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value"))
-               );
+        base().get("/methods")
+              .then()
+              .statusCode(200)
+              .body("method", is("GET"),
+                    "queryParameters", is(QUERY_PARAMS),
+                    "headers",
+                    aMapWithSize(greaterThanOrEqualTo(HEADERS.size())),
+                    "headers",
+                    hasEntry(in(HEADERS.keySet()), in(HEADERS.values()))
+              );
+
+    }
+
+    @Test
+    public void testMethodsHead() {
+        base().head("/methods")
+              .then()
+              .statusCode(200);
     }
 
     @Test
     public void testMethodsPost() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .post("/methods")
-               .then()
-               .statusCode(200)
-               .body("method", is("POST"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(BODY)
-               );
+        json().post("/methods")
+              .then()
+              .statusCode(200)
+              .body("method", is("POST"),
+                    "queryParameters", is(QUERY_PARAMS),
+                    "headers",
+                    aMapWithSize(greaterThanOrEqualTo(HEADERS.size())),
+                    "headers",
+                    hasEntry(in(HEADERS.keySet()), in(HEADERS.values())),
+                    "body", is(BODY)
+              );
     }
 
     @Test
     public void testMethodsPut() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .put("/methods")
-               .then()
-               .statusCode(200)
-               .body("method", is("PUT"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(BODY)
-               );
+        json().put("/methods")
+              .then()
+              .statusCode(200)
+              .body("method", is("PUT"),
+                    "queryParameters", is(QUERY_PARAMS),
+                    "headers",
+                    aMapWithSize(greaterThanOrEqualTo(HEADERS.size())),
+                    "headers",
+                    hasEntry(in(HEADERS.keySet()), in(HEADERS.values())),
+                    "body", is(BODY)
+              );
     }
 
     @Test
     public void testMethodsPatch() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .patch("/methods")
-               .then()
-               .statusCode(200)
-               .body("method", is("PATCH"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(BODY)
-               );
+        json().patch("/methods")
+              .then()
+              .statusCode(200)
+              .body("method", is("PATCH"),
+                    "queryParameters", is(QUERY_PARAMS),
+                    "headers",
+                    aMapWithSize(greaterThanOrEqualTo(HEADERS.size())),
+                    "headers",
+                    hasEntry(in(HEADERS.keySet()), in(HEADERS.values())),
+                    "body", is(BODY)
+              );
     }
 
     @Test
     public void testMethodsDelete() {
-        given().when()
-               .headers("test-header", "test-header-value")
-               .queryParam("test", "test")
-               .contentType(ContentType.JSON)
-               .body(BODY)
-               .delete("/methods")
-               .then()
-               .statusCode(200)
-               .body("method", is("DELETE"),
-                     "queryParameters",
-                     is(Map.of("test", List.of("test"))),
-                     "headers.test-header", is(List.of("test-header-value")),
-                     "body", is(BODY)
-               );
+        json().delete("/methods")
+              .then()
+              .statusCode(200)
+              .body("method", is("DELETE"),
+                    "queryParameters", is(QUERY_PARAMS),
+                    "headers",
+                    aMapWithSize(greaterThanOrEqualTo(HEADERS.size())),
+                    "headers",
+                    hasEntry(in(HEADERS.keySet()), in(HEADERS.values())),
+                    "body", is(BODY)
+              );
     }
 
 }
