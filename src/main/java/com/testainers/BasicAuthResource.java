@@ -1,5 +1,6 @@
 package com.testainers;
 
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @author Eduardo Folly
  */
 @Path("/basic-auth")
+@Authenticated
 public class BasicAuthResource {
 
     @Inject
@@ -29,7 +31,7 @@ public class BasicAuthResource {
     @APIResponses({
             @APIResponse(responseCode = "200"),
             @APIResponse(responseCode = "401"),
-            @APIResponse(responseCode = "500"),
+            @APIResponse(responseCode = "403"),
     })
     @Produces(MediaType.APPLICATION_JSON)
     public Response withoutBody(
@@ -48,7 +50,7 @@ public class BasicAuthResource {
     @APIResponses({
             @APIResponse(responseCode = "200"),
             @APIResponse(responseCode = "401"),
-            @APIResponse(responseCode = "500"),
+            @APIResponse(responseCode = "403"),
     })
     @Produces(MediaType.APPLICATION_JSON)
     public Response withBody(
@@ -62,20 +64,20 @@ public class BasicAuthResource {
     private Response getResponse(String auth, String user, String pass,
                                  Object body) {
         ResponseBody responseBody = new ResponseBody(request, body);
-        int code = 401;
+        int code = 403;
 
         Map<String, Object> bodyMap = new HashMap<>();
         bodyMap.put("auth", false);
         bodyMap.put("user", user);
         bodyMap.put("pass", pass);
-        bodyMap.put("message", "Unauthorized.");
+        bodyMap.put("message", "Forbidden.");
 
         if (body != null) {
             bodyMap.put("body", body);
         }
 
         if (auth == null || auth.isBlank()) {
-            code = 500;
+            code = 401;
             bodyMap.put("message", "Authorization header not present.");
         } else {
             String encoded = Base64

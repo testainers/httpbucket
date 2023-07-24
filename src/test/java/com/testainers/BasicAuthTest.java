@@ -20,7 +20,7 @@ public class BasicAuthTest extends BaseTest {
     public void getNoHeader() {
         base().get("/basic-auth/{user}/{pass}", user, pass)
               .then()
-              .statusCode(500)
+              .statusCode(401)
               .body("body",
                     is(Map.of("auth", false,
                               "user", user,
@@ -47,11 +47,11 @@ public class BasicAuthTest extends BaseTest {
         base().auth().preemptive().basic(user, pass)
               .get("/basic-auth/{user}Fail/{pass}", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user + "Fail",
                                       "pass", pass,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("GET"));
     }
 
@@ -60,11 +60,11 @@ public class BasicAuthTest extends BaseTest {
         base().auth().preemptive().basic(user, pass)
               .get("/basic-auth/{user}/{pass}Fail", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user,
                                       "pass", pass + "Fail",
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("GET"));
     }
 
@@ -72,7 +72,7 @@ public class BasicAuthTest extends BaseTest {
     public void headNoHeader() {
         base().head("/basic-auth/{user}/{pass}", user, pass)
               .then()
-              .statusCode(500)
+              .statusCode(401)
               .body(is(""));
     }
 
@@ -90,7 +90,7 @@ public class BasicAuthTest extends BaseTest {
         base().auth().preemptive().basic(user, pass)
               .head("/basic-auth/{user}Fail/{pass}", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body(is(""));
     }
 
@@ -99,7 +99,7 @@ public class BasicAuthTest extends BaseTest {
         base().auth().preemptive().basic(user, pass)
               .head("/basic-auth/{user}/{pass}Fail", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body(is(""));
     }
 
@@ -107,7 +107,7 @@ public class BasicAuthTest extends BaseTest {
     public void postNoHeader() {
         json().post("/basic-auth/{user}/{pass}", user, pass)
               .then()
-              .statusCode(500)
+              .statusCode(401)
               .body("body",
                     is(Map.of("auth", false,
                               "user", user,
@@ -136,12 +136,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .post("/basic-auth/{user}Fail/{pass}", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user + "Fail",
                                       "pass", pass,
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("POST"));
     }
 
@@ -150,12 +150,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .post("/basic-auth/{user}/{pass}Fail", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user,
                                       "pass", pass + "Fail",
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("POST"));
     }
 
@@ -163,7 +163,7 @@ public class BasicAuthTest extends BaseTest {
     public void putNoHeader() {
         json().put("/basic-auth/{user}/{pass}", user, pass)
               .then()
-              .statusCode(500)
+              .statusCode(401)
               .body("body",
                     is(Map.of("auth", false,
                               "user", user,
@@ -192,12 +192,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .put("/basic-auth/{user}Fail/{pass}", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user + "Fail",
                                       "pass", pass,
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("PUT"));
     }
 
@@ -206,12 +206,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .put("/basic-auth/{user}/{pass}Fail", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user,
                                       "pass", pass + "Fail",
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("PUT"));
     }
 
@@ -219,7 +219,7 @@ public class BasicAuthTest extends BaseTest {
     public void patchNoHeader() {
         json().patch("/basic-auth/{user}/{pass}", user, pass)
               .then()
-              .statusCode(500)
+              .statusCode(401)
               .body("body",
                     is(Map.of("auth", false,
                               "user", user,
@@ -248,12 +248,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .patch("/basic-auth/{user}Fail/{pass}", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user + "Fail",
                                       "pass", pass,
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("PATCH"));
     }
 
@@ -262,12 +262,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .patch("/basic-auth/{user}/{pass}Fail", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user,
                                       "pass", pass + "Fail",
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("PATCH"));
     }
 
@@ -275,7 +275,7 @@ public class BasicAuthTest extends BaseTest {
     public void deleteNoHeader() {
         json().delete("/basic-auth/{user}/{pass}", user, pass)
               .then()
-              .statusCode(500)
+              .statusCode(401)
               .body("body",
                     is(Map.of("auth", false,
                               "user", user,
@@ -304,12 +304,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .delete("/basic-auth/{user}Fail/{pass}", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user + "Fail",
                                       "pass", pass,
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("DELETE"));
     }
 
@@ -318,12 +318,12 @@ public class BasicAuthTest extends BaseTest {
         json().auth().preemptive().basic(user, pass)
               .delete("/basic-auth/{user}/{pass}Fail", user, pass)
               .then()
-              .statusCode(401)
+              .statusCode(403)
               .body("body", is(Map.of("auth", false,
                                       "user", user,
                                       "pass", pass + "Fail",
                                       "body", BODY,
-                                      "message", "Unauthorized.")),
+                                      "message", "Forbidden.")),
                     bodyMatchers("DELETE"));
     }
 
