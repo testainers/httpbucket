@@ -3,6 +3,6 @@ package com.testainers;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
 @QuarkusIntegrationTest
-public class LengthResourcePostTestIT extends LengthResourcePostTest {
+public class DelayResourceHeadIT extends DelayResourceHeadTest {
     // Execute the same tests but in packaged mode.
 }

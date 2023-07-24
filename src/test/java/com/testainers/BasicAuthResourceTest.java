@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.*;
  * @author Eduardo Folly
  */
 @QuarkusTest
-public class BasicAuthTest extends BaseTest {
+public class BasicAuthResourceTest extends BaseResourceTest {
 
     private static final String user = "test";
     private static final String pass = "test-pass0";

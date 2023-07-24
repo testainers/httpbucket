@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 /**
  * @author Eduardo Folly
  */
-public class BaseTest {
+public class BaseResourceTest {
 
     protected static final Map<String, Object> HEADERS =
             Map.of("test-header", List.of("test-header-value"),
