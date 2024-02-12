@@ -59,7 +59,7 @@ jobs:
             -Dquarkus.container-image.username=${{ env.OWNER }} \
             -Dquarkus.container-image.password=${{ secrets.DOCKER_TOKEN }} \
             -Dquarkus.container-image.group=${{ env.OWNER }} \
-            -Dquarkus.container-image.name=${{ env.REPO }} \
+            -Dquarkus.container-image.name=httpbucket \
             -Dquarkus.container-image.tag=t${{ env.VERSION }} \
             -Dquarkus.container-image.additional-tags=test \
             -Dquarkus.jib.platforms=linux/amd64,linux/arm64
