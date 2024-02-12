@@ -28,7 +28,9 @@ jobs:
 
       - name: Get Gradle Version
         run: |
-          VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")
+          echo "TAGS=latest" >> $GITHUB_ENV
+          SUFFIX=""
+          VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")$SUFFIX
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           REPO=$(echo $GITHUB_REPOSITORY | cut -f 2 -d "/")
           echo "REPO=$REPO" >> $GITHUB_ENV
@@ -36,10 +38,11 @@ jobs:
 
       - name: Check if version is used
         run: |
-          URL=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/latest
-          LATEST=$(curl --silent "$URL" | jq -r .name)
-          if [ "$LATEST" == "$VERSION" ]; then
-            echo "Version already used: $VERSION"
+          URL=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/tags/${{ env.VERSION }}
+          echo "$URL"
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          if [ "$CODE" != 404 ]; then
+            echo "Release '$VERSION' already exists. ($CODE)"
             exit 1
           fi
 
@@ -66,8 +69,8 @@ jobs:
             -Dquarkus.container-image.password=${{ secrets.DOCKER_TOKEN }} \
             -Dquarkus.container-image.group=${{ env.OWNER }} \
             -Dquarkus.container-image.name=${{ env.REPO }} \
-            -Dquarkus.container-image.tag=t${{ env.VERSION }} \
-            -Dquarkus.container-image.additional-tags=test \
+            -Dquarkus.container-image.tag=${{ env.VERSION }} \
+            -Dquarkus.container-image.additional-tags=${{ env.TAGS }} \
             -Dquarkus.jib.platforms=linux/amd64,linux/arm64
 
       - name: Creating GitHub Tag
