@@ -1,14 +1,16 @@
 package com.testainers;
 
 import io.quarkus.security.Authenticated;
+import io.vertx.core.http.HttpServerRequest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
-import org.jboss.resteasy.spi.HttpRequest;
+import org.jboss.resteasy.reactive.RestHeader;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -18,52 +20,67 @@ import java.util.Map;
 /**
  * @author Eduardo Folly
  */
-@Path("/basic-auth")
 @Authenticated
+@Path("/basic-auth/{user}/{pass}")
+@APIResponses({
+        @APIResponse(responseCode = "200"),
+        @APIResponse(responseCode = "401"),
+        @APIResponse(responseCode = "403"),
+})
+@Produces(MediaType.APPLICATION_JSON)
 public class BasicAuthResource {
 
     @Inject
-    HttpRequest request;
+    HttpServerRequest request;
+
+    @Inject
+    UriInfo uriInfo;
 
     @GET
+    public Response get(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                        String user, String pass) {
+
+        return getResponse(auth, user, pass, null);
+    }
+
     @HEAD
-    @Path("/{user}/{pass}")
-    @APIResponses({
-            @APIResponse(responseCode = "200"),
-            @APIResponse(responseCode = "401"),
-            @APIResponse(responseCode = "403"),
-    })
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response withoutBody(
-            @HeaderParam(HttpHeaders.AUTHORIZATION) String auth,
-            @PathParam("user") String user,
-            @PathParam("pass") String pass
-    ) {
+    public Response head(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                         String user, String pass) {
+
         return getResponse(auth, user, pass, null);
     }
 
     @POST
+    public Response post(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                         String user, String pass, Object body) {
+
+        return getResponse(auth, user, pass, body);
+    }
+
     @PUT
+    public Response put(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                        String user, String pass, Object body) {
+
+        return getResponse(auth, user, pass, body);
+    }
+
     @PATCH
+    public Response patch(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                          String user, String pass, Object body) {
+
+        return getResponse(auth, user, pass, body);
+    }
+
     @DELETE
-    @Path("/{user}/{pass}")
-    @APIResponses({
-            @APIResponse(responseCode = "200"),
-            @APIResponse(responseCode = "401"),
-            @APIResponse(responseCode = "403"),
-    })
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response withBody(
-            @HeaderParam(HttpHeaders.AUTHORIZATION) String auth,
-            @PathParam("user") String user,
-            @PathParam("pass") String pass,
-            Object body) {
+    public Response delete(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                           String user, String pass, Object body) {
+
         return getResponse(auth, user, pass, body);
     }
 
     private Response getResponse(String auth, String user, String pass,
                                  Object body) {
-        ResponseBody responseBody = new ResponseBody(request, body);
+        ResponseBody responseBody = new ResponseBody(request, uriInfo, body);
         int code = 403;
 
         Map<String, Object> bodyMap = new HashMap<>();
