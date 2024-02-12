@@ -18,6 +18,7 @@ public class StatusResource {
     HttpRequest request;
 
     @GET
+    @HEAD
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @Parameter(description = "Code must be between 200 and 599. " +
@@ -40,7 +41,8 @@ public class StatusResource {
                                      "are not supported.",
                        schema = @Schema(minimum = "200", maximum = "599")
             )
-            @PathParam("code") Integer code, Object body) {
+            @PathParam("code") Integer code,
+            Object body) {
         return getResponse(code, body);
     }
 

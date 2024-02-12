@@ -15,6 +15,8 @@ dependencies {
     implementation "io.quarkus:quarkus-smallrye-health"
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-container-image-jib'
+    implementation 'io.quarkus:quarkus-info'
     implementation 'io.quarkus:quarkus-arc'
     implementation 'io.smallrye.config:smallrye-config-source-file-system'
     testImplementation 'io.quarkus:quarkus-junit5'
@@ -23,7 +25,7 @@ dependencies {
 }
 
 group 'com.testainers'
-version '0.0.4'
+version '0.0.5'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
