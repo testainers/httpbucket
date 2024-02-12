@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasicAuthResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">BasicAuthResource.java</span></div><h1>BasicAuthResource.java</h1><pre class="source lang-java linenums">package com.testainers;
+
+import io.quarkus.security.Authenticated;
+import io.vertx.core.http.HttpServerRequest;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.jboss.resteasy.reactive.RestHeader;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author Eduardo Folly
+ */
+@Authenticated
+@Path(&quot;/basic-auth/{user}/{pass}&quot;)
+@APIResponses({
+        @APIResponse(responseCode = &quot;200&quot;),
+        @APIResponse(responseCode = &quot;401&quot;),
+        @APIResponse(responseCode = &quot;403&quot;),
+})
+@Produces(MediaType.APPLICATION_JSON)
+<span class="fc" id="L31">public class BasicAuthResource {</span>
+
+    @Inject
+    HttpServerRequest request;
+
+    @Inject
+    UriInfo uriInfo;
+
+    @GET
+    public Response get(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                        String user, String pass) {
+
+<span class="fc" id="L43">        return getResponse(auth, user, pass, null);</span>
+    }
+
+    @POST
+    public Response post(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                         String user, String pass, Object body) {
+
+<span class="fc" id="L50">        return getResponse(auth, user, pass, body);</span>
+    }
+
+    @PUT
+    public Response put(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                        String user, String pass, Object body) {
+
+<span class="fc" id="L57">        return getResponse(auth, user, pass, body);</span>
+    }
+
+    @PATCH
+    public Response patch(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                          String user, String pass, Object body) {
+
+<span class="fc" id="L64">        return getResponse(auth, user, pass, body);</span>
+    }
+
+    @DELETE
+    public Response delete(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
+                           String user, String pass, Object body) {
+
+<span class="fc" id="L71">        return getResponse(auth, user, pass, body);</span>
+    }
+
+    private Response getResponse(String auth, String user, String pass,
+                                 Object body) {
+<span class="fc" id="L76">        ResponseBody responseBody = new ResponseBody(request, uriInfo, body);</span>
+<span class="fc" id="L77">        int code = 403;</span>
+
+<span class="fc" id="L79">        Map&lt;String, Object&gt; bodyMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L80">        bodyMap.put(&quot;auth&quot;, false);</span>
+<span class="fc" id="L81">        bodyMap.put(&quot;user&quot;, user);</span>
+<span class="fc" id="L82">        bodyMap.put(&quot;pass&quot;, pass);</span>
+<span class="fc" id="L83">        bodyMap.put(&quot;message&quot;, &quot;Forbidden.&quot;);</span>
+
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (body != null) {</span>
+<span class="nc" id="L86">            bodyMap.put(&quot;body&quot;, body);</span>
+        }
+
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">        if (auth == null || auth.isBlank()) {</span>
+<span class="fc" id="L90">            code = 401;</span>
+<span class="fc" id="L91">            bodyMap.put(&quot;message&quot;, &quot;Authorization header not present.&quot;);</span>
+        } else {
+            String encoded = Base64
+<span class="fc" id="L94">                    .getEncoder()</span>
+<span class="fc" id="L95">                    .encodeToString((user + &quot;:&quot; + pass)</span>
+<span class="fc" id="L96">                                            .getBytes(StandardCharsets.UTF_8));</span>
+
+<span class="fc" id="L98">            boolean ok = auth.equals(&quot;Basic &quot; + encoded);</span>
+
+<span class="fc" id="L100">            bodyMap.put(&quot;auth&quot;, ok);</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            if (ok) {</span>
+<span class="fc" id="L103">                code = 200;</span>
+<span class="fc" id="L104">                bodyMap.put(&quot;message&quot;, &quot;Success.&quot;);</span>
+            }
+
+        }
+
+<span class="fc" id="L109">        responseBody.body = bodyMap;</span>
+
+<span class="fc" id="L111">        return Response.status(code).entity(responseBody).build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>httpbucket</div></body></html>

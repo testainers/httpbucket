@@ -15,58 +15,103 @@ import java.net.URI;
  * @author Eduardo Folly
  */
 @Path(&quot;/redirect&quot;)
-<span class="fc" id="L18">public class RedirectResource {</span>
+@APIResponses({
+        @APIResponse(responseCode = &quot;30X&quot;, description = &quot;Redirected&quot;),
+        @APIResponse(responseCode = &quot;500&quot;,
+                     description = &quot;'Invalid URL' or &quot; +
+                                   &quot;'Invalid URL Scheme' or &quot; +
+                                   &quot;'Invalid status code: 30X'&quot;)
+})
+<span class="fc" id="L25">public class RedirectResource {</span>
 
     @GET
-    @POST
-    @PUT
-    @PATCH
-    @DELETE
-    @APIResponses({
-            @APIResponse(responseCode = &quot;30X&quot;, description = &quot;Redirected&quot;),
-            @APIResponse(responseCode = &quot;500&quot;,
-                         description = &quot;'Invalid URL' or &quot; +
-                                       &quot;'Invalid URL Scheme' or &quot; +
-                                       &quot;'Invalid status code: 30X'&quot;)
-    })
-    public Response redirect(
+    public Response get(
             @Parameter(description = &quot;URL to redirect.&quot;, required = true)
             @QueryParam(&quot;url&quot;) String url,
             @Parameter(description = &quot;Response status code.&quot;,
                        schema = @Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;))
-            @QueryParam(&quot;code&quot;)
-            @DefaultValue(&quot;302&quot;) Integer code) {
+            @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) Integer code) {
 
-<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (url == null) {</span>
-<span class="fc" id="L41">            return Response</span>
-<span class="fc" id="L42">                    .status(500)</span>
-<span class="fc" id="L43">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L44">                    .entity(&quot;Invalid URL&quot;)</span>
-<span class="fc" id="L45">                    .build();</span>
+<span class="fc" id="L35">        return internal(url, code);</span>
+    }
+
+    @POST
+    public Response post(
+            @Parameter(description = &quot;URL to redirect.&quot;, required = true)
+            @QueryParam(&quot;url&quot;) String url,
+            @Parameter(description = &quot;Response status code.&quot;,
+                       schema = @Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;))
+            @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) Integer code) {
+
+<span class="fc" id="L46">        return internal(url, code);</span>
+    }
+
+    @PUT
+    public Response put(
+            @Parameter(description = &quot;URL to redirect.&quot;, required = true)
+            @QueryParam(&quot;url&quot;) String url,
+            @Parameter(description = &quot;Response status code.&quot;,
+                       schema = @Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;))
+            @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) Integer code) {
+
+<span class="fc" id="L57">        return internal(url, code);</span>
+    }
+
+    @PATCH
+    public Response patch(
+            @Parameter(description = &quot;URL to redirect.&quot;, required = true)
+            @QueryParam(&quot;url&quot;) String url,
+            @Parameter(description = &quot;Response status code.&quot;,
+                       schema = @Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;))
+            @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) Integer code) {
+
+<span class="fc" id="L68">        return internal(url, code);</span>
+    }
+
+    @DELETE
+    public Response delete(
+            @Parameter(description = &quot;URL to redirect.&quot;, required = true)
+            @QueryParam(&quot;url&quot;) String url,
+            @Parameter(description = &quot;Response status code.&quot;,
+                       schema = @Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;))
+            @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) Integer code) {
+
+<span class="fc" id="L79">        return internal(url, code);</span>
+    }
+
+    private Response internal(String url, Integer code) {
+        URI uri;
+
+        try {
+<span class="fc" id="L86">            uri = URI.create(url);</span>
+<span class="fc" id="L87">        } catch (Exception e) {</span>
+<span class="fc" id="L88">            return Response</span>
+<span class="fc" id="L89">                    .status(500)</span>
+<span class="fc" id="L90">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L91">                    .entity(String.format(&quot;Invalid URL: %s&quot;, url))</span>
+<span class="fc" id="L92">                    .build();</span>
+<span class="fc" id="L93">        }</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (uri.getScheme() == null) {</span>
+<span class="fc" id="L96">            return Response</span>
+<span class="fc" id="L97">                    .status(500)</span>
+<span class="fc" id="L98">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L99">                    .entity(String.format(&quot;Invalid URL Scheme: %s&quot;, url))</span>
+<span class="fc" id="L100">                    .build();</span>
         }
 
-<span class="fc" id="L48">        URI uri = URI.create(url);</span>
-
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (uri.getScheme() == null) {</span>
-<span class="fc" id="L51">            return Response</span>
-<span class="fc" id="L52">                    .status(500)</span>
-<span class="fc" id="L53">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L54">                    .entity(&quot;Invalid URL Scheme&quot;)</span>
-<span class="fc" id="L55">                    .build();</span>
+<span class="fc bfc" id="L103" title="All 4 branches covered.">        if (code &lt; 300 || code &gt; 399) {</span>
+<span class="fc" id="L104">            return Response</span>
+<span class="fc" id="L105">                    .status(500)</span>
+<span class="fc" id="L106">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L107">                    .entity(String.format(&quot;Invalid status code: %d&quot;, code))</span>
+<span class="fc" id="L108">                    .build();</span>
         }
 
-<span class="fc bfc" id="L58" title="All 4 branches covered.">        if (code &lt; 300 || code &gt; 399) {</span>
-<span class="fc" id="L59">            return Response</span>
-<span class="fc" id="L60">                    .status(500)</span>
-<span class="fc" id="L61">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L62">                    .entity(String.format(&quot;Invalid status code: %d&quot;, code))</span>
-<span class="fc" id="L63">                    .build();</span>
-        }
-
-<span class="fc" id="L66">        return Response.status(code)</span>
-<span class="fc" id="L67">                       .header(HttpHeaders.LOCATION, uri.toASCIIString())</span>
-<span class="fc" id="L68">                       .build();</span>
+<span class="fc" id="L111">        return Response.status(code)</span>
+<span class="fc" id="L112">                       .header(HttpHeaders.LOCATION, uri.toASCIIString())</span>
+<span class="fc" id="L113">                       .build();</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span>httpbucket</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>httpbucket</div></body></html>

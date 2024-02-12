@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.jboss.resteasy.reactive.RestHeader;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,52 +17,99 @@ import java.util.stream.IntStream;
 /**
  * @author Eduardo Folly
  */
-@Path(&quot;/length&quot;)
-<span class="fc" id="L20">public class LengthResource {</span>
+@Path(&quot;/length/{size}&quot;)
+@APIResponses({
+        @APIResponse(responseCode = &quot;200&quot;, content = {
+                @Content(mediaType = MediaType.TEXT_PLAIN),
+                @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM)
+        }),
+        @APIResponse(responseCode = &quot;500&quot;, description = &quot;Invalid size: X.&quot;)
+})
+<span class="fc" id="L28">public class LengthResource {</span>
 
     @GET
+    public Response get(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                        @Parameter(description = &quot;Size must be &quot; +
+                                                 &quot;between 1 and 2048.&quot;,
+                                   schema = @Schema(minimum = &quot;1&quot;,
+                                                    maximum = &quot;2048&quot;,
+                                                    defaultValue = &quot;10&quot;
+                                   )) int size) {
+
+<span class="fc" id="L39">        return internal(accept, size);</span>
+    }
+
     @POST
+    public Response post(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                         @Parameter(description = &quot;Size must be &quot; +
+                                                  &quot;between 1 and 2048.&quot;,
+                                    schema = @Schema(minimum = &quot;1&quot;,
+                                                     maximum = &quot;2048&quot;,
+                                                     defaultValue = &quot;10&quot;
+                                    )) int size) {
+
+<span class="fc" id="L51">        return internal(accept, size);</span>
+    }
+
     @PUT
+    public Response put(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                        @Parameter(description = &quot;Size must be &quot; +
+                                                 &quot;between 1 and 2048.&quot;,
+                                   schema = @Schema(minimum = &quot;1&quot;,
+                                                    maximum = &quot;2048&quot;,
+                                                    defaultValue = &quot;10&quot;
+                                   )) int size) {
+
+<span class="fc" id="L63">        return internal(accept, size);</span>
+    }
+
     @PATCH
+    public Response patch(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                          @Parameter(description = &quot;Size must be &quot; +
+                                                   &quot;between 1 and 2048.&quot;,
+                                     schema = @Schema(minimum = &quot;1&quot;,
+                                                      maximum = &quot;2048&quot;,
+                                                      defaultValue = &quot;10&quot;
+                                     )) int size) {
+
+<span class="fc" id="L75">        return internal(accept, size);</span>
+    }
+
     @DELETE
-    @Path(&quot;/{size}&quot;)
-    @APIResponses({
-            @APIResponse(responseCode = &quot;200&quot;, content = {
-                    @Content(mediaType = MediaType.TEXT_PLAIN),
-                    @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM)
-            }),
-            @APIResponse(responseCode = &quot;500&quot;, description = &quot;Invalid size: X.&quot;)
-    })
-    public Response length(
-            @HeaderParam(HttpHeaders.ACCEPT) String accept,
-            @Parameter(description = &quot;Size must be between 1 and 2048.&quot;,
-                       schema = @Schema(minimum = &quot;1&quot;, maximum = &quot;2048&quot;,
-                                        defaultValue = &quot;10&quot;
-                       )
-            )
-            @PathParam(&quot;size&quot;) int size) {
-<span class="fc bfc" id="L43" title="All 4 branches covered.">        if (size &lt; 1 || size &gt; 2048) {</span>
-<span class="fc" id="L44">            return Response</span>
-<span class="fc" id="L45">                    .status(500)</span>
-<span class="fc" id="L46">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L47">                    .entity(String.format(&quot;Invalid size: %d&quot;, size))</span>
-<span class="fc" id="L48">                    .build();</span>
+    public Response delete(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                           @Parameter(description = &quot;Size must be &quot; +
+                                                    &quot;between 1 and 2048.&quot;,
+                                      schema = @Schema(minimum = &quot;1&quot;,
+                                                       maximum = &quot;2048&quot;,
+                                                       defaultValue = &quot;10&quot;
+                                      )) int size) {
+
+<span class="fc" id="L87">        return internal(accept, size);</span>
+    }
+
+    private Response internal(String accept, int size) {
+<span class="fc bfc" id="L91" title="All 4 branches covered.">        if (size &lt; 1 || size &gt; 2048) {</span>
+<span class="fc" id="L92">            return Response</span>
+<span class="fc" id="L93">                    .status(500)</span>
+<span class="fc" id="L94">                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L95">                    .entity(String.format(&quot;Invalid size: %d&quot;, size))</span>
+<span class="fc" id="L96">                    .build();</span>
         }
 
-<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (MediaType.APPLICATION_OCTET_STREAM.equals(accept)) {</span>
-<span class="fc" id="L52">            return Response</span>
-<span class="fc" id="L53">                    .ok(new byte[size], MediaType.APPLICATION_OCTET_STREAM_TYPE)</span>
-<span class="fc" id="L54">                    .build();</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (MediaType.APPLICATION_OCTET_STREAM.equals(accept)) {</span>
+<span class="fc" id="L100">            return Response</span>
+<span class="fc" id="L101">                    .ok(new byte[size], MediaType.APPLICATION_OCTET_STREAM_TYPE)</span>
+<span class="fc" id="L102">                    .build();</span>
         } else {
-<span class="fc" id="L56">            return Response</span>
-<span class="fc" id="L57">                    .ok(IntStream.range(0, size)</span>
-<span class="fc" id="L58">                                 .boxed()</span>
-<span class="fc" id="L59">                                 .map(integer -&gt; &quot;0&quot;)</span>
-<span class="fc" id="L60">                                 .collect(Collectors.joining()),</span>
+<span class="fc" id="L104">            return Response</span>
+<span class="fc" id="L105">                    .ok(IntStream.range(0, size)</span>
+<span class="fc" id="L106">                                 .boxed()</span>
+<span class="fc" id="L107">                                 .map(integer -&gt; &quot;0&quot;)</span>
+<span class="fc" id="L108">                                 .collect(Collectors.joining()),</span>
                         MediaType.TEXT_PLAIN_TYPE)
-<span class="fc" id="L62">                    .build();</span>
+<span class="fc" id="L110">                    .build();</span>
         }
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span>httpbucket</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>httpbucket</div></body></html>

@@ -1,38 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MethodsResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">MethodsResource.java</span></div><h1>MethodsResource.java</h1><pre class="source lang-java linenums">package com.testainers;
 
+import io.vertx.core.http.HttpServerRequest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
-import org.jboss.resteasy.spi.HttpRequest;
 
 /**
  * @author Eduardo Folly
  */
 @Path(&quot;/methods&quot;)
-<span class="fc" id="L14">public class MethodsResource {</span>
+@APIResponses({@APIResponse(responseCode = &quot;200&quot;)})
+@Produces(MediaType.APPLICATION_JSON)
+<span class="fc" id="L16">public class MethodsResource {</span>
 
     @Inject
-    HttpRequest request;
+    HttpServerRequest request;
+
+    @Inject
+    UriInfo uriInfo;
 
     @GET
-    @APIResponses({@APIResponse(responseCode = &quot;200&quot;)})
-    @Produces(MediaType.APPLICATION_JSON)
     public ResponseBody get() {
-<span class="fc" id="L23">        return new ResponseBody(request, null);</span>
+<span class="fc" id="L26">        return new ResponseBody(request, uriInfo, null);</span>
+    }
+
+    @HEAD
+    public ResponseBody head() {
+<span class="fc" id="L31">        return new ResponseBody(request, uriInfo, null);</span>
     }
 
     @POST
+    public ResponseBody post(Object body) {
+<span class="fc" id="L36">        return new ResponseBody(request, uriInfo, body);</span>
+    }
+
     @PUT
+    public ResponseBody put(Object body) {
+<span class="fc" id="L41">        return new ResponseBody(request, uriInfo, body);</span>
+    }
+
     @PATCH
+    public ResponseBody patch(Object body) {
+<span class="fc" id="L46">        return new ResponseBody(request, uriInfo, body);</span>
+    }
+
     @DELETE
-    @APIResponses({@APIResponse(responseCode = &quot;200&quot;)})
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResponseBody others(Object body) {
-<span class="fc" id="L33">        return new ResponseBody(request, body);</span>
+    public ResponseBody delete(Object body) {
+<span class="fc" id="L51">        return new ResponseBody(request, uriInfo, body);</span>
     }
 
 }
 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span>httpbucket</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>httpbucket</div></body></html>

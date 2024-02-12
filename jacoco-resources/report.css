@@ -241,8 +241,8 @@ table.coverage tfoot td.ctr2 {
   margin-top: 20px;
   border-top: #d6d3ce 1px solid;
   padding-top: 2px;
-  font-size: 8pt;
   color: #a0a0a0;
+  font-size: 1.5em;
 }
 
 .footer a {
@@ -250,6 +250,6 @@ table.coverage tfoot td.ctr2 {
 }
 
 .right {
-  float: right;
+  display: none;
 }
 

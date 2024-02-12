@@ -1,67 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatusResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">StatusResource.java</span></div><h1>StatusResource.java</h1><pre class="source lang-java linenums">package com.testainers;
 
+import io.vertx.core.http.HttpServerRequest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
-import org.jboss.resteasy.spi.HttpRequest;
 
 /**
  * @author Eduardo Folly
  */
 @Path(&quot;/status/{code}&quot;)
-<span class="fc" id="L15">public class StatusResource {</span>
+@Produces(MediaType.APPLICATION_JSON)
+<span class="fc" id="L17">public class StatusResource {</span>
 
     @Inject
-    HttpRequest request;
+    HttpServerRequest request;
+
+    @Inject
+    UriInfo uriInfo;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
                                      &quot;Informational responses (1XX) &quot; +
                                      &quot;are not supported.&quot;,
                        schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
-            )
-            @PathParam(&quot;code&quot;) Integer code) {
-<span class="fc" id="L29">        return getResponse(code, null);</span>
+            ) Integer code) {
+
+<span class="fc" id="L33">        return internal(code, null);</span>
     }
 
     @POST
-    @PUT
-    @PATCH
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response others(
+    public Response post(
             @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
                                      &quot;Informational responses (1XX) &quot; +
                                      &quot;are not supported.&quot;,
                        schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
-            )
-            @PathParam(&quot;code&quot;) Integer code, Object body) {
-<span class="fc" id="L44">        return getResponse(code, body);</span>
+            ) Integer code, Object body) {
+
+<span class="fc" id="L44">        return internal(code, body);</span>
     }
 
-    private Response getResponse(int code, Object body) {
-<span class="fc" id="L48">        ResponseBody responseBody = new ResponseBody(request, body);</span>
+    @PUT
+    public Response put(
+            @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
+                                     &quot;Informational responses (1XX) &quot; +
+                                     &quot;are not supported.&quot;,
+                       schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
+            ) Integer code, Object body) {
 
-<span class="fc bfc" id="L50" title="All 4 branches covered.">        if (code &lt; 200 || code &gt; 599) {</span>
+<span class="fc" id="L55">        return internal(code, body);</span>
+    }
+
+    @PATCH
+    public Response patch(
+            @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
+                                     &quot;Informational responses (1XX) &quot; +
+                                     &quot;are not supported.&quot;,
+                       schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
+            ) Integer code, Object body) {
+
+<span class="fc" id="L66">        return internal(code, body);</span>
+    }
+
+    @DELETE
+    public Response delete(
+            @Parameter(description = &quot;Code must be between 200 and 599. &quot; +
+                                     &quot;Informational responses (1XX) &quot; +
+                                     &quot;are not supported.&quot;,
+                       schema = @Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;)
+            ) Integer code, Object body) {
+
+<span class="fc" id="L77">        return internal(code, body);</span>
+    }
+
+    private Response internal(int code, Object body) {
+<span class="fc" id="L81">        ResponseBody responseBody = new ResponseBody(request, uriInfo, body);</span>
+
+<span class="fc bfc" id="L83" title="All 4 branches covered.">        if (code &lt; 200 || code &gt; 599) {</span>
             String message;
 
-<span class="fc bfc" id="L53" title="All 4 branches covered.">            if (code &gt; 99 &amp;&amp; code &lt; 200) {</span>
-<span class="fc" id="L54">                message = &quot;Informational responses are not supported: %d&quot;;</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">            if (code &gt; 99 &amp;&amp; code &lt; 200) {</span>
+<span class="fc" id="L87">                message = &quot;Informational responses are not supported: %d&quot;;</span>
             } else {
-<span class="fc" id="L56">                message = &quot;Unknown status code: %d&quot;;</span>
+<span class="fc" id="L89">                message = &quot;Unknown status code: %d&quot;;</span>
             }
 
-<span class="fc" id="L59">            responseBody.body = String.format(message, code);</span>
-<span class="fc" id="L60">            code = 500;</span>
+<span class="fc" id="L92">            responseBody.body = String.format(message, code);</span>
+<span class="fc" id="L93">            code = 500;</span>
         }
 
-<span class="fc" id="L63">        return Response.status(code).entity(responseBody).build();</span>
+<span class="fc" id="L96">        return Response.status(code).entity(responseBody).build();</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span>httpbucket</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>httpbucket</div></body></html>
