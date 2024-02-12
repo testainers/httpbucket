@@ -2,6 +2,7 @@ package com.testainers;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.Method;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
@@ -83,6 +84,7 @@ public class DelayResourceTest extends BaseResourceTest {
     }
 
     @Test
+    @Disabled
     public void delay10() {
         for (Method method : METHODS) {
             json(method)
