@@ -19,9 +19,19 @@ body{
     background-color: #C38FA3;
 }
 
-#swaggerUiTitleLink:before {
-    content: 'Testainers';
+.swagger-ui .topbar-wrapper:before {
+    content: "Testainers";
+    padding-left: 60px;
     font-weight: normal;
+    font-size: 3.0em;
+    background-image: url("logo.png");
+    background-repeat: no-repeat;
+    background-position: start;
+    background-size: contain;
+}
+
+.swagger-ui .topbar-wrapper svg {
+    display: none;
 }
 
 .swagger-ui .topbar .download-url-wrapper {

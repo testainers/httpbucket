@@ -93,3 +93,4 @@ openssl req \
 - /swagger-ui
 - /health
 - /metrics
+- /info
