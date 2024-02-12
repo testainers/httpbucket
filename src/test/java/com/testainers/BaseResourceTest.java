@@ -1,12 +1,18 @@
 package com.testainers;
 
+import io.restassured.RestAssured;
+import io.restassured.config.LogConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
+import io.restassured.http.Method;
 import io.restassured.specification.RequestSpecification;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.config.RedirectConfig.redirectConfig;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -14,6 +20,17 @@ import static org.hamcrest.Matchers.*;
  */
 public class BaseResourceTest {
 
+    protected static final List<Method> METHODS =
+            List.of(Method.GET, Method.POST, Method.PUT,
+                    Method.PATCH, Method.DELETE);
+
+    protected static final RestAssuredConfig CONFIG = RestAssured
+            .config()
+            .logConfig(LogConfig
+                               .logConfig()
+                               .enableLoggingOfRequestAndResponseIfValidationFails()
+                               .enablePrettyPrinting(true))
+            .redirect(redirectConfig().followRedirects(false));
     protected static final Map<String, Object> HEADERS =
             Map.of("test-header", List.of("test-header-value"),
                    "test-header-2", List.of("test-header-value-2"));
@@ -21,30 +38,38 @@ public class BaseResourceTest {
     protected static final Map<String, Object> QUERY_PARAMS =
             Map.of("test-qs", List.of("test-qs"));
 
-    protected static final Map<String, Object> BODY = Map
-            .of("test_string", "test",
-                "test_int", 1,
-                "test_boolean", true);
+    protected static final Map<String, Object> BODY =
+            Map.of("test_string", "test",
+                   "test_int", 1,
+                   "test_boolean", true);
 
     protected RequestSpecification base() {
-        return given().when()
+        return given().config(CONFIG)
+                      .when()
                       .headers(HEADERS)
-                      .queryParams(QUERY_PARAMS);
-
+                      .queryParams(QUERY_PARAMS)
+                      .contentType(ContentType.JSON);
     }
 
-    protected RequestSpecification json() {
-        return base()
-                .contentType(ContentType.JSON)
-                .body(BODY);
+    protected RequestSpecification json(Method method) {
+        if (method == null || method == Method.GET) {
+            return base();
+        } else {
+            return base().body(BODY);
+        }
     }
 
-    protected Object[] bodyMatchers(String method) {
-        return new Object[]{"method", is(method),
-                "queryParameters", is(QUERY_PARAMS),
-                "headers", aMapWithSize(greaterThanOrEqualTo(HEADERS.size())),
-                "headers", hasEntry(in(HEADERS.keySet()), in(HEADERS.values())),
-        };
+    protected Object[] bodyMatchers(Method method) {
+        List<Object> matchers = new ArrayList<>();
+        matchers.add("method");
+        matchers.add(is(method.name()));
+        matchers.add("queryParameters");
+        matchers.add(is(QUERY_PARAMS));
+        matchers.add("headers");
+        matchers.add(aMapWithSize(greaterThanOrEqualTo(HEADERS.size())));
+        matchers.add("headers");
+        matchers.add(hasEntry(in(HEADERS.keySet()), in(HEADERS.values())));
+        return matchers.toArray();
     }
 
 }

@@ -1,11 +1,13 @@
 package com.testainers;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.vertx.core.http.HttpServerRequest;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.UriInfo;
-import org.jboss.resteasy.spi.HttpRequest;
 
 import java.net.URI;
+import java.util.Map;
 
 /**
  * @author Eduardo Folly
@@ -23,13 +25,19 @@ public class ResponseBody {
 
     public Object body;
 
-    public ResponseBody(HttpRequest request, Object body) {
-        this.method = request.getHttpMethod();
-        this.remoteAddress = request.getRemoteAddress();
-        this.remoteHost = request.getRemoteHost();
-        this.headers = request.getHttpHeaders().getRequestHeaders();
+    public ResponseBody(HttpServerRequest request, UriInfo uriInfo,
+                        Object body) {
 
-        UriInfo uriInfo = request.getUri();
+        this.method = request.method().name();
+        this.remoteAddress = request.remoteAddress().toString();
+        this.remoteHost = request.remoteAddress().host();
+
+        headers = new MultivaluedHashMap<>();
+
+        for (Map.Entry<String, String> entry : request.headers()) {
+            headers.add(entry.getKey(), entry.getValue());
+        }
+
         this.uri = uriInfo.getAbsolutePath();
         this.pathParameters = uriInfo.getPathParameters();
         this.queryParameters = uriInfo.getQueryParameters();

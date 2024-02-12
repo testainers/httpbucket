@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.jboss.resteasy.reactive.RestHeader;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,32 +17,77 @@ import java.util.stream.IntStream;
 /**
  * @author Eduardo Folly
  */
-@Path("/length")
+@Path("/length/{size}")
+@APIResponses({
+        @APIResponse(responseCode = "200", content = {
+                @Content(mediaType = MediaType.TEXT_PLAIN),
+                @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM)
+        }),
+        @APIResponse(responseCode = "500", description = "Invalid size: X.")
+})
 public class LengthResource {
 
     @GET
-    @HEAD
+    public Response get(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                        @Parameter(description = "Size must be " +
+                                                 "between 1 and 2048.",
+                                   schema = @Schema(minimum = "1",
+                                                    maximum = "2048",
+                                                    defaultValue = "10"
+                                   )) int size) {
+
+        return internal(accept, size);
+    }
+
     @POST
+    public Response post(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                         @Parameter(description = "Size must be " +
+                                                  "between 1 and 2048.",
+                                    schema = @Schema(minimum = "1",
+                                                     maximum = "2048",
+                                                     defaultValue = "10"
+                                    )) int size) {
+
+        return internal(accept, size);
+    }
+
     @PUT
+    public Response put(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                        @Parameter(description = "Size must be " +
+                                                 "between 1 and 2048.",
+                                   schema = @Schema(minimum = "1",
+                                                    maximum = "2048",
+                                                    defaultValue = "10"
+                                   )) int size) {
+
+        return internal(accept, size);
+    }
+
     @PATCH
+    public Response patch(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                          @Parameter(description = "Size must be " +
+                                                   "between 1 and 2048.",
+                                     schema = @Schema(minimum = "1",
+                                                      maximum = "2048",
+                                                      defaultValue = "10"
+                                     )) int size) {
+
+        return internal(accept, size);
+    }
+
     @DELETE
-    @Path("/{size}")
-    @APIResponses({
-            @APIResponse(responseCode = "200", content = {
-                    @Content(mediaType = MediaType.TEXT_PLAIN),
-                    @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM)
-            }),
-            @APIResponse(responseCode = "500", description = "Invalid size: X.")
-    })
-    public Response length(
-            @HeaderParam(HttpHeaders.ACCEPT) String accept,
-            @Parameter(description = "Size must be between 1 and 2048.",
-                       schema = @Schema(minimum = "1", maximum = "2048",
-                                        defaultValue = "10"
-                       )
-            )
-            @PathParam("size") int size
-    ) {
+    public Response delete(@RestHeader(HttpHeaders.ACCEPT) String accept,
+                           @Parameter(description = "Size must be " +
+                                                    "between 1 and 2048.",
+                                      schema = @Schema(minimum = "1",
+                                                       maximum = "2048",
+                                                       defaultValue = "10"
+                                      )) int size) {
+
+        return internal(accept, size);
+    }
+
+    private Response internal(String accept, int size) {
         if (size < 1 || size > 2048) {
             return Response
                     .status(500)

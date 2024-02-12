@@ -15,44 +15,88 @@ import java.net.URI;
  * @author Eduardo Folly
  */
 @Path("/redirect")
+@APIResponses({
+        @APIResponse(responseCode = "30X", description = "Redirected"),
+        @APIResponse(responseCode = "500",
+                     description = "'Invalid URL' or " +
+                                   "'Invalid URL Scheme' or " +
+                                   "'Invalid status code: 30X'")
+})
 public class RedirectResource {
 
     @GET
-    @HEAD
-    @POST
-    @PUT
-    @PATCH
-    @DELETE
-    @APIResponses({
-            @APIResponse(responseCode = "30X", description = "Redirected"),
-            @APIResponse(responseCode = "500",
-                         description = "'Invalid URL' or " +
-                                       "'Invalid URL Scheme' or " +
-                                       "'Invalid status code: 30X'")
-    })
-    public Response redirect(
+    public Response get(
             @Parameter(description = "URL to redirect.", required = true)
             @QueryParam("url") String url,
             @Parameter(description = "Response status code.",
                        schema = @Schema(minimum = "300", maximum = "399"))
-            @QueryParam("code")
-            @DefaultValue("302") Integer code) {
+            @QueryParam("code") @DefaultValue("302") Integer code) {
 
-        if (url == null) {
+        return internal(url, code);
+    }
+
+    @POST
+    public Response post(
+            @Parameter(description = "URL to redirect.", required = true)
+            @QueryParam("url") String url,
+            @Parameter(description = "Response status code.",
+                       schema = @Schema(minimum = "300", maximum = "399"))
+            @QueryParam("code") @DefaultValue("302") Integer code) {
+
+        return internal(url, code);
+    }
+
+    @PUT
+    public Response put(
+            @Parameter(description = "URL to redirect.", required = true)
+            @QueryParam("url") String url,
+            @Parameter(description = "Response status code.",
+                       schema = @Schema(minimum = "300", maximum = "399"))
+            @QueryParam("code") @DefaultValue("302") Integer code) {
+
+        return internal(url, code);
+    }
+
+    @PATCH
+    public Response patch(
+            @Parameter(description = "URL to redirect.", required = true)
+            @QueryParam("url") String url,
+            @Parameter(description = "Response status code.",
+                       schema = @Schema(minimum = "300", maximum = "399"))
+            @QueryParam("code") @DefaultValue("302") Integer code) {
+
+        return internal(url, code);
+    }
+
+    @DELETE
+    public Response delete(
+            @Parameter(description = "URL to redirect.", required = true)
+            @QueryParam("url") String url,
+            @Parameter(description = "Response status code.",
+                       schema = @Schema(minimum = "300", maximum = "399"))
+            @QueryParam("code") @DefaultValue("302") Integer code) {
+
+        return internal(url, code);
+    }
+
+    private Response internal(String url, Integer code) {
+        URI uri;
+
+        try {
+            uri = URI.create(url);
+        } catch (Exception e) {
             return Response
                     .status(500)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                    .entity("Invalid URL")
+                    .entity(String.format("Invalid URL: %s", url))
                     .build();
         }
-
-        URI uri = URI.create(url);
 
         if (uri.getScheme() == null) {
             return Response
                     .status(500)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                    .entity("Invalid URL Scheme")
+                    .entity(String.format("Invalid URL Scheme: %s", url))
                     .build();
         }
 
