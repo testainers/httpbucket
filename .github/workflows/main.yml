@@ -91,3 +91,4 @@ jobs:
         with:
           publish_dir: ./build/jacoco-report
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          cname: httpbucket.testainers.com
