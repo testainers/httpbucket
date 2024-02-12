@@ -2,13 +2,8 @@
 
 set -e
 
-export QUARKUS_JACOCO_REPORT_LOCATION='coverage'
-export QUARKUS_JACOCO_FOOTER='httpbucket'
-export QUARKUS_JACOCO_TITLE='httpbucket'
-export QUARKUS_JACOCO_EXCLUDES='**/SimpleHealthCheck.class'
-
 ./gradlew cleanTest test
 
-/bin/cp -rf helpers/coverage/* build/coverage/.
+/bin/cp -rf helpers/jacoco-report/* build/jacoco-report/.
 
-/opt/google/chrome/google-chrome build/coverage/index.html
+# /opt/google/chrome/google-chrome build/coverage/index.html

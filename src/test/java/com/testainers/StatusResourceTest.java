@@ -98,8 +98,7 @@ public class StatusResourceTest extends BaseResourceTest {
                     .then()
                     .statusCode(200)
                     .body("body",
-                          "GET|HEAD".contains(method.name()) ? not(BODY)
-                                                             : is(BODY),
+                          method == Method.GET ? not(BODY) : is(BODY),
                           bodyMatchers(method));
         }
     }
@@ -142,8 +141,7 @@ public class StatusResourceTest extends BaseResourceTest {
                         .then()
                         .statusCode(599)
                         .body("body",
-                              "GET|HEAD".contains(method.name()) ? not(BODY)
-                                                                 : is(BODY),
+                              method == Method.GET ? not(BODY) : is(BODY),
                               bodyMatchers(method));
         }
     }

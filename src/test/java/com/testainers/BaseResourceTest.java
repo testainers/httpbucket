@@ -21,8 +21,7 @@ import static org.hamcrest.Matchers.*;
 public class BaseResourceTest {
 
     protected static final List<Method> METHODS =
-            List.of(Method.GET,
-                    Method.POST, Method.PUT,
+            List.of(Method.GET, Method.POST, Method.PUT,
                     Method.PATCH, Method.DELETE);
 
     protected static final RestAssuredConfig CONFIG = RestAssured
@@ -53,7 +52,7 @@ public class BaseResourceTest {
     }
 
     protected RequestSpecification json(Method method) {
-        if (method == null || method == Method.GET || method == Method.HEAD) {
+        if (method == null || method == Method.GET) {
             return base();
         } else {
             return base().body(BODY);

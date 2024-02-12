@@ -43,13 +43,6 @@ public class BasicAuthResource {
         return getResponse(auth, user, pass, null);
     }
 
-    @HEAD
-    public Response head(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
-                         String user, String pass) {
-
-        return getResponse(auth, user, pass, null);
-    }
-
     @POST
     public Response post(@RestHeader(HttpHeaders.AUTHORIZATION) String auth,
                          String user, String pass, Object body) {

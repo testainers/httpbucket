@@ -33,17 +33,6 @@ public class StatusResource {
         return internal(code, null);
     }
 
-    @HEAD
-    public Response head(
-            @Parameter(description = "Code must be between 200 and 599. " +
-                                     "Informational responses (1XX) " +
-                                     "are not supported.",
-                       schema = @Schema(minimum = "200", maximum = "599")
-            ) Integer code) {
-
-        return internal(code, null);
-    }
-
     @POST
     public Response post(
             @Parameter(description = "Code must be between 200 and 599. " +

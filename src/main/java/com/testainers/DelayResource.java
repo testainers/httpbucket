@@ -38,15 +38,6 @@ public class DelayResource {
         return internal(delay, null);
     }
 
-    @HEAD
-    public Response head(
-            @Parameter(description = "Delay must be between 0 and 10 seconds.",
-                       schema = @Schema(minimum = "1", maximum = "10",
-                                        defaultValue = "10")) int delay) {
-
-        return internal(delay, null);
-    }
-
     @POST
     public Response post(
             @Parameter(description = "Delay must be between 0 and 10 seconds.",

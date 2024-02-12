@@ -35,17 +35,6 @@ public class RedirectResource {
         return internal(url, code);
     }
 
-    @HEAD
-    public Response head(
-            @Parameter(description = "URL to redirect.", required = true)
-            @QueryParam("url") String url,
-            @Parameter(description = "Response status code.",
-                       schema = @Schema(minimum = "300", maximum = "399"))
-            @QueryParam("code") @DefaultValue("302") Integer code) {
-
-        return internal(url, code);
-    }
-
     @POST
     public Response post(
             @Parameter(description = "URL to redirect.", required = true)

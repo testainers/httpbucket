@@ -39,18 +39,6 @@ public class LengthResource {
         return internal(accept, size);
     }
 
-    @HEAD
-    public Response head(@RestHeader(HttpHeaders.ACCEPT) String accept,
-                         @Parameter(description = "Size must be " +
-                                                  "between 1 and 2048.",
-                                    schema = @Schema(minimum = "1",
-                                                     maximum = "2048",
-                                                     defaultValue = "10"
-                                    )) int size) {
-
-        return internal(accept, size);
-    }
-
     @POST
     public Response post(@RestHeader(HttpHeaders.ACCEPT) String accept,
                          @Parameter(description = "Size must be " +
