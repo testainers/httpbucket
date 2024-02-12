@@ -40,7 +40,8 @@ public class LengthResource {
                                         defaultValue = "10"
                        )
             )
-            @PathParam("size") int size) {
+            @PathParam("size") int size
+    ) {
         if (size < 1 || size > 2048) {
             return Response
                     .status(500)

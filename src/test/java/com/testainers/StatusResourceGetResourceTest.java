@@ -10,7 +10,15 @@ import static org.hamcrest.Matchers.*;
  * @author Eduardo Folly
  */
 @QuarkusTest
-public class StatusResourceGetTest extends BaseTest {
+public class StatusResourceGetResourceTest extends BaseResourceTest {
+
+    @Test
+    public void testStatusGetEmpty() {
+        base().get("/status")
+              .then()
+              .statusCode(404)
+              .statusLine(containsStringIgnoringCase("Not Found"));
+    }
 
     @Test
     public void testStatusGetString() {

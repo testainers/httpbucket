@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.*;
  * @author Eduardo Folly
  */
 @QuarkusTest
-public class StatusResourcePatchTest extends BaseTest {
+public class StatusResourcePatchResourceTest extends BaseResourceTest {
 
     @Test
     public void testStatusPatchString() {
