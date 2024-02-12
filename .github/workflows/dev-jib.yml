@@ -19,7 +19,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
-          cache: 'gradle'
 
       - name: Get Gradle Version
         run: |
@@ -52,8 +51,11 @@ jobs:
       - name: Build
         run: |
           ./gradlew build --no-daemon \
+            -DskipTests \
             -Dquarkus.package.type=native \
             -Dquarkus.native.container-build=true \
+            -Dquarkus.container-image.build=true \
+            -Dquarkus.container-image.push=true \
             -Dquarkus.container-image.username=${{ env.OWNER }} \
             -Dquarkus.container-image.password=${{ secrets.DOCKER_TOKEN }} \
             -Dquarkus.container-image.group=${{ env.OWNER }} \
