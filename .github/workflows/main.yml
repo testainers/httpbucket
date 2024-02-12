@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: write
     env:
-      QUARKUS_JACOCO_REPORT_LOCATION: 'coverage'
+#      QUARKUS_JACOCO_REPORT_LOCATION: 'coverage'
       QUARKUS_JACOCO_FOOTER: 'httpbucket'
       QUARKUS_JACOCO_TITLE: 'httpbucket'
       QUARKUS_JACOCO_EXCLUDES: '**/SimpleHealthCheck.class'
@@ -87,10 +87,10 @@ jobs:
 
       - name: Overwrite Coverage Theme
         run: |
-          /bin/cp -rf helpers/coverage/* build/coverage/.
+          /bin/cp -rf helpers/jacoco-report/* build/jacoco-report/.
 
       - name: Publishing to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          publish_dir: ./build/coverage
+          publish_dir: ./build/jacoco-report
           github_token: ${{ secrets.GITHUB_TOKEN }}
