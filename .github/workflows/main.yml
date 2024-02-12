@@ -83,6 +83,7 @@ jobs:
       - name: Overwrite Coverage Theme
         run: |
           /bin/cp -rf helpers/jacoco-report/* build/jacoco-report/.
+          /bin/cp -f README.md build/jacoco-report/.
 
       - name: Publishing to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
