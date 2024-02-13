@@ -65,13 +65,13 @@ jobs:
             -Dquarkus.container-image.group=${{ env.OWNER }} \
             -Dquarkus.container-image.name=${{ env.REPO }} \
             -Dquarkus.container-image.tag=${{ env.VERSION }} \
-            -Dquarkus.container-image.additional-tags=${{ env.TAGS }} \
-            -Dquarkus.jib.platforms=linux/amd64,linux/arm64
+            -Dquarkus.container-image.additional-tags=${{ env.TAGS }}
 
       - name: Creating GitHub Tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           custom_tag: ${{ env.VERSION }}
+          tag_prefix: ''
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
@@ -83,9 +83,11 @@ jobs:
       - name: Overwrite Coverage Theme
         run: |
           /bin/cp -rf helpers/jacoco-report/* build/jacoco-report/.
+          /bin/cp -f README.md build/jacoco-report/.
 
       - name: Publishing to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           publish_dir: ./build/jacoco-report
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          cname: httpbucket.testainers.com
