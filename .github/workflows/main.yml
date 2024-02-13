@@ -65,8 +65,7 @@ jobs:
             -Dquarkus.container-image.group=${{ env.OWNER }} \
             -Dquarkus.container-image.name=${{ env.REPO }} \
             -Dquarkus.container-image.tag=${{ env.VERSION }} \
-            -Dquarkus.container-image.additional-tags=${{ env.TAGS }} \
-            -Dquarkus.jib.platforms=linux/amd64,linux/arm64
+            -Dquarkus.container-image.additional-tags=${{ env.TAGS }}
 
       - name: Creating GitHub Tag
         uses: mathieudutour/github-tag-action@v6.1
