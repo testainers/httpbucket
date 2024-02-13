@@ -14,7 +14,7 @@ public class MethodsResourceTest extends BaseResourceTest {
 
     @Test
     public void methodsGet() {
-        base()
+        json(Method.GET)
                 .get("/methods")
                 .then()
                 .statusCode(200)
@@ -23,9 +23,10 @@ public class MethodsResourceTest extends BaseResourceTest {
 
     @Test
     public void methodsHead() {
-        base().head("/methods")
-              .then()
-              .statusCode(200);
+        json(Method.HEAD)
+                .head("/methods")
+                .then()
+                .statusCode(200);
     }
 
     @Test
