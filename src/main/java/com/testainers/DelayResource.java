@@ -32,7 +32,7 @@ public class DelayResource {
     @GET
     public Response get(
             @Parameter(description = "Delay must be between 0 and 10 seconds.",
-                       schema = @Schema(minimum = "1", maximum = "10",
+                       schema = @Schema(minimum = "0", maximum = "10",
                                         defaultValue = "10")) int delay) {
 
         return internal(delay, null);
@@ -41,7 +41,7 @@ public class DelayResource {
     @POST
     public Response post(
             @Parameter(description = "Delay must be between 0 and 10 seconds.",
-                       schema = @Schema(minimum = "1", maximum = "10",
+                       schema = @Schema(minimum = "0", maximum = "10",
                                         defaultValue = "10"))
             int delay, Object body) {
 
@@ -51,7 +51,7 @@ public class DelayResource {
     @PUT
     public Response put(
             @Parameter(description = "Delay must be between 0 and 10 seconds.",
-                       schema = @Schema(minimum = "1", maximum = "10",
+                       schema = @Schema(minimum = "0", maximum = "10",
                                         defaultValue = "10"))
             int delay, Object body) {
 
@@ -61,7 +61,7 @@ public class DelayResource {
     @PATCH
     public Response patch(
             @Parameter(description = "Delay must be between 0 and 10 seconds.",
-                       schema = @Schema(minimum = "1", maximum = "10",
+                       schema = @Schema(minimum = "0", maximum = "10",
                                         defaultValue = "10"))
             int delay, Object body) {
 
@@ -71,7 +71,7 @@ public class DelayResource {
     @DELETE
     public Response delete(
             @Parameter(description = "Delay must be between 0 and 10 seconds.",
-                       schema = @Schema(minimum = "1", maximum = "10",
+                       schema = @Schema(minimum = "0", maximum = "10",
                                         defaultValue = "10"))
             int delay, Object body) {
 

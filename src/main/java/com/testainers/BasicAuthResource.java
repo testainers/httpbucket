@@ -81,10 +81,7 @@ public class BasicAuthResource {
         bodyMap.put("user", user);
         bodyMap.put("pass", pass);
         bodyMap.put("message", "Forbidden.");
-
-        if (body != null) {
-            bodyMap.put("body", body);
-        }
+        bodyMap.put("body", body);
 
         if (auth == null || auth.isBlank()) {
             code = 401;

@@ -15,20 +15,22 @@ public class StatusResourceTest extends BaseResourceTest {
     @Test
     public void statusString() {
         for (Method method : METHODS) {
-            base().request(method, "/status/a")
-                  .then()
-                  .statusCode(404)
-                  .statusLine(containsStringIgnoringCase("Not Found"));
+            json(method)
+                    .request(method, "/status/a")
+                    .then()
+                    .statusCode(404)
+                    .statusLine(containsStringIgnoringCase("Not Found"));
         }
     }
 
     @Test
     public void statusDouble() {
         for (Method method : METHODS) {
-            base().request(method, "/status/1.8")
-                  .then()
-                  .statusCode(404)
-                  .statusLine(containsStringIgnoringCase("Not Found"));
+            json(method)
+                    .request(method, "/status/1.8")
+                    .then()
+                    .statusCode(404)
+                    .statusLine(containsStringIgnoringCase("Not Found"));
         }
     }
 

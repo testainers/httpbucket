@@ -8,6 +8,7 @@ import io.restassured.http.Method;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +27,12 @@ public class BaseResourceTest {
 
     protected static final RestAssuredConfig CONFIG = RestAssured
             .config()
-            .logConfig(LogConfig
-                               .logConfig()
-                               .enableLoggingOfRequestAndResponseIfValidationFails()
-                               .enablePrettyPrinting(true))
+            .logConfig(
+                    LogConfig
+                            .logConfig()
+                            .enableLoggingOfRequestAndResponseIfValidationFails()
+                            .enablePrettyPrinting(true)
+            )
             .redirect(redirectConfig().followRedirects(false));
     protected static final Map<String, Object> HEADERS =
             Map.of("test-header", List.of("test-header-value"),
@@ -43,32 +46,40 @@ public class BaseResourceTest {
                    "test_int", 1,
                    "test_boolean", true);
 
-    protected RequestSpecification base() {
-        return given().config(CONFIG)
-                      .when()
-                      .headers(HEADERS)
-                      .queryParams(QUERY_PARAMS)
-                      .contentType(ContentType.JSON);
-    }
-
     protected RequestSpecification json(Method method) {
-        if (method == null || method == Method.GET) {
-            return base();
-        } else {
-            return base().body(BODY);
+        RequestSpecification spec = given()
+                .config(CONFIG)
+                .when()
+                .headers(HEADERS)
+                .queryParams(QUERY_PARAMS)
+                .contentType(ContentType.JSON);
+
+        if (method != null && method != Method.GET) {
+            spec = spec.body(BODY);
         }
+
+        return spec;
     }
 
-    protected Object[] bodyMatchers(Method method) {
+    protected Object[] bodyMatchers(Method method, Object... objects) {
         List<Object> matchers = new ArrayList<>();
+
         matchers.add("method");
         matchers.add(is(method.name()));
+
         matchers.add("queryParameters");
         matchers.add(is(QUERY_PARAMS));
+
         matchers.add("headers");
         matchers.add(aMapWithSize(greaterThanOrEqualTo(HEADERS.size())));
+
         matchers.add("headers");
         matchers.add(hasEntry(in(HEADERS.keySet()), in(HEADERS.values())));
+
+        if (objects != null && objects.length > 0) {
+            matchers.addAll(Arrays.asList(objects));
+        }
+
         return matchers.toArray();
     }
 
