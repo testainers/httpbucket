@@ -4,5 +4,5 @@ httpbucket,com.testainers,MethodsResource,0,57,0,0,0,7,0,7,0,7
 httpbucket,com.testainers,RedirectResource,0,101,0,6,0,29,0,10,0,7
 httpbucket,com.testainers,StatusResource,0,78,0,8,0,14,0,11,0,7
 httpbucket,com.testainers,ResponseBody,0,59,0,2,0,13,0,2,0,1
-httpbucket,com.testainers,BasicAuthResource,5,126,2,6,1,27,2,9,0,7
+httpbucket,com.testainers,BasicAuthResource,0,129,0,6,0,27,0,10,0,7
 httpbucket,com.testainers,LengthResource,0,75,0,6,0,22,0,11,0,8

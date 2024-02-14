@@ -81,34 +81,31 @@ import java.util.Map;
 <span class="fc" id="L81">        bodyMap.put(&quot;user&quot;, user);</span>
 <span class="fc" id="L82">        bodyMap.put(&quot;pass&quot;, pass);</span>
 <span class="fc" id="L83">        bodyMap.put(&quot;message&quot;, &quot;Forbidden.&quot;);</span>
+<span class="fc" id="L84">        bodyMap.put(&quot;body&quot;, body);</span>
 
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (body != null) {</span>
-<span class="nc" id="L86">            bodyMap.put(&quot;body&quot;, body);</span>
-        }
-
-<span class="pc bpc" id="L89" title="1 of 4 branches missed.">        if (auth == null || auth.isBlank()) {</span>
-<span class="fc" id="L90">            code = 401;</span>
-<span class="fc" id="L91">            bodyMap.put(&quot;message&quot;, &quot;Authorization header not present.&quot;);</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">        if (auth == null || auth.isBlank()) {</span>
+<span class="fc" id="L87">            code = 401;</span>
+<span class="fc" id="L88">            bodyMap.put(&quot;message&quot;, &quot;Authorization header not present.&quot;);</span>
         } else {
             String encoded = Base64
-<span class="fc" id="L94">                    .getEncoder()</span>
-<span class="fc" id="L95">                    .encodeToString((user + &quot;:&quot; + pass)</span>
-<span class="fc" id="L96">                                            .getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L91">                    .getEncoder()</span>
+<span class="fc" id="L92">                    .encodeToString((user + &quot;:&quot; + pass)</span>
+<span class="fc" id="L93">                                            .getBytes(StandardCharsets.UTF_8));</span>
 
-<span class="fc" id="L98">            boolean ok = auth.equals(&quot;Basic &quot; + encoded);</span>
+<span class="fc" id="L95">            boolean ok = auth.equals(&quot;Basic &quot; + encoded);</span>
 
-<span class="fc" id="L100">            bodyMap.put(&quot;auth&quot;, ok);</span>
+<span class="fc" id="L97">            bodyMap.put(&quot;auth&quot;, ok);</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">            if (ok) {</span>
-<span class="fc" id="L103">                code = 200;</span>
-<span class="fc" id="L104">                bodyMap.put(&quot;message&quot;, &quot;Success.&quot;);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            if (ok) {</span>
+<span class="fc" id="L100">                code = 200;</span>
+<span class="fc" id="L101">                bodyMap.put(&quot;message&quot;, &quot;Success.&quot;);</span>
             }
 
         }
 
-<span class="fc" id="L109">        responseBody.body = bodyMap;</span>
+<span class="fc" id="L106">        responseBody.body = bodyMap;</span>
 
-<span class="fc" id="L111">        return Response.status(code).entity(responseBody).build();</span>
+<span class="fc" id="L108">        return Response.status(code).entity(responseBody).build();</span>
     }
 
 }

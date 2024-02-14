@@ -32,7 +32,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
     @GET
     public Response get(
             @Parameter(description = &quot;Delay must be between 0 and 10 seconds.&quot;,
-                       schema = @Schema(minimum = &quot;1&quot;, maximum = &quot;10&quot;,
+                       schema = @Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;,
                                         defaultValue = &quot;10&quot;)) int delay) {
 
 <span class="fc" id="L38">        return internal(delay, null);</span>
@@ -41,7 +41,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
     @POST
     public Response post(
             @Parameter(description = &quot;Delay must be between 0 and 10 seconds.&quot;,
-                       schema = @Schema(minimum = &quot;1&quot;, maximum = &quot;10&quot;,
+                       schema = @Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;,
                                         defaultValue = &quot;10&quot;))
             int delay, Object body) {
 
@@ -51,7 +51,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
     @PUT
     public Response put(
             @Parameter(description = &quot;Delay must be between 0 and 10 seconds.&quot;,
-                       schema = @Schema(minimum = &quot;1&quot;, maximum = &quot;10&quot;,
+                       schema = @Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;,
                                         defaultValue = &quot;10&quot;))
             int delay, Object body) {
 
@@ -61,7 +61,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
     @PATCH
     public Response patch(
             @Parameter(description = &quot;Delay must be between 0 and 10 seconds.&quot;,
-                       schema = @Schema(minimum = &quot;1&quot;, maximum = &quot;10&quot;,
+                       schema = @Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;,
                                         defaultValue = &quot;10&quot;))
             int delay, Object body) {
 
@@ -71,7 +71,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
     @DELETE
     public Response delete(
             @Parameter(description = &quot;Delay must be between 0 and 10 seconds.&quot;,
-                       schema = @Schema(minimum = &quot;1&quot;, maximum = &quot;10&quot;,
+                       schema = @Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;,
                                         defaultValue = &quot;10&quot;))
             int delay, Object body) {
 
