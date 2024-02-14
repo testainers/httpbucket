@@ -23,6 +23,12 @@ RUN chown 1001 /work \
     && chmod "g+rwX" /work \
     && chown 1001:root /work
 
+ADD --chown=1001:root \
+    https://github.com/testainers/check/releases/latest/download/check \
+    /usr/bin/check
+
+RUN chmod +x /usr/bin/check
+
 COPY --chown=1001:root build/*-runner /work/application
 COPY --chown=1001:root cert.pem /work/cert.pem
 COPY --chown=1001:root key.pem /work/key.pem
