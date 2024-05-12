@@ -34,6 +34,7 @@ public class BaseResourceTest {
                             .enablePrettyPrinting(true)
             )
             .redirect(redirectConfig().followRedirects(false));
+
     protected static final Map<String, Object> HEADERS =
             Map.of("test-header", List.of("test-header-value"),
                    "test-header-2", List.of("test-header-value-2"));
