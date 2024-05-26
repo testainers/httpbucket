@@ -85,21 +85,21 @@ class LengthResource {
         ) size: Int
     ): Response = internal(accept, size)
 
-    private fun internal(accept: String, size: Int): Response {
+    private fun internal(accept: String, size: Int): Response =
         if (size < 1 || size > 2048) {
-            return Response
-                .status(500)
+            Response.status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
                 .entity(String.format("Invalid size: %d", size))
                 .build()
+        } else {
+            if (MediaType.APPLICATION_OCTET_STREAM == accept) {
+                Response.ok(
+                    ByteArray(size),
+                    MediaType.APPLICATION_OCTET_STREAM_TYPE
+                ).build()
+            } else {
+                Response.ok("0".repeat(size), MediaType.TEXT_PLAIN_TYPE).build()
+            }
         }
 
-        return if (MediaType.APPLICATION_OCTET_STREAM == accept) {
-            Response
-                .ok(ByteArray(size), MediaType.APPLICATION_OCTET_STREAM_TYPE)
-                .build()
-        } else {
-            Response.ok("0".repeat(size), MediaType.TEXT_PLAIN_TYPE).build()
-        }
-    }
 }

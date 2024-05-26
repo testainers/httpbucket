@@ -100,7 +100,7 @@ public class RedirectResourceTest {
                    .then()
                    .statusCode(500)
                    .contentType(ContentType.TEXT)
-                   .body(is("Invalid URL: null"));
+                   .body(is("Invalid URL Scheme: "));
         }
     }
 
