@@ -13,73 +13,79 @@ import java.net.URI
  */
 @Path("/redirect")
 @APIResponses(
-    APIResponse(responseCode = "30X", description = "Redirected"), APIResponse(
+    APIResponse(responseCode = "30X", description = "Redirected"),
+    APIResponse(
         responseCode = "500",
-        description = "'Invalid URL' or 'Invalid URL Scheme' or 'Invalid status code: 30X'"
-    )
+        description =
+            "'Invalid URL' or 'Invalid URL Scheme' " +
+                "or 'Invalid status code: 30X'",
+    ),
 )
 class RedirectResource {
     @GET
     fun get(
         @Parameter(
             description = "URL to redirect.",
-            required = true
+            required = true,
         ) @QueryParam("url") @DefaultValue("") url: String,
         @Parameter(
             description = "Response status code.",
-            schema = Schema(minimum = "300", maximum = "399")
-        ) @QueryParam("code") @DefaultValue("302") code: Int
+            schema = Schema(minimum = "300", maximum = "399"),
+        ) @QueryParam("code") @DefaultValue("302") code: Int,
     ): Response = internal(url, code)
 
     @POST
     fun post(
         @Parameter(
             description = "URL to redirect.",
-            required = true
+            required = true,
         ) @QueryParam("url") @DefaultValue("") url: String,
         @Parameter(
             description = "Response status code.",
-            schema = Schema(minimum = "300", maximum = "399")
-        ) @QueryParam("code") @DefaultValue("302") code: Int
+            schema = Schema(minimum = "300", maximum = "399"),
+        ) @QueryParam("code") @DefaultValue("302") code: Int,
     ): Response = internal(url, code)
 
     @PUT
     fun put(
         @Parameter(
             description = "URL to redirect.",
-            required = true
+            required = true,
         ) @QueryParam("url") @DefaultValue("") url: String,
         @Parameter(
             description = "Response status code.",
-            schema = Schema(minimum = "300", maximum = "399")
-        ) @QueryParam("code") @DefaultValue("302") code: Int
+            schema = Schema(minimum = "300", maximum = "399"),
+        ) @QueryParam("code") @DefaultValue("302") code: Int,
     ): Response = internal(url, code)
 
     @PATCH
     fun patch(
         @Parameter(
             description = "URL to redirect.",
-            required = true
+            required = true,
         ) @QueryParam("url") @DefaultValue("") url: String,
         @Parameter(
             description = "Response status code.",
-            schema = Schema(minimum = "300", maximum = "399")
-        ) @QueryParam("code") @DefaultValue("302") code: Int
+            schema = Schema(minimum = "300", maximum = "399"),
+        ) @QueryParam("code") @DefaultValue("302") code: Int,
     ): Response = internal(url, code)
 
     @DELETE
     fun delete(
         @Parameter(
             description = "URL to redirect.",
-            required = true
+            required = true,
         ) @QueryParam("url") @DefaultValue("") url: String,
         @Parameter(
             description = "Response status code.",
-            schema = Schema(minimum = "300", maximum = "399")
-        ) @QueryParam("code") @DefaultValue("302") code: Int
+            schema = Schema(minimum = "300", maximum = "399"),
+        ) @QueryParam("code") @DefaultValue("302") code: Int,
     ): Response = internal(url, code)
 
-    private fun internal(url: String, code: Int): Response {
+    private fun internal(
+        url: String,
+        code: Int,
+    ): Response {
         val uri: URI
 
         try {
@@ -108,7 +114,8 @@ class RedirectResource {
                 .build()
         }
 
-        return Response.status(code)
+        return Response
+            .status(code)
             .header(HttpHeaders.LOCATION, uri.toASCIIString())
             .build()
     }

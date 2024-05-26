@@ -13,8 +13,10 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 @Path("/methods")
 @APIResponses(APIResponse(responseCode = "200"))
 @Produces(MediaType.APPLICATION_JSON)
-class MethodsResource(val request: HttpServerRequest, val uriInfo: UriInfo) {
-
+class MethodsResource(
+    val request: HttpServerRequest,
+    val uriInfo: UriInfo,
+) {
     @GET
     fun get(): ResponseBody = ResponseBody(request, uriInfo, null)
 

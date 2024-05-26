@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package com.testainers
 
 import io.quarkus.runtime.annotations.RegisterForReflection
@@ -10,8 +12,9 @@ import java.net.URI
  */
 @RegisterForReflection
 class ResponseBody(
-    request: HttpServerRequest, uriInfo: UriInfo,
-    body: Any?
+    request: HttpServerRequest,
+    uriInfo: UriInfo,
+    body: Any?,
 ) {
     var uri: URI
     var method: String = request.method().name()

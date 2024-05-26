@@ -2,7 +2,6 @@ package com.testainers
 
 import io.quarkus.security.Authenticated
 import io.vertx.core.http.HttpServerRequest
-import jakarta.inject.Inject
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.*
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
@@ -19,39 +18,50 @@ import java.util.*
 @APIResponses(
     APIResponse(responseCode = "200"),
     APIResponse(responseCode = "401"),
-    APIResponse(responseCode = "403")
+    APIResponse(responseCode = "403"),
 )
 @Produces(MediaType.APPLICATION_JSON)
-class BasicAuthResource(val request: HttpServerRequest, val uriInfo: UriInfo) {
-
+class BasicAuthResource(
+    val request: HttpServerRequest,
+    val uriInfo: UriInfo,
+) {
     @GET
     fun get(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
-        user: String, pass: String
+        user: String,
+        pass: String,
     ): Response = getResponse(auth, user, pass, null)
 
     @POST
     fun post(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
-        user: String, pass: String, body: Any?
+        user: String,
+        pass: String,
+        body: Any?,
     ): Response = getResponse(auth, user, pass, body)
 
     @PUT
     fun put(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
-        user: String, pass: String, body: Any?
+        user: String,
+        pass: String,
+        body: Any?,
     ): Response = getResponse(auth, user, pass, body)
 
     @PATCH
     fun patch(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
-        user: String, pass: String, body: Any?
+        user: String,
+        pass: String,
+        body: Any?,
     ): Response = getResponse(auth, user, pass, body)
 
     @DELETE
     fun delete(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
-        user: String, pass: String, body: Any?
+        user: String,
+        pass: String,
+        body: Any?,
     ): Response = getResponse(auth, user, pass, body)
 
     private fun getResponse(
@@ -74,12 +84,12 @@ class BasicAuthResource(val request: HttpServerRequest, val uriInfo: UriInfo) {
             code = 401
             bodyMap["message"] = "Authorization header not present."
         } else {
-            val encoded = Base64
-                .getEncoder()
-                .encodeToString(
-                    "$user:$pass"
-                        .toByteArray(StandardCharsets.UTF_8)
-                )
+            val encoded =
+                Base64
+                    .getEncoder()
+                    .encodeToString(
+                        "$user:$pass".toByteArray(StandardCharsets.UTF_8),
+                    )
 
             val ok = auth == "Basic $encoded"
 

@@ -16,8 +16,14 @@ import org.jboss.resteasy.reactive.RestHeader
 @APIResponses(
     APIResponse(
         responseCode = "200",
-        content = [Content(mediaType = MediaType.TEXT_PLAIN), Content(mediaType = MediaType.APPLICATION_OCTET_STREAM)]
-    ), APIResponse(responseCode = "500", description = "Invalid size: X.")
+        content = [
+            Content(
+                mediaType = MediaType.TEXT_PLAIN,
+            ),
+            Content(mediaType = MediaType.APPLICATION_OCTET_STREAM),
+        ],
+    ),
+    APIResponse(responseCode = "500", description = "Invalid size: X."),
 )
 class LengthResource {
     @GET
@@ -25,12 +31,13 @@ class LengthResource {
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
         @Parameter(
             description = "Size must be between 1 and 2048.",
-            schema = Schema(
-                minimum = "1",
-                maximum = "2048",
-                defaultValue = "10"
-            )
-        ) size: Int
+            schema =
+                Schema(
+                    minimum = "1",
+                    maximum = "2048",
+                    defaultValue = "10",
+                ),
+        ) size: Int,
     ): Response = internal(accept, size)
 
     @POST
@@ -38,12 +45,13 @@ class LengthResource {
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
         @Parameter(
             description = "Size must be between 1 and 2048.",
-            schema = Schema(
-                minimum = "1",
-                maximum = "2048",
-                defaultValue = "10"
-            )
-        ) size: Int
+            schema =
+                Schema(
+                    minimum = "1",
+                    maximum = "2048",
+                    defaultValue = "10",
+                ),
+        ) size: Int,
     ): Response = internal(accept, size)
 
     @PUT
@@ -51,12 +59,13 @@ class LengthResource {
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
         @Parameter(
             description = "Size must be between 1 and 2048.",
-            schema = Schema(
-                minimum = "1",
-                maximum = "2048",
-                defaultValue = "10"
-            )
-        ) size: Int
+            schema =
+                Schema(
+                    minimum = "1",
+                    maximum = "2048",
+                    defaultValue = "10",
+                ),
+        ) size: Int,
     ): Response = internal(accept, size)
 
     @PATCH
@@ -64,12 +73,13 @@ class LengthResource {
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
         @Parameter(
             description = "Size must be between 1 and 2048.",
-            schema = Schema(
-                minimum = "1",
-                maximum = "2048",
-                defaultValue = "10"
-            )
-        ) size: Int
+            schema =
+                Schema(
+                    minimum = "1",
+                    maximum = "2048",
+                    defaultValue = "10",
+                ),
+        ) size: Int,
     ): Response = internal(accept, size)
 
     @DELETE
@@ -77,29 +87,34 @@ class LengthResource {
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
         @Parameter(
             description = "Size must be between 1 and 2048.",
-            schema = Schema(
-                minimum = "1",
-                maximum = "2048",
-                defaultValue = "10"
-            )
-        ) size: Int
+            schema =
+                Schema(
+                    minimum = "1",
+                    maximum = "2048",
+                    defaultValue = "10",
+                ),
+        ) size: Int,
     ): Response = internal(accept, size)
 
-    private fun internal(accept: String, size: Int): Response =
+    private fun internal(
+        accept: String,
+        size: Int,
+    ): Response =
         if (size < 1 || size > 2048) {
-            Response.status(500)
+            Response
+                .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
                 .entity(String.format("Invalid size: %d", size))
                 .build()
         } else {
             if (MediaType.APPLICATION_OCTET_STREAM == accept) {
-                Response.ok(
-                    ByteArray(size),
-                    MediaType.APPLICATION_OCTET_STREAM_TYPE
-                ).build()
+                Response
+                    .ok(
+                        ByteArray(size),
+                        MediaType.APPLICATION_OCTET_STREAM_TYPE,
+                    ).build()
             } else {
                 Response.ok("0".repeat(size), MediaType.TEXT_PLAIN_TYPE).build()
             }
         }
-
 }
