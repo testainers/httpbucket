@@ -32,10 +32,7 @@ abstract class BaseResourceTest {
             argumentGenerator(listOf(null, "", " ", "a", "1.8"))
 
         @JvmStatic
-        fun argumentGenerator(
-            list: List<Any?>,
-            methods: Set<Method> = this.methods,
-        ): List<Arguments> {
+        fun argumentGenerator(list: List<Any?>): List<Arguments> {
             val result = mutableListOf<Arguments>()
 
             methods.forEach { method ->
