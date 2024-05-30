@@ -88,21 +88,29 @@ class RedirectResource {
     ): Response {
         val uri: URI
 
+        if (url.isBlank()) {
+            return Response
+                .status(500)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+                .entity("URL is required")
+                .build()
+        }
+
         try {
             uri = URI.create(url)
         } catch (e: Exception) {
             return Response
                 .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                .entity(String.format("Invalid URL: %s", url))
+                .entity("Invalid URL: $url")
                 .build()
         }
 
-        if (uri.scheme == null) {
+        if (uri.scheme?.startsWith("http") != true) {
             return Response
                 .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                .entity(String.format("Invalid URL Scheme: %s", url))
+                .entity("Invalid URL Scheme: $url")
                 .build()
         }
 
@@ -110,7 +118,7 @@ class RedirectResource {
             return Response
                 .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                .entity(String.format("Invalid status code: %d", code))
+                .entity("Invalid status code: $code")
                 .build()
         }
 

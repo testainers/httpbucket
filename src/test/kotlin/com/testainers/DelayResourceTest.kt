@@ -1,117 +1,78 @@
 package com.testainers
 
 import io.quarkus.test.junit.QuarkusTest
+import io.restassured.http.Method
 import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.*
 
 /**
  * @author Eduardo Folly
  */
 @QuarkusTest
 class DelayResourceTest : BaseResourceTest() {
-    @Test
-    fun delayEmpty() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay")
-                .then()
-                .statusCode(404)
-                .statusLine(containsStringIgnoringCase("Not Found"))
-        }
+    companion object : BaseResourceTest() {
+        @JvmStatic
+        fun invalidDelay(): List<Arguments> = argumentGenerator(listOf(-1, 11))
+
+        @JvmStatic
+        fun validDelay(): List<Arguments> = argumentGenerator(listOf(0, 1))
     }
 
-    @Test
-    fun delayString() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/a")
-                .then()
-                .statusCode(404)
-                .statusLine(containsStringIgnoringCase("Not Found"))
-        }
+    @ParameterizedTest
+    @MethodSource("onlyMethods")
+    fun delayEmpty(method: Method) {
+        json(method)
+            .request(method, "/delay")
+            .then()
+            .statusCode(404)
+            .statusLine(containsStringIgnoringCase("Not Found"))
     }
 
-    @Test
-    fun delayDouble() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/1.8")
-                .then()
-                .statusCode(404)
-                .statusLine(containsStringIgnoringCase("Not Found"))
-        }
+    @ParameterizedTest
+    @MethodSource("notFoundStatus")
+    fun notFound(
+        method: Method,
+        delay: String?,
+    ) {
+        json(method)
+            .request(method, "/delay/$delay")
+            .then()
+            .statusCode(404)
+            .statusLine(containsStringIgnoringCase("Not Found"))
     }
 
-    @Test
-    fun delayNegative() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/-1")
-                .then()
-                .statusCode(400)
-                .body("body", equalTo("Invalid delay: -1"), *bodyMatchers(it))
-        }
+    @ParameterizedTest
+    @MethodSource("invalidDelay")
+    fun invalid(
+        method: Method,
+        delay: Int,
+    ) {
+        json(method)
+            .request(method, "/delay/$delay")
+            .then()
+            .statusCode(400)
+            .body(
+                "body",
+                equalTo("Invalid delay: $delay"),
+                *bodyMatchers(method),
+            )
     }
 
-    @Test
-    fun delay0() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/0")
-                .then()
-                .statusCode(200)
-                .body(
-                    "body",
-                    equalTo("Slept for 0 seconds."),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    fun delay1() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/1")
-                .then()
-                .statusCode(200)
-                .body(
-                    "body",
-                    equalTo("Slept for 1 seconds."),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    @Disabled
-    fun delay10() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/10")
-                .then()
-                .statusCode(200)
-                .body(
-                    "body",
-                    equalTo("Slept for 10 seconds."),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    fun delay11() {
-        methods.forEach {
-            json(it)
-                .request(it, "/delay/11")
-                .then()
-                .statusCode(400)
-                .body(
-                    "body",
-                    equalTo("Invalid delay: 11"),
-                    *bodyMatchers(it),
-                )
-        }
+    @ParameterizedTest
+    @MethodSource("validDelay")
+    fun valid(
+        it: Method,
+        delay: Int,
+    ) {
+        json(it)
+            .request(it, "/delay/$delay")
+            .then()
+            .statusCode(200)
+            .body(
+                "body",
+                equalTo("Slept for $delay seconds."),
+                *bodyMatchers(it),
+            )
     }
 }

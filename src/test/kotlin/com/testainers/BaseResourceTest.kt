@@ -7,15 +7,42 @@ import io.restassured.http.Method
 import io.restassured.specification.RequestSpecification
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
+import org.junit.jupiter.params.provider.Arguments
 
 /**
  * @author Eduardo Folly
  */
 abstract class BaseResourceTest {
-    protected val methods =
-        listOf(Method.GET, Method.POST, Method.PUT, Method.DELETE)
+    companion object {
+        private val methods =
+            listOf(Method.GET, Method.POST, Method.PUT, Method.DELETE)
 
-    private val config: RestAssuredConfig =
+        @JvmStatic
+        fun notFoundStatus(): List<Arguments> =
+            argumentGenerator(listOf(null, "", " ", "a", "1.8"))
+
+        @JvmStatic
+        fun onlyMethods(): List<Arguments> = methods.map { Arguments.of(it) }
+
+        @JvmStatic
+        fun argumentGenerator(list: List<Any?>): List<Arguments> {
+            val result = mutableListOf<Arguments>()
+
+            methods.forEach { method ->
+                list.forEach { status ->
+                    result.add(Arguments.of(method, status))
+                }
+            }
+
+            return result
+        }
+    }
+
+//    @Deprecated("Not use")
+//    protected val methods =
+//        listOf(Method.GET, Method.POST, Method.PUT, Method.DELETE)
+
+    protected val config: RestAssuredConfig =
         RestAssured
             .config()
             .logConfig(

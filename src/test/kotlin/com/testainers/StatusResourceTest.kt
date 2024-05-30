@@ -3,186 +3,106 @@ package com.testainers
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.http.Method
 import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 /**
  * @author Eduardo Folly
  */
 @QuarkusTest
 class StatusResourceTest : BaseResourceTest() {
-    @Test
-    fun statusString() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/a")
-                .then()
-                .statusCode(404)
-                .statusLine(containsStringIgnoringCase("Not Found"))
-        }
+    companion object : BaseResourceTest() {
+        @JvmStatic
+        fun unknownStatus(): List<Arguments> =
+            argumentGenerator(listOf(-1, 0, 1, 99, 600))
+
+        @JvmStatic
+        fun informationalStatus(): List<Arguments> =
+            argumentGenerator(listOf(100, 199))
+
+        @JvmStatic
+        fun validStatus(): List<Arguments> = argumentGenerator(listOf(200, 599))
+
+        @JvmStatic
+        fun emptyStatus(): List<Arguments> =
+            argumentGenerator(listOf(204, 205, 304))
     }
 
-    @Test
-    fun statusDouble() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/1.8")
-                .then()
-                .statusCode(404)
-                .statusLine(containsStringIgnoringCase("Not Found"))
-        }
+    @ParameterizedTest
+    @MethodSource("notFoundStatus")
+    fun notFound(
+        method: Method,
+        status: String?,
+    ) {
+        json(method)
+            .request(method, "/status/$status")
+            .then()
+            .statusCode(404)
+            .statusLine(containsStringIgnoringCase("Not Found"))
     }
 
-    @Test
-    fun statusNegative() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/-1")
-                .then()
-                .statusCode(500)
-                .body(
-                    "body",
-                    equalTo("Unknown status code: -1"),
-                    *bodyMatchers(it),
-                )
-        }
+    @ParameterizedTest
+    @MethodSource("unknownStatus")
+    fun unknown(
+        method: Method,
+        status: Int,
+    ) {
+        json(method)
+            .request(method, "/status/$status")
+            .then()
+            .statusCode(500)
+            .body(
+                "body",
+                equalTo("Unknown status code: $status"),
+                *bodyMatchers(method),
+            )
     }
 
-    @Test
-    fun status0() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/0")
-                .then()
-                .statusCode(500)
-                .body(
-                    "body",
-                    equalTo("Unknown status code: 0"),
-                    *bodyMatchers(it),
-                )
-        }
+    @ParameterizedTest
+    @MethodSource("informationalStatus")
+    fun informational(
+        method: Method,
+        status: Int,
+    ) {
+        json(method)
+            .request(method, "/status/$status")
+            .then()
+            .statusCode(500)
+            .body(
+                "body",
+                equalTo("Informational responses are not supported: $status"),
+                *bodyMatchers(method),
+            )
     }
 
-    @Test
-    fun status99() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/99")
-                .then()
-                .statusCode(500)
-                .body(
-                    "body",
-                    equalTo("Unknown status code: 99"),
-                    *bodyMatchers(it),
-                )
-        }
+    @ParameterizedTest
+    @MethodSource("validStatus")
+    fun valid(
+        method: Method,
+        status: Int,
+    ) {
+        json(method)
+            .request(method, "/status/$status")
+            .then()
+            .statusCode(status)
+            .body(
+                "body",
+                if (method == Method.GET) not(body) else equalTo(body),
+                *bodyMatchers(method),
+            )
     }
 
-    @Test
-    fun status100() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/100")
-                .then()
-                .statusCode(500)
-                .body(
-                    "body",
-                    equalTo("Informational responses are not supported: 100"),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    fun status199() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/199")
-                .then()
-                .statusCode(500)
-                .body(
-                    "body",
-                    equalTo("Informational responses are not supported: 199"),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    fun status200() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/200")
-                .then()
-                .statusCode(200)
-                .body(
-                    "body",
-                    if (it == Method.GET) not(body) else equalTo(body),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    fun status204() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/204")
-                .then()
-                .statusCode(204)
-                .body(equalTo(""))
-        }
-    }
-
-    @Test
-    fun status205() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/205")
-                .then()
-                .statusCode(205)
-                .headers("content-length", "0")
-                .body(equalTo(""))
-        }
-    }
-
-    @Test
-    fun status304() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/304")
-                .then()
-                .statusCode(304)
-                .body(equalTo(""))
-        }
-    }
-
-    @Test
-    fun status599() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/599")
-                .then()
-                .statusCode(599)
-                .body(
-                    "body",
-                    if (it == Method.GET) not(body) else equalTo(body),
-                    *bodyMatchers(it),
-                )
-        }
-    }
-
-    @Test
-    fun status600() {
-        methods.forEach {
-            json(it)
-                .request(it, "/status/600")
-                .then()
-                .statusCode(500)
-                .body(
-                    "body",
-                    equalTo("Unknown status code: 600"),
-                    *bodyMatchers(it),
-                )
-        }
+    @ParameterizedTest
+    @MethodSource("emptyStatus")
+    fun empty(
+        method: Method,
+        status: Int,
+    ) {
+        json(method)
+            .request(method, "/status/$status")
+            .then()
+            .statusCode(status)
+            .body(equalTo(""))
     }
 }
