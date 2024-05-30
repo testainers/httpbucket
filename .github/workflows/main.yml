@@ -19,13 +19,13 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: '17'
+          java-version: '21'
 
       - name: Get Gradle Version
         run: |
           echo "TAGS=latest" >> $GITHUB_ENV
           SUFFIX=""
-          VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")$SUFFIX
+          VERSION=$(grep 'version =' build.gradle.kts | cut -f 2 -d '"')$SUFFIX
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           REPO=$(echo $GITHUB_REPOSITORY | cut -f 2 -d "/")
           echo "REPO=$REPO" >> $GITHUB_ENV
@@ -68,7 +68,7 @@ jobs:
             -Dquarkus.container-image.additional-tags=${{ env.TAGS }}
 
       - name: Creating GitHub Tag
-        uses: mathieudutour/github-tag-action@v6.1
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           custom_tag: ${{ env.VERSION }}
           tag_prefix: ''
@@ -86,7 +86,7 @@ jobs:
           /bin/cp -f README.md build/jacoco-report/.
 
       - name: Publishing to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           publish_dir: ./build/jacoco-report
           github_token: ${{ secrets.GITHUB_TOKEN }}
