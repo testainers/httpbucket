@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "TAGS=latest" >> $GITHUB_ENV
           SUFFIX=""
-          VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")$SUFFIX
+          VERSION=$(grep 'version =' build.gradle.kts | cut -f 2 -d '"')$SUFFIX
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           REPO=$(echo $GITHUB_REPOSITORY | cut -f 2 -d "/")
           echo "REPO=$REPO" >> $GITHUB_ENV
