@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatusResource.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">StatusResource.kt</span></div><h1>StatusResource.kt</h1><pre class="source lang-java linenums">package com.testainers
+
+import io.vertx.core.http.HttpServerRequest
+import jakarta.ws.rs.*
+import jakarta.ws.rs.core.*
+import org.eclipse.microprofile.openapi.annotations.media.Schema
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
+
+/**
+ * @author Eduardo Folly
+ */
+<span class="fc" id="L12">@Path(&quot;/status/{code}&quot;)</span>
+@Produces(MediaType.APPLICATION_JSON)
+<span class="fc" id="L14">class StatusResource(</span>
+<span class="fc" id="L15">    val request: HttpServerRequest,</span>
+<span class="fc" id="L16">    val uriInfo: UriInfo,</span>
+) {
+    @GET
+    fun get(
+        @Parameter(
+            description =
+                &quot;Code must be between 200 and 599. &quot; +
+                    &quot;Informational responses (1XX) are not supported.&quot;,
+            schema = Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;),
+        ) code: Int,
+<span class="fc" id="L26">    ): Response = internal(code, null)</span>
+
+    @POST
+    fun post(
+        @Parameter(
+            description =
+                &quot;Code must be between 200 and 599. &quot; +
+                    &quot;Informational responses (1XX) are not supported.&quot;,
+            schema = Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;),
+        ) code: Int,
+        body: Any?,
+<span class="fc" id="L37">    ): Response = internal(code, body)</span>
+
+    @PUT
+    fun put(
+        @Parameter(
+            description =
+                &quot;Code must be between 200 and 599. &quot; +
+                    &quot;Informational responses (1XX) are not supported.&quot;,
+            schema = Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;),
+        ) code: Int,
+        body: Any?,
+<span class="fc" id="L48">    ): Response = internal(code, body)</span>
+
+    @PATCH
+    fun patch(
+        @Parameter(
+            description =
+                &quot;Code must be between 200 and 599. &quot; +
+                    &quot;Informational responses (1XX) are not supported.&quot;,
+            schema = Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;),
+        ) code: Int,
+        body: Any?,
+<span class="nc" id="L59">    ): Response = internal(code, body)</span>
+
+    @DELETE
+    fun delete(
+        @Parameter(
+            description =
+                &quot;Code must be between 200 and 599. &quot; +
+                    &quot;Informational responses (1XX) are not supported.&quot;,
+            schema = Schema(minimum = &quot;200&quot;, maximum = &quot;599&quot;),
+        ) code: Int,
+        body: Any?,
+<span class="fc" id="L70">    ): Response = internal(code, body)</span>
+
+    private fun internal(
+        code: Int,
+        body: Any?,
+    ): Response {
+<span class="fc" id="L76">        var status = code</span>
+<span class="fc" id="L77">        val responseBody = ResponseBody(request, uriInfo, body)</span>
+
+<span class="fc bfc" id="L79" title="All 4 branches covered.">        if (status &lt; 200 || status &gt; 599) {</span>
+<span class="fc" id="L80">            val message =</span>
+<span class="fc bfc" id="L81" title="All 6 branches covered.">                if (status in 100..199) {</span>
+<span class="fc" id="L82">                    &quot;Informational responses are not supported: %d&quot;</span>
+                } else {
+<span class="fc" id="L84">                    &quot;Unknown status code: %d&quot;</span>
+                }
+
+<span class="fc" id="L87">            responseBody.body = String.format(message, status)</span>
+<span class="fc" id="L88">            status = 500</span>
+        }
+
+<span class="fc" id="L91">        return Response.status(status).entity(responseBody).build()</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span>httpbucket</div></body></html>

@@ -1,8 +1,8 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-httpbucket,com.testainers,DelayResource,14,81,0,4,4,16,0,9,0,7
-httpbucket,com.testainers,MethodsResource,0,57,0,0,0,7,0,7,0,7
-httpbucket,com.testainers,RedirectResource,0,101,0,6,0,29,0,10,0,7
-httpbucket,com.testainers,StatusResource,0,78,0,8,0,14,0,11,0,7
-httpbucket,com.testainers,ResponseBody,0,59,0,2,0,13,0,2,0,1
-httpbucket,com.testainers,BasicAuthResource,0,129,0,6,0,27,0,10,0,7
-httpbucket,com.testainers,LengthResource,0,75,0,6,0,22,0,11,0,8
+httpbucket,com.testainers,DelayResource,33,126,0,4,4,18,1,10,1,8
+httpbucket,com.testainers,MethodsResource,0,75,0,0,0,10,0,9,0,9
+httpbucket,com.testainers,RedirectResource,8,136,0,12,1,37,1,12,1,6
+httpbucket,com.testainers,StatusResource,5,108,0,10,1,18,1,13,1,8
+httpbucket,com.testainers,ResponseBody,49,117,0,2,0,18,7,11,7,10
+httpbucket,com.testainers,BasicAuthResource,13,186,1,7,1,30,2,11,1,8
+httpbucket,com.testainers,LengthResource,8,98,0,6,1,19,1,9,1,6

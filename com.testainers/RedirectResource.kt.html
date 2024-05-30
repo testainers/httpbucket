@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RedirectResource.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">RedirectResource.kt</span></div><h1>RedirectResource.kt</h1><pre class="source lang-java linenums">package com.testainers
+
+import jakarta.ws.rs.*
+import jakarta.ws.rs.core.*
+import org.eclipse.microprofile.openapi.annotations.media.Schema
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
+import java.net.URI
+
+/**
+ * @author Eduardo Folly
+ */
+<span class="fc" id="L14">@Path(&quot;/redirect&quot;)</span>
+@APIResponses(
+    APIResponse(responseCode = &quot;30X&quot;, description = &quot;Redirected&quot;),
+    APIResponse(
+        responseCode = &quot;500&quot;,
+        description =
+            &quot;'Invalid URL' or 'Invalid URL Scheme' &quot; +
+                &quot;or 'Invalid status code: 30X'&quot;,
+    ),
+)
+<span class="fc" id="L24">class RedirectResource {</span>
+    @GET
+    fun get(
+        @Parameter(
+            description = &quot;URL to redirect.&quot;,
+            required = true,
+        ) @QueryParam(&quot;url&quot;) @DefaultValue(&quot;&quot;) url: String,
+        @Parameter(
+            description = &quot;Response status code.&quot;,
+            schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
+        ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
+<span class="fc" id="L35">    ): Response = internal(url, code)</span>
+
+    @POST
+    fun post(
+        @Parameter(
+            description = &quot;URL to redirect.&quot;,
+            required = true,
+        ) @QueryParam(&quot;url&quot;) @DefaultValue(&quot;&quot;) url: String,
+        @Parameter(
+            description = &quot;Response status code.&quot;,
+            schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
+        ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
+<span class="fc" id="L47">    ): Response = internal(url, code)</span>
+
+    @PUT
+    fun put(
+        @Parameter(
+            description = &quot;URL to redirect.&quot;,
+            required = true,
+        ) @QueryParam(&quot;url&quot;) @DefaultValue(&quot;&quot;) url: String,
+        @Parameter(
+            description = &quot;Response status code.&quot;,
+            schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
+        ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
+<span class="fc" id="L59">    ): Response = internal(url, code)</span>
+
+    @PATCH
+    fun patch(
+        @Parameter(
+            description = &quot;URL to redirect.&quot;,
+            required = true,
+        ) @QueryParam(&quot;url&quot;) @DefaultValue(&quot;&quot;) url: String,
+        @Parameter(
+            description = &quot;Response status code.&quot;,
+            schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
+        ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
+<span class="nc" id="L71">    ): Response = internal(url, code)</span>
+
+    @DELETE
+    fun delete(
+        @Parameter(
+            description = &quot;URL to redirect.&quot;,
+            required = true,
+        ) @QueryParam(&quot;url&quot;) @DefaultValue(&quot;&quot;) url: String,
+        @Parameter(
+            description = &quot;Response status code.&quot;,
+            schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
+        ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
+<span class="fc" id="L83">    ): Response = internal(url, code)</span>
+
+    private fun internal(
+        url: String,
+        code: Int,
+    ): Response {
+<span class="fc" id="L89">        val uri: URI</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (url.isBlank()) {</span>
+<span class="fc" id="L92">            return Response</span>
+<span class="fc" id="L93">                .status(500)</span>
+<span class="fc" id="L94">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L95">                .entity(&quot;URL is required&quot;)</span>
+<span class="fc" id="L96">                .build()</span>
+        }
+
+<span class="fc" id="L99">        try {</span>
+<span class="fc" id="L100">            uri = URI.create(url)</span>
+<span class="fc" id="L101">        } catch (e: Exception) {</span>
+<span class="fc" id="L102">            return Response</span>
+<span class="fc" id="L103">                .status(500)</span>
+<span class="fc" id="L104">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L105">                .entity(&quot;Invalid URL: $url&quot;)</span>
+<span class="fc" id="L106">                .build()</span>
+        }
+
+<span class="fc bfc" id="L109" title="All 6 branches covered.">        if (uri.scheme?.startsWith(&quot;http&quot;) != true) {</span>
+<span class="fc" id="L110">            return Response</span>
+<span class="fc" id="L111">                .status(500)</span>
+<span class="fc" id="L112">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L113">                .entity(&quot;Invalid URL Scheme: $url&quot;)</span>
+<span class="fc" id="L114">                .build()</span>
+        }
+
+<span class="fc bfc" id="L117" title="All 4 branches covered.">        if (code &lt; 300 || code &gt; 399) {</span>
+<span class="fc" id="L118">            return Response</span>
+<span class="fc" id="L119">                .status(500)</span>
+<span class="fc" id="L120">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L121">                .entity(&quot;Invalid status code: $code&quot;)</span>
+<span class="fc" id="L122">                .build()</span>
+        }
+
+<span class="fc" id="L125">        return Response</span>
+<span class="fc" id="L126">            .status(code)</span>
+<span class="fc" id="L127">            .header(HttpHeaders.LOCATION, uri.toASCIIString())</span>
+<span class="fc" id="L128">            .build()</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span>httpbucket</div></body></html>

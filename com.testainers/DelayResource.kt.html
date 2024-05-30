@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DelayResource.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">DelayResource.kt</span></div><h1>DelayResource.kt</h1><pre class="source lang-java linenums">package com.testainers
+
+import io.vertx.core.http.HttpServerRequest
+import jakarta.ws.rs.*
+import jakarta.ws.rs.core.*
+import org.eclipse.microprofile.openapi.annotations.media.Schema
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
+
+/**
+ * @author Eduardo Folly
+ */
+<span class="fc" id="L14">@Path(&quot;/delay/{delay}&quot;)</span>
+@APIResponses(
+    APIResponse(responseCode = &quot;200&quot;),
+    APIResponse(responseCode = &quot;400&quot;),
+    APIResponse(responseCode = &quot;500&quot;),
+)
+@Produces(MediaType.APPLICATION_JSON)
+<span class="fc" id="L21">class DelayResource(</span>
+<span class="fc" id="L22">    val request: HttpServerRequest,</span>
+<span class="fc" id="L23">    val uriInfo: UriInfo,</span>
+) {
+    @GET
+    fun get(
+        @Parameter(
+            description = &quot;Delay must be between 0 and 10 seconds.&quot;,
+            schema = Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;, defaultValue = &quot;10&quot;),
+        ) delay: Int,
+<span class="fc" id="L31">    ): Response = internal(delay, null)</span>
+
+    @POST
+    fun post(
+        @Parameter(
+            description = &quot;Delay must be between 0 and 10 seconds.&quot;,
+            schema = Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;, defaultValue = &quot;10&quot;),
+        ) delay: Int,
+        body: Any?,
+<span class="fc" id="L40">    ): Response = internal(delay, body)</span>
+
+    @PUT
+    fun put(
+        @Parameter(
+            description = &quot;Delay must be between 0 and 10 seconds.&quot;,
+            schema = Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;, defaultValue = &quot;10&quot;),
+        ) delay: Int,
+        body: Any?,
+<span class="fc" id="L49">    ): Response = internal(delay, body)</span>
+
+    @PATCH
+    fun patch(
+        @Parameter(
+            description = &quot;Delay must be between 0 and 10 seconds.&quot;,
+            schema = Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;, defaultValue = &quot;10&quot;),
+        ) delay: Int,
+        body: Any?,
+<span class="nc" id="L58">    ): Response = internal(delay, body)</span>
+
+    @DELETE
+    fun delete(
+        @Parameter(
+            description = &quot;Delay must be between 0 and 10 seconds.&quot;,
+            schema = Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;, defaultValue = &quot;10&quot;),
+        ) delay: Int,
+        body: Any?,
+<span class="fc" id="L67">    ): Response = internal(delay, body)</span>
+
+    private fun internal(
+        delay: Int,
+        body: Any?,
+    ): Response {
+<span class="fc" id="L73">        val responseBody = ResponseBody(request, uriInfo, body)</span>
+<span class="fc" id="L74">        var code = 200</span>
+
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        if (delay &lt; 0 || delay &gt; 10) {</span>
+<span class="fc" id="L77">            code = 400</span>
+<span class="fc" id="L78">            responseBody.body = String.format(&quot;Invalid delay: %d&quot;, delay)</span>
+        } else {
+<span class="fc" id="L80">            try {</span>
+<span class="fc" id="L81">                Thread.sleep(delay * 1000L)</span>
+<span class="fc" id="L82">                responseBody.body =</span>
+<span class="fc" id="L83">                    String.format(&quot;Slept for %d seconds.&quot;, delay)</span>
+<span class="nc" id="L84">            } catch (e: InterruptedException) {</span>
+<span class="nc" id="L85">                code = 500</span>
+<span class="nc" id="L86">                responseBody.body = String.format(&quot;Interrupted: %s&quot;, e.message)</span>
+            }
+        }
+
+<span class="fc" id="L90">        return Response.status(code).entity(responseBody).build()</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span>httpbucket</div></body></html>

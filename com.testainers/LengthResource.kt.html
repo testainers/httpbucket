@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LengthResource.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpbucket</a> &gt; <a href="index.source.html" class="el_package">com.testainers</a> &gt; <span class="el_source">LengthResource.kt</span></div><h1>LengthResource.kt</h1><pre class="source lang-java linenums">package com.testainers
+
+import jakarta.ws.rs.*
+import jakarta.ws.rs.core.*
+import org.eclipse.microprofile.openapi.annotations.media.Content
+import org.eclipse.microprofile.openapi.annotations.media.Schema
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
+import org.jboss.resteasy.reactive.RestHeader
+
+/**
+ * @author Eduardo Folly
+ */
+<span class="fc" id="L15">@Path(&quot;/length/{size}&quot;)</span>
+@APIResponses(
+    APIResponse(
+        responseCode = &quot;200&quot;,
+        content = [
+            Content(
+                mediaType = MediaType.TEXT_PLAIN,
+            ),
+            Content(mediaType = MediaType.APPLICATION_OCTET_STREAM),
+        ],
+    ),
+    APIResponse(responseCode = &quot;500&quot;, description = &quot;Invalid size: X.&quot;),
+)
+<span class="fc" id="L28">class LengthResource {</span>
+    @GET
+    fun get(
+        @RestHeader(HttpHeaders.ACCEPT) accept: String,
+        @Parameter(
+            description = &quot;Size must be between 1 and 2048.&quot;,
+            schema =
+                Schema(
+                    minimum = &quot;1&quot;,
+                    maximum = &quot;2048&quot;,
+                    defaultValue = &quot;10&quot;,
+                ),
+        ) size: Int,
+<span class="fc" id="L41">    ): Response = internal(accept, size)</span>
+
+    @POST
+    fun post(
+        @RestHeader(HttpHeaders.ACCEPT) accept: String,
+        @Parameter(
+            description = &quot;Size must be between 1 and 2048.&quot;,
+            schema =
+                Schema(
+                    minimum = &quot;1&quot;,
+                    maximum = &quot;2048&quot;,
+                    defaultValue = &quot;10&quot;,
+                ),
+        ) size: Int,
+<span class="fc" id="L55">    ): Response = internal(accept, size)</span>
+
+    @PUT
+    fun put(
+        @RestHeader(HttpHeaders.ACCEPT) accept: String,
+        @Parameter(
+            description = &quot;Size must be between 1 and 2048.&quot;,
+            schema =
+                Schema(
+                    minimum = &quot;1&quot;,
+                    maximum = &quot;2048&quot;,
+                    defaultValue = &quot;10&quot;,
+                ),
+        ) size: Int,
+<span class="fc" id="L69">    ): Response = internal(accept, size)</span>
+
+    @PATCH
+    fun patch(
+        @RestHeader(HttpHeaders.ACCEPT) accept: String,
+        @Parameter(
+            description = &quot;Size must be between 1 and 2048.&quot;,
+            schema =
+                Schema(
+                    minimum = &quot;1&quot;,
+                    maximum = &quot;2048&quot;,
+                    defaultValue = &quot;10&quot;,
+                ),
+        ) size: Int,
+<span class="nc" id="L83">    ): Response = internal(accept, size)</span>
+
+    @DELETE
+    fun delete(
+        @RestHeader(HttpHeaders.ACCEPT) accept: String,
+        @Parameter(
+            description = &quot;Size must be between 1 and 2048.&quot;,
+            schema =
+                Schema(
+                    minimum = &quot;1&quot;,
+                    maximum = &quot;2048&quot;,
+                    defaultValue = &quot;10&quot;,
+                ),
+        ) size: Int,
+<span class="fc" id="L97">    ): Response = internal(accept, size)</span>
+
+    private fun internal(
+        accept: String,
+        size: Int,
+    ): Response =
+<span class="fc bfc" id="L103" title="All 4 branches covered.">        if (size &lt; 1 || size &gt; 2048) {</span>
+            Response
+<span class="fc" id="L105">                .status(500)</span>
+<span class="fc" id="L106">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L107">                .entity(String.format(&quot;Invalid size: %d&quot;, size))</span>
+<span class="fc" id="L108">                .build()</span>
+<span class="fc" id="L109">        } else {</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (MediaType.APPLICATION_OCTET_STREAM == accept) {</span>
+                Response
+<span class="fc" id="L112">                    .ok(</span>
+<span class="fc" id="L113">                        ByteArray(size),</span>
+<span class="fc" id="L114">                        MediaType.APPLICATION_OCTET_STREAM_TYPE,</span>
+<span class="fc" id="L115">                    ).build()</span>
+            } else {
+<span class="fc" id="L117">                Response.ok(&quot;0&quot;.repeat(size), MediaType.TEXT_PLAIN_TYPE).build()</span>
+            }
+<span class="fc" id="L119">        }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span>httpbucket</div></body></html>
