@@ -92,4 +92,29 @@ class BasicAuthResourceTest : BaseResourceTest() {
                 ),
             )
     }
+
+    @ParameterizedTest
+    @MethodSource("onlyMethods")
+    fun fail(method: Method) {
+        json(method)
+            .auth()
+            .preemptive()
+            .basic(USER + "A", PASS + "A")
+            .request(method, "/basic-auth/$USER/$PASS")
+            .then()
+            .statusCode(403)
+            .body(
+                "body.body",
+                if (method == Method.GET) nullValue() else equalTo(body),
+                *bodyMatchers(
+                    method,
+                    mapOf(
+                        "body.auth" to equalTo(false),
+                        "body.user" to equalTo(USER),
+                        "body.pass" to equalTo(PASS),
+                        "body.message" to equalTo("Forbidden."),
+                    ),
+                ),
+            )
+    }
 }

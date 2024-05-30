@@ -77,14 +77,9 @@ class DelayResource(
             code = 400
             responseBody.body = String.format("Invalid delay: %d", delay)
         } else {
-            try {
-                Thread.sleep(delay * 1000L)
-                responseBody.body =
-                    String.format("Slept for %d seconds.", delay)
-            } catch (e: InterruptedException) {
-                code = 500
-                responseBody.body = String.format("Interrupted: %s", e.message)
-            }
+            Thread.sleep(delay * 1000L)
+            responseBody.body =
+                String.format("Slept for %d seconds.", delay)
         }
 
         return Response.status(code).entity(responseBody).build()

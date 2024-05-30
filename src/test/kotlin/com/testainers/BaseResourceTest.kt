@@ -14,18 +14,28 @@ import org.junit.jupiter.params.provider.Arguments
  */
 abstract class BaseResourceTest {
     companion object {
+        @JvmStatic
         private val methods =
-            listOf(Method.GET, Method.POST, Method.PUT, Method.DELETE)
+            setOf(
+                Method.GET,
+                Method.POST,
+                Method.PUT,
+                Method.DELETE,
+                Method.PATCH,
+            )
+
+        @JvmStatic
+        fun onlyMethods(): List<Arguments> = methods.map { Arguments.of(it) }
 
         @JvmStatic
         fun notFoundStatus(): List<Arguments> =
             argumentGenerator(listOf(null, "", " ", "a", "1.8"))
 
         @JvmStatic
-        fun onlyMethods(): List<Arguments> = methods.map { Arguments.of(it) }
-
-        @JvmStatic
-        fun argumentGenerator(list: List<Any?>): List<Arguments> {
+        fun argumentGenerator(
+            list: List<Any?>,
+            methods: Set<Method> = this.methods,
+        ): List<Arguments> {
             val result = mutableListOf<Arguments>()
 
             methods.forEach { method ->
@@ -37,10 +47,6 @@ abstract class BaseResourceTest {
             return result
         }
     }
-
-//    @Deprecated("Not use")
-//    protected val methods =
-//        listOf(Method.GET, Method.POST, Method.PUT, Method.DELETE)
 
     protected val config: RestAssuredConfig =
         RestAssured
