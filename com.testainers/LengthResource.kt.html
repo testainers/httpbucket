@@ -80,7 +80,7 @@ import org.jboss.resteasy.reactive.RestHeader
                     defaultValue = &quot;10&quot;,
                 ),
         ) size: Int,
-<span class="nc" id="L83">    ): Response = internal(accept, size)</span>
+<span class="fc" id="L83">    ): Response = internal(accept, size)</span>
 
     @DELETE
     fun delete(
@@ -104,7 +104,7 @@ import org.jboss.resteasy.reactive.RestHeader
             Response
 <span class="fc" id="L105">                .status(500)</span>
 <span class="fc" id="L106">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L107">                .entity(String.format(&quot;Invalid size: %d&quot;, size))</span>
+<span class="fc" id="L107">                .entity(&quot;Invalid size: $size&quot;)</span>
 <span class="fc" id="L108">                .build()</span>
 <span class="fc" id="L109">        } else {</span>
 <span class="fc bfc" id="L110" title="All 2 branches covered.">            if (MediaType.APPLICATION_OCTET_STREAM == accept) {</span>

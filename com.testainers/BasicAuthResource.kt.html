@@ -54,7 +54,7 @@ import java.util.*
         user: String,
         pass: String,
         body: Any?,
-<span class="nc" id="L57">    ): Response = getResponse(auth, user, pass, body)</span>
+<span class="fc" id="L57">    ): Response = getResponse(auth, user, pass, body)</span>
 
     @DELETE
     fun delete(
@@ -95,7 +95,7 @@ import java.util.*
 
 <span class="fc" id="L96">            bodyMap[&quot;auth&quot;] = ok</span>
 
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            if (ok) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if (ok) {</span>
 <span class="fc" id="L99">                code = 200</span>
 <span class="fc" id="L100">                bodyMap[&quot;message&quot;] = &quot;Success.&quot;</span>
             }

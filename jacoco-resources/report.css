@@ -1,40 +1,45 @@
 body, td {
   font-family: sans-serif;
   font-size: 10pt;
-  color: #ffffff; /* cor do texto */
-  background-color: #222222; /* cor de fundo */
+  color: #e0e0e0;
+  background-color: #1e1e1e;
 }
 
 h1 {
   font-weight: bold;
   font-size: 18pt;
-  color: #ffffff; /* cor do título */
+  color: #ffffff;
+}
+
+a {
+  color: #80b3ff;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #ffcc80;
+  text-decoration: underline;
 }
 
 .breadcrumb {
-  border: #d6d3ce 1px solid;
-  padding: 2px 4px 2px 4px;
-  background-color: #333333; /* cor de fundo da breadcrumb */
-  color: #ffffff; /* cor do texto da breadcrumb */
+  border: #444 1px solid;
+  padding: 2px 4px;
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+.breadcrumb .info {
+  float: right;
 }
 
 .breadcrumb .info a {
   margin-left: 8px;
-  color: #ffffff; /* cor dos links da breadcrumb */
 }
 
-.el_report,
-.el_group,
-.el_bundle,
-.el_package,
-.el_class,
-.el_source,
-.el_method,
-.el_session {
+.el_report, .el_group, .el_bundle, .el_package, .el_class, .el_source, .el_method, .el_session {
   padding-left: 18px;
   background-position: left center;
   background-repeat: no-repeat;
-  color: #ffffff; /* cor do texto */
 }
 
 .el_report {
@@ -70,28 +75,32 @@ h1 {
 }
 
 pre.source {
-  border: #d6d3ce 1px solid;
+  border: #444 1px solid;
   font-family: monospace;
-  color: #ffffff; /* cor do texto */
-  background-color: #333333; /* cor de fundo */
+  background-color: #2e2e2e;
+  color: #c0c0c0;
+}
+
+pre.source ol {
+  margin: 0;
 }
 
 pre.source li {
-  border-left: 1px solid #d6d3ce;
-  color: #a0a0a0;
-  padding-left: 0px;
+  border-left: 1px solid #444;
+  color: #888;
+  padding-left: 0;
 }
 
 pre.source span.fc {
-  background-color: #224422; /* cor de fundo dos spans .fc */
+  background-color: #334d33;
 }
 
 pre.source span.nc {
-  background-color: #662222; /* cor de fundo dos spans .nc */
+  background-color: #4d3333;
 }
 
 pre.source span.pc {
-  background-color: #666622; /* cor de fundo dos spans .pc */
+  background-color: #4d4d33;
 }
 
 pre.source span.bfc {
@@ -101,7 +110,7 @@ pre.source span.bfc {
 }
 
 pre.source span.bfc:hover {
-  background-color: #228822; /* cor de fundo hover dos spans .bfc */
+  background-color: #267326;
 }
 
 pre.source span.bnc {
@@ -111,7 +120,7 @@ pre.source span.bnc {
 }
 
 pre.source span.bnc:hover {
-  background-color: #882222; /* cor de fundo hover dos spans .bnc */
+  background-color: #732626;
 }
 
 pre.source span.bpc {
@@ -121,20 +130,7 @@ pre.source span.bpc {
 }
 
 pre.source span.bpc:hover {
-  background-color: #888822; /* cor de fundo hover dos spans .bpc */
-}
-
-/* Java Code */
-
-pre.source.lang-java.linenums {
-  background-color: #2f3032;
-  color: #d4d4d4;
-  padding: 10px;
-  font-family: monospace;
-  font-size: 12px;
-  line-height: 1.4;
-  overflow-x: auto;
-  border-radius: 4px;
+  background-color: #737326;
 }
 
 pre.source.lang-java.linenums code {
@@ -146,28 +142,26 @@ pre.source.lang-java.linenums code {
 table.coverage {
   empty-cells: show;
   border-collapse: collapse;
-  color: #ffffff; /* cor do texto */
 }
 
 table.coverage thead {
-  background-color: #333333; /* cor de fundo do cabeçalho da tabela */
-  color: #ffffff; /* cor do texto do cabeçalho da tabela */
+  background-color: #444;
+  color: #e0e0e0;
 }
 
 table.coverage thead td {
   white-space: nowrap;
-  padding: 12px 18px;
-  border-bottom: 1px solid #555555;
-  font-weight: bold;
+  padding: 2px 14px 0 6px;
+  border-bottom: #666 1px solid;
 }
 
 table.coverage thead td.bar {
-  border-left: #cccccc 1px solid;
+  border-left: #555 1px solid;
 }
 
 table.coverage thead td.ctr1 {
   text-align: right;
-  border-left: #cccccc 1px solid;
+  border-left: #555 1px solid;
 }
 
 table.coverage thead td.ctr2 {
@@ -192,64 +186,64 @@ table.coverage thead td.down {
 
 table.coverage tbody td {
   white-space: nowrap;
-  padding: 12px 18px;
-  border-bottom: 1px solid #555555;
+  padding: 2px 6px;
+  border-bottom: #444 1px solid;
+  color: #e0e0e0;
 }
 
 table.coverage tbody tr:hover {
-  background: #444444; /* cor de fundo hover das linhas da tabela */
+  background: #333 !important;
 }
 
 table.coverage tbody td.bar {
-  border-left: #e8e8e8 1px solid;
+  border-left: #555 1px solid;
 }
 
 table.coverage tbody td.ctr1 {
   text-align: right;
-  padding-right: 18px;
-  border-left: #e8e8e8 1px solid;
+  padding-right: 14px;
+  border-left: #555 1px solid;
 }
 
 table.coverage tbody td.ctr2 {
   text-align: right;
-  padding-right: 18px;
+  padding-right: 14px;
   padding-left: 2px;
 }
 
 table.coverage tfoot td {
   white-space: nowrap;
-  padding: 12px 18px;
+  padding: 2px 6px;
 }
 
 table.coverage tfoot td.bar {
-  border-left: #e8e8e8 1px solid;
+  border-left: #555 1px solid;
 }
 
 table.coverage tfoot td.ctr1 {
   text-align: right;
-  padding-right: 18px;
-  border-left: #e8e8e8 1px solid;
+  padding-right: 14px;
+  border-left: #555 1px solid;
 }
 
 table.coverage tfoot td.ctr2 {
   text-align: right;
-  padding-right: 18px;
+  padding-right: 14px;
   padding-left: 2px;
 }
 
 .footer {
   margin-top: 20px;
-  border-top: #d6d3ce 1px solid;
+  border-top: #444 1px solid;
   padding-top: 2px;
-  color: #a0a0a0;
-  font-size: 1.5em;
+  font-size: 8pt;
+  color: #888;
 }
 
 .footer a {
-  color: #a0a0a0;
+  color: #80b3ff;
 }
 
 .right {
-  display: none;
+  float: right;
 }
-

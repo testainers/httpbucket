@@ -55,7 +55,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
             schema = Schema(minimum = &quot;0&quot;, maximum = &quot;10&quot;, defaultValue = &quot;10&quot;),
         ) delay: Int,
         body: Any?,
-<span class="nc" id="L58">    ): Response = internal(delay, body)</span>
+<span class="fc" id="L58">    ): Response = internal(delay, body)</span>
 
     @DELETE
     fun delete(
@@ -73,21 +73,15 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 <span class="fc" id="L73">        val responseBody = ResponseBody(request, uriInfo, body)</span>
 <span class="fc" id="L74">        var code = 200</span>
 
-<span class="fc bfc" id="L76" title="All 4 branches covered.">        if (delay &lt; 0 || delay &gt; 10) {</span>
-<span class="fc" id="L77">            code = 400</span>
-<span class="fc" id="L78">            responseBody.body = String.format(&quot;Invalid delay: %d&quot;, delay)</span>
+<span class="fc bfc" id="L76" title="All 6 branches covered.">        if (delay in 0..10) {</span>
+<span class="fc" id="L77">            Thread.sleep(delay * 1000L)</span>
+<span class="fc" id="L78">            responseBody.body = &quot;Slept for $delay seconds.&quot;</span>
         } else {
-<span class="fc" id="L80">            try {</span>
-<span class="fc" id="L81">                Thread.sleep(delay * 1000L)</span>
-<span class="fc" id="L82">                responseBody.body =</span>
-<span class="fc" id="L83">                    String.format(&quot;Slept for %d seconds.&quot;, delay)</span>
-<span class="nc" id="L84">            } catch (e: InterruptedException) {</span>
-<span class="nc" id="L85">                code = 500</span>
-<span class="nc" id="L86">                responseBody.body = String.format(&quot;Interrupted: %s&quot;, e.message)</span>
-            }
+<span class="fc" id="L80">            code = 400</span>
+<span class="fc" id="L81">            responseBody.body = &quot;Invalid delay: $delay&quot;</span>
         }
 
-<span class="fc" id="L90">        return Response.status(code).entity(responseBody).build()</span>
+<span class="fc" id="L84">        return Response.status(code).entity(responseBody).build()</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span>httpbucket</div></body></html>

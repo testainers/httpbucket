@@ -68,7 +68,7 @@ import java.net.URI
             description = &quot;Response status code.&quot;,
             schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
         ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
-<span class="nc" id="L71">    ): Response = internal(url, code)</span>
+<span class="fc" id="L71">    ): Response = internal(url, code)</span>
 
     @DELETE
     fun delete(
