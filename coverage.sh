@@ -2,7 +2,7 @@
 
 set -e
 
-./gradlew cleanTest test
+./gradlew clean test
 
 /bin/cp -rf helpers/jacoco-report/* build/jacoco-report/.
 
