@@ -1,8 +1,5 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
-
 package com.testainers
 
-import io.quarkus.runtime.annotations.RegisterForReflection
 import io.vertx.core.http.HttpServerRequest
 import jakarta.ws.rs.core.*
 import java.net.URI
@@ -10,31 +7,24 @@ import java.net.URI
 /**
  * @author Eduardo Folly
  */
-@RegisterForReflection
-class ResponseBody(
-    request: HttpServerRequest,
-    uriInfo: UriInfo,
-    body: Any?,
+data class ResponseBody(
+    private val request: HttpServerRequest,
+    private val uriInfo: UriInfo,
+    var body: Any?,
 ) {
-    var uri: URI
-    var method: String = request.method().name()
-    var remoteAddress: String = request.remoteAddress().toString()
-    var remoteHost: String = request.remoteAddress().host()
-    var headers: MultivaluedMap<String, String> = MultivaluedHashMap()
-    var pathParameters: MultivaluedMap<String, String>
-    var queryParameters: MultivaluedMap<String, String>
-
-    var body: Any?
-
-    init {
-        for ((key, value) in request.headers()) {
-            headers.add(key, value)
-        }
-
-        this.uri = uriInfo.absolutePath
-        this.pathParameters = uriInfo.pathParameters
-        this.queryParameters = uriInfo.queryParameters
-
-        this.body = body
-    }
+    val uri: URI get() = uriInfo.absolutePath
+    val method: String get() = request.method().name()
+    val remoteAddress: String get() = request.remoteAddress().toString()
+    val remoteHost: String get() = request.remoteAddress().host()
+    val pathParameters: MultivaluedMap<String, String>
+        get() = uriInfo.pathParameters
+    val queryParameters: MultivaluedMap<String, String>
+        get() = uriInfo.queryParameters
+    val headers: MultivaluedMap<String, String>
+        get() =
+            request
+                .headers()
+                .fold(MultivaluedHashMap()) { acc, (key, value) ->
+                    acc.apply { add(key, value) }
+                }
 }

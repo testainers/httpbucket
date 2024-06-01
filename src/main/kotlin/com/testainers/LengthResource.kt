@@ -104,7 +104,7 @@ class LengthResource {
             Response
                 .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-                .entity(String.format("Invalid size: %d", size))
+                .entity("Invalid size: $size")
                 .build()
         } else {
             if (MediaType.APPLICATION_OCTET_STREAM == accept) {

@@ -1,13 +1,46 @@
 /* Pretty printing styles. Used with prettify.js. */
 
-.str { color: #ecc48d; }
-.kwd { color: #f7768e; font-weight: bold; }
-.com { color: #86c1b9; font-style: italic; }
-.typ { color: #b8b8f3; font-weight: bold; }
-.lit { color: #7b9df9; }
-.pun { color: #f9a8d4; }
-.pln { color: #d4d4d4; }
-.tag { color: #008; font-weight: bold; }
-.atn { color: #606; font-weight: bold; }
-.atv { color: #080; }
-.dec { color: #606; }
+.str {
+  color: #80b3ff; /* Light blue for strings */
+}
+
+.kwd {
+  color: #ff80b3; /* Light pink for keywords */
+  font-weight: bold;
+}
+
+.com {
+  color: #b3d9ff; /* Light sky blue for comments */
+}
+
+.typ {
+  color: #c080ff; /* Light purple for types */
+}
+
+.lit {
+  color: #80ffd4; /* Light teal for literals */
+}
+
+.pun {
+  color: #ffd480; /* Light orange for punctuation */
+}
+
+.pln {
+  color: #e0e0e0; /* Light gray for plain text */
+}
+
+.tag {
+  color: #80ff80; /* Light green for tags */
+}
+
+.atn {
+  color: #ff80ff; /* Light magenta for attribute names */
+}
+
+.atv {
+  color: #80ffb3; /* Light green for attribute values */
+}
+
+.dec {
+  color: #ffb380; /* Light peach for decimal values */
+}
