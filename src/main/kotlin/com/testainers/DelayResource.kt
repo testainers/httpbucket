@@ -73,13 +73,12 @@ class DelayResource(
         val responseBody = ResponseBody(request, uriInfo, body)
         var code = 200
 
-        if (delay < 0 || delay > 10) {
-            code = 400
-            responseBody.body = String.format("Invalid delay: %d", delay)
-        } else {
+        if (delay in 0..10) {
             Thread.sleep(delay * 1000L)
-            responseBody.body =
-                String.format("Slept for %d seconds.", delay)
+            responseBody.body = "Slept for $delay seconds."
+        } else {
+            code = 400
+            responseBody.body = "Invalid delay: $delay"
         }
 
         return Response.status(code).entity(responseBody).build()

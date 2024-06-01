@@ -12,16 +12,14 @@ import org.junit.jupiter.params.provider.MethodSource
  */
 @QuarkusTest
 class BasicAuthResourceTest : BaseResourceTest() {
-    companion object : BaseResourceTest() {
-        const val USER = "test"
-        const val PASS = "test-pass0"
-    }
+    val user = "test"
+    val pass = "test-pass0"
 
     @ParameterizedTest
     @MethodSource("onlyMethods")
     fun noHeader(method: Method) {
         json(method)
-            .request(method, "/basic-auth/$USER/$PASS")
+            .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(401)
             .body(
@@ -31,8 +29,8 @@ class BasicAuthResourceTest : BaseResourceTest() {
                     method,
                     mapOf(
                         "body.auth" to equalTo(false),
-                        "body.user" to equalTo(USER),
-                        "body.pass" to equalTo(PASS),
+                        "body.user" to equalTo(user),
+                        "body.pass" to equalTo(pass),
                         "body.message" to
                             equalTo(
                                 "Authorization header not present.",
@@ -47,7 +45,7 @@ class BasicAuthResourceTest : BaseResourceTest() {
     fun emptyHeader(method: Method) {
         json(method)
             .header(HttpHeaders.AUTHORIZATION, "")
-            .request(method, "/basic-auth/$USER/$PASS")
+            .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(401)
             .body(
@@ -57,8 +55,8 @@ class BasicAuthResourceTest : BaseResourceTest() {
                     method,
                     mapOf(
                         "body.auth" to equalTo(false),
-                        "body.user" to equalTo(USER),
-                        "body.pass" to equalTo(PASS),
+                        "body.user" to equalTo(user),
+                        "body.pass" to equalTo(pass),
                         "body.message" to
                             equalTo(
                                 "Authorization header not present.",
@@ -74,8 +72,8 @@ class BasicAuthResourceTest : BaseResourceTest() {
         json(method)
             .auth()
             .preemptive()
-            .basic(USER, PASS)
-            .request(method, "/basic-auth/$USER/$PASS")
+            .basic(user, pass)
+            .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(200)
             .body(
@@ -85,8 +83,8 @@ class BasicAuthResourceTest : BaseResourceTest() {
                     method,
                     mapOf(
                         "body.auth" to equalTo(true),
-                        "body.user" to equalTo(USER),
-                        "body.pass" to equalTo(PASS),
+                        "body.user" to equalTo(user),
+                        "body.pass" to equalTo(pass),
                         "body.message" to equalTo("Success."),
                     ),
                 ),
@@ -99,8 +97,8 @@ class BasicAuthResourceTest : BaseResourceTest() {
         json(method)
             .auth()
             .preemptive()
-            .basic(USER + "A", PASS + "A")
-            .request(method, "/basic-auth/$USER/$PASS")
+            .basic(user + "A", pass + "A")
+            .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(403)
             .body(
@@ -110,8 +108,8 @@ class BasicAuthResourceTest : BaseResourceTest() {
                     method,
                     mapOf(
                         "body.auth" to equalTo(false),
-                        "body.user" to equalTo(USER),
-                        "body.pass" to equalTo(PASS),
+                        "body.user" to equalTo(user),
+                        "body.pass" to equalTo(pass),
                         "body.message" to equalTo("Forbidden."),
                     ),
                 ),
