@@ -25,7 +25,7 @@ import org.jboss.resteasy.reactive.RestHeader
     ),
     APIResponse(responseCode = &quot;500&quot;, description = &quot;Invalid size: X.&quot;),
 )
-<span class="fc" id="L28">class LengthResource {</span>
+class LengthResource {
     @GET
     fun get(
         @RestHeader(HttpHeaders.ACCEPT) accept: String,

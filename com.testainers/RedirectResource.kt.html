@@ -21,7 +21,7 @@ import java.net.URI
                 &quot;or 'Invalid status code: 30X'&quot;,
     ),
 )
-<span class="fc" id="L24">class RedirectResource {</span>
+class RedirectResource {
     @GET
     fun get(
         @Parameter(
@@ -82,50 +82,62 @@ import java.net.URI
         ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
 <span class="fc" id="L83">    ): Response = internal(url, code)</span>
 
+    @HEAD
+    fun head(
+        @Parameter(
+            description = &quot;URL to redirect.&quot;,
+            required = true,
+        ) @QueryParam(&quot;url&quot;) @DefaultValue(&quot;&quot;) url: String,
+        @Parameter(
+            description = &quot;Response status code.&quot;,
+            schema = Schema(minimum = &quot;300&quot;, maximum = &quot;399&quot;),
+        ) @QueryParam(&quot;code&quot;) @DefaultValue(&quot;302&quot;) code: Int,
+<span class="fc" id="L95">    ): Response = internal(url, code)</span>
+
     private fun internal(
         url: String,
         code: Int,
     ): Response {
-<span class="fc" id="L89">        val uri: URI</span>
+<span class="fc" id="L101">        val uri: URI</span>
 
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (url.isBlank()) {</span>
-<span class="fc" id="L92">            return Response</span>
-<span class="fc" id="L93">                .status(500)</span>
-<span class="fc" id="L94">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L95">                .entity(&quot;URL is required&quot;)</span>
-<span class="fc" id="L96">                .build()</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (url.isBlank()) {</span>
+<span class="fc" id="L104">            return Response</span>
+<span class="fc" id="L105">                .status(500)</span>
+<span class="fc" id="L106">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L107">                .entity(&quot;URL is required&quot;)</span>
+<span class="fc" id="L108">                .build()</span>
         }
 
-<span class="fc" id="L99">        try {</span>
-<span class="fc" id="L100">            uri = URI.create(url)</span>
-<span class="fc" id="L101">        } catch (e: Exception) {</span>
-<span class="fc" id="L102">            return Response</span>
-<span class="fc" id="L103">                .status(500)</span>
-<span class="fc" id="L104">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L105">                .entity(&quot;Invalid URL: $url&quot;)</span>
-<span class="fc" id="L106">                .build()</span>
+<span class="fc" id="L111">        try {</span>
+<span class="fc" id="L112">            uri = URI.create(url)</span>
+<span class="fc" id="L113">        } catch (e: Exception) {</span>
+<span class="fc" id="L114">            return Response</span>
+<span class="fc" id="L115">                .status(500)</span>
+<span class="fc" id="L116">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L117">                .entity(&quot;Invalid URL: $url&quot;)</span>
+<span class="fc" id="L118">                .build()</span>
         }
 
-<span class="fc bfc" id="L109" title="All 6 branches covered.">        if (uri.scheme?.startsWith(&quot;http&quot;) != true) {</span>
-<span class="fc" id="L110">            return Response</span>
-<span class="fc" id="L111">                .status(500)</span>
-<span class="fc" id="L112">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L113">                .entity(&quot;Invalid URL Scheme: $url&quot;)</span>
-<span class="fc" id="L114">                .build()</span>
+<span class="fc bfc" id="L121" title="All 6 branches covered.">        if (uri.scheme?.startsWith(&quot;http&quot;) != true) {</span>
+<span class="fc" id="L122">            return Response</span>
+<span class="fc" id="L123">                .status(500)</span>
+<span class="fc" id="L124">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L125">                .entity(&quot;Invalid URL Scheme: $url&quot;)</span>
+<span class="fc" id="L126">                .build()</span>
         }
 
-<span class="fc bfc" id="L117" title="All 4 branches covered.">        if (code &lt; 300 || code &gt; 399) {</span>
-<span class="fc" id="L118">            return Response</span>
-<span class="fc" id="L119">                .status(500)</span>
-<span class="fc" id="L120">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
-<span class="fc" id="L121">                .entity(&quot;Invalid status code: $code&quot;)</span>
-<span class="fc" id="L122">                .build()</span>
+<span class="fc bfc" id="L129" title="All 4 branches covered.">        if (code &lt; 300 || code &gt; 399) {</span>
+<span class="fc" id="L130">            return Response</span>
+<span class="fc" id="L131">                .status(500)</span>
+<span class="fc" id="L132">                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)</span>
+<span class="fc" id="L133">                .entity(&quot;Invalid status code: $code&quot;)</span>
+<span class="fc" id="L134">                .build()</span>
         }
 
-<span class="fc" id="L125">        return Response</span>
-<span class="fc" id="L126">            .status(code)</span>
-<span class="fc" id="L127">            .header(HttpHeaders.LOCATION, uri.toASCIIString())</span>
-<span class="fc" id="L128">            .build()</span>
+<span class="fc" id="L137">        return Response</span>
+<span class="fc" id="L138">            .status(code)</span>
+<span class="fc" id="L139">            .header(HttpHeaders.LOCATION, uri.toASCIIString())</span>
+<span class="fc" id="L140">            .build()</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span>httpbucket</div></body></html>
