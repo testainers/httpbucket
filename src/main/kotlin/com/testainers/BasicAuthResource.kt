@@ -64,6 +64,13 @@ class BasicAuthResource(
         body: Any?,
     ): Response = getResponse(auth, user, pass, body)
 
+    @HEAD
+    fun head(
+        @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
+        user: String,
+        pass: String,
+    ): Response = getResponse(auth, user, pass, null)
+
     private fun getResponse(
         auth: String?,
         user: String,

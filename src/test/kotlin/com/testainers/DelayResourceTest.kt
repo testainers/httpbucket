@@ -52,27 +52,35 @@ class DelayResourceTest : BaseResourceTest() {
             .request(method, "/delay/$delay")
             .then()
             .statusCode(400)
-            .body(
-                "body",
-                equalTo("Invalid delay: $delay"),
-                *bodyMatchers(method),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body",
+                        equalTo("Invalid delay: $delay"),
+                        *bodyMatchers(method),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
     @MethodSource("validDelay")
     fun valid(
-        it: Method,
+        method: Method,
         delay: Int,
     ) {
-        json(it)
-            .request(it, "/delay/$delay")
+        json(method)
+            .request(method, "/delay/$delay")
             .then()
             .statusCode(200)
-            .body(
-                "body",
-                equalTo("Slept for $delay seconds."),
-                *bodyMatchers(it),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body",
+                        equalTo("Slept for $delay seconds."),
+                        *bodyMatchers(method),
+                    )
+                }
+            }
     }
 }

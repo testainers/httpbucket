@@ -1,6 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "1.9.24"
-    kotlin("plugin.allopen") version "1.9.24"
+    kotlin("jvm") version "2.0.21"
+    kotlin("plugin.allopen") version "2.0.21"
     id("io.quarkus")
 }
 
@@ -14,7 +16,11 @@ val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
 
 dependencies {
-    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
+    implementation(
+        enforcedPlatform(
+            "$quarkusPlatformGroupId:$quarkusPlatformArtifactId:$quarkusPlatformVersion",
+        ),
+    )
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.smallrye.config:smallrye-config-source-file-system")
     implementation("io.quarkus:quarkus-micrometer-registry-prometheus")
@@ -33,7 +39,7 @@ dependencies {
 }
 
 group = "com.testainers"
-version = "0.1.1"
+version = "0.1.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -43,7 +49,7 @@ java {
 tasks.withType<Test> {
     systemProperty(
         "java.util.logging.manager",
-        "org.jboss.logmanager.LogManager"
+        "org.jboss.logmanager.LogManager",
     )
 
     testLogging {
@@ -52,7 +58,7 @@ tasks.withType<Test> {
             "SKIPPED",
             "FAILED",
             "STANDARD_OUT",
-            "STANDARD_ERROR"
+            "STANDARD_ERROR",
         )
     }
 }
@@ -64,7 +70,9 @@ allOpen {
     annotation("io.quarkus.test.junit.QuarkusTest")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
-    kotlinOptions.javaParameters = true
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21
+        javaParameters = true
+    }
 }

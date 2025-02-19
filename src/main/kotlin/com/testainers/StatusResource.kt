@@ -69,6 +69,16 @@ class StatusResource(
         body: Any?,
     ): Response = internal(code, body)
 
+    @HEAD
+    fun head(
+        @Parameter(
+            description =
+                "Code must be between 200 and 599. " +
+                    "Informational responses (1XX) are not supported.",
+            schema = Schema(minimum = "200", maximum = "599"),
+        ) code: Int,
+    ): Response = internal(code, null)
+
     private fun internal(
         code: Int,
         body: Any?,

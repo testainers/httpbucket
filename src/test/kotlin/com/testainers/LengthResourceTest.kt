@@ -18,15 +18,15 @@ class LengthResourceTest : BaseResourceTest() {
     companion object : BaseResourceTest() {
         @JvmStatic
         fun invalidLength(): List<Arguments> =
-            argumentGenerator(listOf(-1, 0, 2049))
+            argumentGenerator(listOf(-1, 0, 2049), remove = listOf(Method.HEAD))
 
         @JvmStatic
         fun successTextLength(): List<Arguments> =
-            argumentGenerator(listOf(1, 10))
+            argumentGenerator(listOf(1, 10), remove = listOf(Method.HEAD))
 
         @JvmStatic
         fun successOctetLength(): List<Arguments> =
-            argumentGenerator(listOf(512, 2048))
+            argumentGenerator(listOf(512, 2048), remove = listOf(Method.HEAD))
     }
 
     @ParameterizedTest

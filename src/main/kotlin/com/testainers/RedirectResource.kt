@@ -82,6 +82,18 @@ class RedirectResource {
         ) @QueryParam("code") @DefaultValue("302") code: Int,
     ): Response = internal(url, code)
 
+    @HEAD
+    fun head(
+        @Parameter(
+            description = "URL to redirect.",
+            required = true,
+        ) @QueryParam("url") @DefaultValue("") url: String,
+        @Parameter(
+            description = "Response status code.",
+            schema = Schema(minimum = "300", maximum = "399"),
+        ) @QueryParam("code") @DefaultValue("302") code: Int,
+    ): Response = internal(url, code)
+
     private fun internal(
         url: String,
         code: Int,

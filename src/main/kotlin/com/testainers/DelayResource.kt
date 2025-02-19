@@ -66,6 +66,14 @@ class DelayResource(
         body: Any?,
     ): Response = internal(delay, body)
 
+    @HEAD
+    fun head(
+        @Parameter(
+            description = "Delay must be between 0 and 10 seconds.",
+            schema = Schema(minimum = "0", maximum = "10", defaultValue = "10"),
+        ) delay: Int,
+    ): Response = internal(delay, null)
+
     private fun internal(
         delay: Int,
         body: Any?,

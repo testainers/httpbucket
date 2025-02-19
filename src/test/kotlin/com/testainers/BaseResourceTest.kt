@@ -22,6 +22,7 @@ abstract class BaseResourceTest {
                 Method.PUT,
                 Method.DELETE,
                 Method.PATCH,
+                Method.HEAD,
             )
 
         @JvmStatic
@@ -32,12 +33,17 @@ abstract class BaseResourceTest {
             argumentGenerator(listOf(null, "", " ", "a", "1.8"))
 
         @JvmStatic
-        fun argumentGenerator(list: List<Any?>): List<Arguments> {
+        fun argumentGenerator(
+            list: List<Any?>,
+            remove: List<Method> = listOf(),
+        ): List<Arguments> {
             val result = mutableListOf<Arguments>()
 
             methods.forEach { method ->
-                list.forEach { status ->
-                    result.add(Arguments.of(method, status))
+                if(method !in remove) {
+                    list.forEach { status ->
+                        result.add(Arguments.of(method, status))
+                    }
                 }
             }
 

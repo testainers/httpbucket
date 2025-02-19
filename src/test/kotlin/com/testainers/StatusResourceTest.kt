@@ -52,11 +52,15 @@ class StatusResourceTest : BaseResourceTest() {
             .request(method, "/status/$status")
             .then()
             .statusCode(500)
-            .body(
-                "body",
-                equalTo("Unknown status code: $status"),
-                *bodyMatchers(method),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body",
+                        equalTo("Unknown status code: $status"),
+                        *bodyMatchers(method),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
@@ -69,11 +73,17 @@ class StatusResourceTest : BaseResourceTest() {
             .request(method, "/status/$status")
             .then()
             .statusCode(500)
-            .body(
-                "body",
-                equalTo("Informational responses are not supported: $status"),
-                *bodyMatchers(method),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body",
+                        equalTo(
+                            "Informational responses are not supported: $status",
+                        ),
+                        *bodyMatchers(method),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
@@ -86,11 +96,15 @@ class StatusResourceTest : BaseResourceTest() {
             .request(method, "/status/$status")
             .then()
             .statusCode(status)
-            .body(
-                "body",
-                if (method == Method.GET) not(body) else equalTo(body),
-                *bodyMatchers(method),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body",
+                        if (method == Method.GET) not(body) else equalTo(body),
+                        *bodyMatchers(method),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
