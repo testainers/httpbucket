@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION=$(grep 'version' build.gradle | cut -f 2 -d "'")
+VERSION=$(grep 'version =' build.gradle.kts | cut -f 2 -d '"')
 
 if [ ! -f "build/httpbucket-$VERSION-runner" ]
 then
