@@ -49,7 +49,7 @@ class RedirectResourceTest : BaseResourceTest() {
     @ParameterizedTest
     @MethodSource("invalidRedirect")
     fun invalid(
-        it: Method,
+        method: Method,
         code: Int,
     ) {
         Given {
@@ -57,18 +57,20 @@ class RedirectResourceTest : BaseResourceTest() {
         } When {
             queryParam("url", LOCATION)
             queryParam("code", code)
-            request(it, "/redirect")
+            request(method, "/redirect")
         } Then {
             statusCode(500)
-            contentType(ContentType.TEXT)
-            body(equalTo("Invalid status code: $code"))
+            if (method != Method.HEAD) {
+                contentType(ContentType.TEXT)
+                body(equalTo("Invalid status code: $code"))
+            }
         }
     }
 
     @ParameterizedTest
     @MethodSource("validRedirect")
     fun valid(
-        it: Method,
+        method: Method,
         code: String?,
     ) {
         Given {
@@ -78,18 +80,20 @@ class RedirectResourceTest : BaseResourceTest() {
             if (!code.isNullOrBlank()) {
                 queryParam("code", code)
             }
-            request(it, "/redirect")
+            request(method, "/redirect")
         } Then {
             statusCode(code?.toIntOrNull() ?: 302)
             header(HttpHeaders.LOCATION, LOCATION)
-            header(HttpHeaders.CONTENT_LENGTH, "0")
+            if (method != Method.HEAD) {
+                header(HttpHeaders.CONTENT_LENGTH, "0")
+            }
         }
     }
 
     @ParameterizedTest
     @MethodSource("requiredUrl")
     fun required(
-        it: Method,
+        method: Method,
         url: String?,
     ) {
         Given {
@@ -98,18 +102,20 @@ class RedirectResourceTest : BaseResourceTest() {
             if (url != null) {
                 queryParam("url", url)
             }
-            request(it, "/redirect")
+            request(method, "/redirect")
         } Then {
             statusCode(500)
-            contentType(ContentType.TEXT)
-            body(equalTo("URL is required"))
+            if (method != Method.HEAD) {
+                contentType(ContentType.TEXT)
+                body(equalTo("URL is required"))
+            }
         }
     }
 
     @ParameterizedTest
     @MethodSource("invalidUrl")
     fun invalid(
-        it: Method,
+        method: Method,
         url: String?,
     ) {
         Given {
@@ -118,18 +124,20 @@ class RedirectResourceTest : BaseResourceTest() {
             if (url != null) {
                 queryParam("url", url)
             }
-            request(it, "/redirect")
+            request(method, "/redirect")
         } Then {
             statusCode(500)
-            contentType(ContentType.TEXT)
-            body(equalTo("Invalid URL: $url"))
+            if (method != Method.HEAD) {
+                contentType(ContentType.TEXT)
+                body(equalTo("Invalid URL: $url"))
+            }
         }
     }
 
     @ParameterizedTest
     @MethodSource("invalidScheme")
     fun scheme(
-        it: Method,
+        method: Method,
         url: String?,
     ) {
         Given {
@@ -138,11 +146,13 @@ class RedirectResourceTest : BaseResourceTest() {
             if (url != null) {
                 queryParam("url", url)
             }
-            request(it, "/redirect")
+            request(method, "/redirect")
         } Then {
             statusCode(500)
-            contentType(ContentType.TEXT)
-            body(equalTo("Invalid URL Scheme: $url"))
+            if (method != Method.HEAD) {
+                contentType(ContentType.TEXT)
+                body(equalTo("Invalid URL Scheme: $url"))
+            }
         }
     }
 }

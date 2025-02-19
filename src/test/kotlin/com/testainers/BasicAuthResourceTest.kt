@@ -22,22 +22,30 @@ class BasicAuthResourceTest : BaseResourceTest() {
             .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(401)
-            .body(
-                "body.body",
-                if (method == Method.GET) nullValue() else equalTo(body),
-                *bodyMatchers(
-                    method,
-                    mapOf(
-                        "body.auth" to equalTo(false),
-                        "body.user" to equalTo(user),
-                        "body.pass" to equalTo(pass),
-                        "body.message" to
-                            equalTo(
-                                "Authorization header not present.",
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body.body",
+                        if (method == Method.GET) {
+                            nullValue()
+                        } else {
+                            equalTo(body)
+                        },
+                        *bodyMatchers(
+                            method,
+                            mapOf(
+                                "body.auth" to equalTo(false),
+                                "body.user" to equalTo(user),
+                                "body.pass" to equalTo(pass),
+                                "body.message" to
+                                    equalTo(
+                                        "Authorization header not present.",
+                                    ),
                             ),
-                    ),
-                ),
-            )
+                        ),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
@@ -48,22 +56,30 @@ class BasicAuthResourceTest : BaseResourceTest() {
             .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(401)
-            .body(
-                "body.body",
-                if (method == Method.GET) nullValue() else equalTo(body),
-                *bodyMatchers(
-                    method,
-                    mapOf(
-                        "body.auth" to equalTo(false),
-                        "body.user" to equalTo(user),
-                        "body.pass" to equalTo(pass),
-                        "body.message" to
-                            equalTo(
-                                "Authorization header not present.",
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body.body",
+                        if (method == Method.GET) {
+                            nullValue()
+                        } else {
+                            equalTo(body)
+                        },
+                        *bodyMatchers(
+                            method,
+                            mapOf(
+                                "body.auth" to equalTo(false),
+                                "body.user" to equalTo(user),
+                                "body.pass" to equalTo(pass),
+                                "body.message" to
+                                    equalTo(
+                                        "Authorization header not present.",
+                                    ),
                             ),
-                    ),
-                ),
-            )
+                        ),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
@@ -76,19 +92,27 @@ class BasicAuthResourceTest : BaseResourceTest() {
             .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(200)
-            .body(
-                "body.body",
-                if (method == Method.GET) nullValue() else equalTo(body),
-                *bodyMatchers(
-                    method,
-                    mapOf(
-                        "body.auth" to equalTo(true),
-                        "body.user" to equalTo(user),
-                        "body.pass" to equalTo(pass),
-                        "body.message" to equalTo("Success."),
-                    ),
-                ),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body.body",
+                        if (method == Method.GET) {
+                            nullValue()
+                        } else {
+                            equalTo(body)
+                        },
+                        *bodyMatchers(
+                            method,
+                            mapOf(
+                                "body.auth" to equalTo(true),
+                                "body.user" to equalTo(user),
+                                "body.pass" to equalTo(pass),
+                                "body.message" to equalTo("Success."),
+                            ),
+                        ),
+                    )
+                }
+            }
     }
 
     @ParameterizedTest
@@ -101,18 +125,26 @@ class BasicAuthResourceTest : BaseResourceTest() {
             .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(403)
-            .body(
-                "body.body",
-                if (method == Method.GET) nullValue() else equalTo(body),
-                *bodyMatchers(
-                    method,
-                    mapOf(
-                        "body.auth" to equalTo(false),
-                        "body.user" to equalTo(user),
-                        "body.pass" to equalTo(pass),
-                        "body.message" to equalTo("Forbidden."),
-                    ),
-                ),
-            )
+            .apply {
+                if (method != Method.HEAD) {
+                    body(
+                        "body.body",
+                        if (method == Method.GET) {
+                            nullValue()
+                        } else {
+                            equalTo(body)
+                        },
+                        *bodyMatchers(
+                            method,
+                            mapOf(
+                                "body.auth" to equalTo(false),
+                                "body.user" to equalTo(user),
+                                "body.pass" to equalTo(pass),
+                                "body.message" to equalTo("Forbidden."),
+                            ),
+                        ),
+                    )
+                }
+            }
     }
 }
