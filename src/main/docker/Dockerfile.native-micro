@@ -31,7 +31,7 @@ ADD --chown=1001:root \
 
 RUN chmod +x /usr/bin/check
 
-COPY --chown=1001:root build/*-runner /work/application
+COPY --chown=1001:root --chmod=0755 build/*-runner /work/application
 COPY --chown=1001:root cert.pem /work/cert.pem
 COPY --chown=1001:root key.pem /work/key.pem
 
