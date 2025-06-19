@@ -1,8 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    kotlin("jvm") version "2.0.21"
-    kotlin("plugin.allopen") version "2.0.21"
+    kotlin("jvm") version "2.1.21"
+    kotlin("plugin.allopen") version "2.1.21"
     id("io.quarkus")
 }
 
@@ -21,7 +19,6 @@ dependencies {
             "$quarkusPlatformGroupId:$quarkusPlatformArtifactId:$quarkusPlatformVersion",
         ),
     )
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.smallrye.config:smallrye-config-source-file-system")
     implementation("io.quarkus:quarkus-micrometer-registry-prometheus")
     implementation("io.quarkus:quarkus-smallrye-openapi")
@@ -32,6 +29,7 @@ dependencies {
     implementation("io.quarkus:quarkus-info")
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-arc")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.rest-assured:kotlin-extensions")
@@ -39,7 +37,7 @@ dependencies {
 }
 
 group = "com.testainers"
-version = "0.1.2"
+version = "0.2.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -72,7 +70,7 @@ allOpen {
 
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_21
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
         javaParameters = true
     }
 }
