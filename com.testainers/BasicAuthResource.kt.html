@@ -3,7 +3,10 @@
 import io.quarkus.security.Authenticated
 import io.vertx.core.http.HttpServerRequest
 import jakarta.ws.rs.*
-import jakarta.ws.rs.core.*
+import jakarta.ws.rs.core.HttpHeaders
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
+import jakarta.ws.rs.core.UriInfo
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.jboss.resteasy.reactive.RestHeader
@@ -13,7 +16,7 @@ import java.util.*
 /**
  * @author Eduardo Folly
  */
-@Authenticated
+<span class="fc" id="L19">@Authenticated</span>
 @Path(&quot;/basic-auth/{user}/{pass}&quot;)
 @APIResponses(
     APIResponse(responseCode = &quot;200&quot;),
@@ -21,16 +24,16 @@ import java.util.*
     APIResponse(responseCode = &quot;403&quot;),
 )
 @Produces(MediaType.APPLICATION_JSON)
-<span class="fc" id="L24">class BasicAuthResource(</span>
-<span class="fc" id="L25">    val request: HttpServerRequest,</span>
-<span class="fc" id="L26">    val uriInfo: UriInfo,</span>
+<span class="fc" id="L27">class BasicAuthResource(</span>
+<span class="fc" id="L28">    val request: HttpServerRequest,</span>
+<span class="fc" id="L29">    val uriInfo: UriInfo,</span>
 ) {
     @GET
     fun get(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
         user: String,
         pass: String,
-<span class="fc" id="L33">    ): Response = getResponse(auth, user, pass, null)</span>
+<span class="fc" id="L36">    ): Response = getResponse(auth, user, pass, null)</span>
 
     @POST
     fun post(
@@ -38,7 +41,7 @@ import java.util.*
         user: String,
         pass: String,
         body: Any?,
-<span class="fc" id="L41">    ): Response = getResponse(auth, user, pass, body)</span>
+<span class="fc" id="L44">    ): Response = getResponse(auth, user, pass, body)</span>
 
     @PUT
     fun put(
@@ -46,7 +49,7 @@ import java.util.*
         user: String,
         pass: String,
         body: Any?,
-<span class="fc" id="L49">    ): Response = getResponse(auth, user, pass, body)</span>
+<span class="fc" id="L52">    ): Response = getResponse(auth, user, pass, body)</span>
 
     @PATCH
     fun patch(
@@ -54,7 +57,7 @@ import java.util.*
         user: String,
         pass: String,
         body: Any?,
-<span class="fc" id="L57">    ): Response = getResponse(auth, user, pass, body)</span>
+<span class="fc" id="L60">    ): Response = getResponse(auth, user, pass, body)</span>
 
     @DELETE
     fun delete(
@@ -62,14 +65,14 @@ import java.util.*
         user: String,
         pass: String,
         body: Any?,
-<span class="fc" id="L65">    ): Response = getResponse(auth, user, pass, body)</span>
+<span class="fc" id="L68">    ): Response = getResponse(auth, user, pass, body)</span>
 
     @HEAD
     fun head(
         @RestHeader(HttpHeaders.AUTHORIZATION) auth: String?,
         user: String,
         pass: String,
-<span class="fc" id="L72">    ): Response = getResponse(auth, user, pass, null)</span>
+<span class="fc" id="L75">    ): Response = getResponse(auth, user, pass, null)</span>
 
     private fun getResponse(
         auth: String?,
@@ -77,40 +80,40 @@ import java.util.*
         pass: String,
         body: Any?,
     ): Response {
-<span class="fc" id="L80">        val responseBody = ResponseBody(request, uriInfo, body)</span>
-<span class="fc" id="L81">        var code = 403</span>
+<span class="fc" id="L83">        val responseBody = ResponseBody(request, uriInfo, body)</span>
+<span class="fc" id="L84">        var code = 403</span>
 
-<span class="fc" id="L83">        val bodyMap: MutableMap&lt;String, Any?&gt; = HashMap()</span>
-<span class="fc" id="L84">        bodyMap[&quot;auth&quot;] = false</span>
-<span class="fc" id="L85">        bodyMap[&quot;user&quot;] = user</span>
-<span class="fc" id="L86">        bodyMap[&quot;pass&quot;] = pass</span>
-<span class="fc" id="L87">        bodyMap[&quot;message&quot;] = &quot;Forbidden.&quot;</span>
-<span class="fc" id="L88">        bodyMap[&quot;body&quot;] = body</span>
+<span class="fc" id="L86">        val bodyMap: MutableMap&lt;String, Any?&gt; = HashMap()</span>
+<span class="fc" id="L87">        bodyMap[&quot;auth&quot;] = false</span>
+<span class="fc" id="L88">        bodyMap[&quot;user&quot;] = user</span>
+<span class="fc" id="L89">        bodyMap[&quot;pass&quot;] = pass</span>
+<span class="fc" id="L90">        bodyMap[&quot;message&quot;] = &quot;Forbidden.&quot;</span>
+<span class="fc" id="L91">        bodyMap[&quot;body&quot;] = body</span>
 
-<span class="pc bpc" id="L90" title="1 of 6 branches missed.">        if (auth.isNullOrBlank()) {</span>
-<span class="fc" id="L91">            code = 401</span>
-<span class="fc" id="L92">            bodyMap[&quot;message&quot;] = &quot;Authorization header not present.&quot;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (auth == null) {</span>
+<span class="fc" id="L94">            code = 401</span>
+<span class="fc" id="L95">            bodyMap[&quot;message&quot;] = &quot;Authorization header not present.&quot;</span>
         } else {
-<span class="fc" id="L94">            val encoded =</span>
+<span class="fc" id="L97">            val encoded =</span>
                 Base64
-<span class="fc" id="L96">                    .getEncoder()</span>
-<span class="fc" id="L97">                    .encodeToString(</span>
-<span class="fc" id="L98">                        &quot;$user:$pass&quot;.toByteArray(StandardCharsets.UTF_8),</span>
+<span class="fc" id="L99">                    .getEncoder()</span>
+<span class="fc" id="L100">                    .encodeToString(</span>
+<span class="fc" id="L101">                        &quot;$user:$pass&quot;.toByteArray(StandardCharsets.UTF_8),</span>
                     )
 
-<span class="fc" id="L101">            val ok = auth == &quot;Basic $encoded&quot;</span>
+<span class="fc" id="L104">            val ok = auth == &quot;Basic $encoded&quot;</span>
 
-<span class="fc" id="L103">            bodyMap[&quot;auth&quot;] = ok</span>
+<span class="fc" id="L106">            bodyMap[&quot;auth&quot;] = ok</span>
 
-<span class="fc bfc" id="L105" title="All 2 branches covered.">            if (ok) {</span>
-<span class="fc" id="L106">                code = 200</span>
-<span class="fc" id="L107">                bodyMap[&quot;message&quot;] = &quot;Success.&quot;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (ok) {</span>
+<span class="fc" id="L109">                code = 200</span>
+<span class="fc" id="L110">                bodyMap[&quot;message&quot;] = &quot;Success.&quot;</span>
             }
         }
 
-<span class="fc" id="L111">        responseBody.body = bodyMap</span>
+<span class="fc" id="L114">        responseBody.body = bodyMap</span>
 
-<span class="fc" id="L113">        return Response.status(code).entity(responseBody).build()</span>
+<span class="fc" id="L116">        return Response.status(code).entity(responseBody).build()</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>httpbucket</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span>httpbucket</div></body></html>
