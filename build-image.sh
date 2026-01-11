@@ -8,8 +8,9 @@ if [ ! -f "build/httpbucket-$VERSION-runner" ]
 then
   ./gradlew clean
 
-  ./gradlew build -Dquarkus.package.type=native \
-                  -Dquarkus.native.container-build=true
+  ./gradlew build -Dquarkus.package.jar.enabled=false \
+                  -Dquarkus.native.enabled=true \
+                  -Dquarkus.native.compression.level=5
 fi
 
 docker build . -f src/main/docker/Dockerfile.native-micro \

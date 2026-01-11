@@ -6,4 +6,4 @@ set -e
 
 /bin/cp -rf helpers/jacoco-report/* build/jacoco-report/.
 
-# /opt/google/chrome/google-chrome build/coverage/index.html
+# /opt/google/chrome/google-chrome "file://$(pwd)/build/jacoco-report/index.html"
