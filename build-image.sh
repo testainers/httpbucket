@@ -16,3 +16,7 @@ fi
 docker build . -f src/main/docker/Dockerfile.native-micro \
                -t "httpbucket-local:$VERSION" \
                -t "httpbucket-local:latest"
+
+docker run --rm --name httpbucket \
+           -p 8080:8080 -p 8443:8443 \
+           "httpbucket-local:$VERSION"

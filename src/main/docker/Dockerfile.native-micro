@@ -39,4 +39,4 @@ EXPOSE 8080
 EXPOSE 8443
 USER 1001
 
-ENTRYPOINT ["./application", "-Dquarkus.http.host=0.0.0.0"]
+ENTRYPOINT ["./httpbucket", "-Dquarkus.http.host=0.0.0.0"]
