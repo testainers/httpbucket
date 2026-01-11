@@ -13,15 +13,9 @@ jobs:
       contents: write
     steps:
       - name: Code Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'adopt'
-          java-version: '21'
-
-      - name: Get Gradle Version
+      - name: Get release attributes
         run: |
           echo "TAGS=latest" >> $GITHUB_ENV
           SUFFIX=""
@@ -35,11 +29,22 @@ jobs:
         run: |
           URL=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/tags/${{ env.VERSION }}
           echo "$URL"
-          CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          CODE=$(curl -s -H "Authorization: Bearer ${{ github.token }}" -o /dev/null -w "%{http_code}" "$URL")
           if [ "$CODE" != 404 ]; then
             echo "Release '$VERSION' already exists. ($CODE)"
             exit 1
           fi
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: false
 
       - name: Generating self-signed certificate
         run: |

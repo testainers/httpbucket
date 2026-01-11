@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.1.21"
-    kotlin("plugin.allopen") version "2.1.21"
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.allopen") version "2.2.21"
     id("io.quarkus")
 }
 
@@ -37,7 +37,7 @@ dependencies {
 }
 
 group = "com.testainers"
-version = "0.2.0"
+version = "0.3.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -49,6 +49,8 @@ tasks.withType<Test> {
         "java.util.logging.manager",
         "org.jboss.logmanager.LogManager",
     )
+
+    jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
 
     testLogging {
         events(

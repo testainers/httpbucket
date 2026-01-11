@@ -1,7 +1,9 @@
 package com.testainers
 
 import io.restassured.RestAssured
-import io.restassured.config.*
+import io.restassured.config.LogConfig
+import io.restassured.config.RedirectConfig
+import io.restassured.config.RestAssuredConfig
 import io.restassured.http.ContentType
 import io.restassured.http.Method
 import io.restassured.specification.RequestSpecification
@@ -40,7 +42,7 @@ abstract class BaseResourceTest {
             val result = mutableListOf<Arguments>()
 
             methods.forEach { method ->
-                if(method !in remove) {
+                if (method !in remove) {
                     list.forEach { status ->
                         result.add(Arguments.of(method, status))
                     }

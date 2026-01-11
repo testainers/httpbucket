@@ -1,7 +1,9 @@
 package com.testainers
 
 import jakarta.ws.rs.*
-import jakarta.ws.rs.core.*
+import jakarta.ws.rs.core.HttpHeaders
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.openapi.annotations.media.Schema
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
@@ -126,7 +128,7 @@ class RedirectResource {
                 .build()
         }
 
-        if (code < 300 || code > 399) {
+        if (code !in 300..399) {
             return Response
                 .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)

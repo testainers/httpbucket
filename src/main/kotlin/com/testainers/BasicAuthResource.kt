@@ -3,7 +3,10 @@ package com.testainers
 import io.quarkus.security.Authenticated
 import io.vertx.core.http.HttpServerRequest
 import jakarta.ws.rs.*
-import jakarta.ws.rs.core.*
+import jakarta.ws.rs.core.HttpHeaders
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
+import jakarta.ws.rs.core.UriInfo
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.jboss.resteasy.reactive.RestHeader
@@ -87,7 +90,7 @@ class BasicAuthResource(
         bodyMap["message"] = "Forbidden."
         bodyMap["body"] = body
 
-        if (auth.isNullOrBlank()) {
+        if (auth == null) {
             code = 401
             bodyMap["message"] = "Authorization header not present."
         } else {
