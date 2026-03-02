@@ -73,16 +73,23 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: 'gradle'
 
+      - name: Generating self-signed certificate
+        run: |
+          openssl req \
+            -newkey rsa:2048 \
+            -new \
+            -nodes \
+            -x509 \
+            -days 3650 \
+            -keyout key.pem \
+            -out cert.pem \
+            -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
+
       - name: Tests & Build Native Executable
         run: |
           ./gradlew build -Dquarkus.package.jar.enabled=false \
-            -Dquarkus.native.enabled=true
-
-#      - name: Tests & Build Native Executable
-#        run: |
-#          ./gradlew build -Dquarkus.package.jar.enabled=false \
-#            -Dquarkus.native.enabled=true \
-#            -Dquarkus.native.compression.level=5
+            -Dquarkus.native.enabled=true \
+            -Dquarkus.native.compression.level=5
 
       - name: Upload Native Binary
         uses: actions/upload-artifact@v4
