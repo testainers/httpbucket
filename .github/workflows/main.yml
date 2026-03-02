@@ -73,11 +73,11 @@ jobs:
             -out cert.pem \
             -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
 
-          - name: Tests & Build
-             run: |
-               ./gradlew build -Dquarkus.package.jar.enabled=false \
-                 -Dquarkus.native.enabled=true \
-                 -Dquarkus.native.compression.level=5
+      - name: Tests & Build
+        run: |
+          ./gradlew build -Dquarkus.package.jar.enabled=false \
+            -Dquarkus.native.enabled=true \
+            -Dquarkus.native.compression.level=5
 
       - name: Login to Registry
         uses: docker/login-action@v3
