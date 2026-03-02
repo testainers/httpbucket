@@ -92,8 +92,8 @@ jobs:
           context: .
           file: src/main/docker/Dockerfile.native-micro
           tags: |
-            ${{ github.repository_owner }}/${{ github.repository }}:${{ env.VERSION }}
-            ${{ github.repository_owner }}/${{ github.repository }}:${{ env.DOCKER_TAG }}
+            ${{ github.repository }}:${{ env.VERSION }}
+            ${{ github.repository }}:${{ env.DOCKER_TAG }}
 
       - name: Creating GitHub Tag
         uses: mathieudutour/github-tag-action@v6.2
