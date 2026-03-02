@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
-    kotlin("plugin.allopen") version "2.2.21"
+    kotlin("jvm") version "2.3.10"
+    kotlin("plugin.allopen") version "2.3.10"
     id("io.quarkus")
 }
 
@@ -45,13 +45,6 @@ java {
 }
 
 tasks.withType<Test> {
-    systemProperty(
-        "java.util.logging.manager",
-        "org.jboss.logmanager.LogManager",
-    )
-
-    jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-
     testLogging {
         events(
             "PASSED",
