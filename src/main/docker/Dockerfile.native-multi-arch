@@ -7,7 +7,8 @@ RUN chown 1001 /work \
     && chmod "g+rwX" /work \
     && chown 1001:root /work
 
-COPY --chown=1001:root --chmod=0755 build/${TARGETARCH}/*-runner /work/httpbucket
+COPY --chown=1001:root build/${TARGETARCH}/*-runner /work/httpbucket
+RUN chmod +x /work/httpbucket
 COPY --chown=1001:root cert.pem /work/cert.pem
 COPY --chown=1001:root key.pem /work/key.pem
 

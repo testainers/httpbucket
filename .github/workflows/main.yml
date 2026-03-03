@@ -127,20 +127,11 @@ jobs:
           name: native-executable-amd64
           path: build/amd64
 
-      - name: Display structure of downloaded files amd64
-        run: ls -R build/amd64
-
       - name: Download ARM64 Binary
         uses: actions/download-artifact@v8
         with:
           name: native-executable-arm64
           path: build/arm64
-
-      - name: Display structure of downloaded files arm64
-        run: ls -R build/arm64
-
-      - name: Display structure of downloaded files
-        run: ls -R
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
