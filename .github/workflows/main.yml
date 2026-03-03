@@ -56,11 +56,6 @@ jobs:
           distribution: 'adopt'
           java-version: '21'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: false
-
       - name: Generating self-signed certificate
         run: |
           openssl req \
@@ -107,23 +102,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: 'gradle'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: false
-
-#      - name: Generating self-signed certificate
-#        run: |
-#          openssl req \
-#            -newkey rsa:2048 \
-#            -new \
-#            -nodes \
-#            -x509 \
-#            -days 3650 \
-#            -keyout key.pem \
-#            -out cert.pem \
-#            -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
-
       - name: Build Native Executable
         run: |
           ./gradlew build -Dquarkus.package.jar.enabled=false \
@@ -143,7 +121,7 @@ jobs:
     needs:
       - prepare
       - build-native
-    timeout-minutes: 10
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     permissions:
       contents: write
