@@ -9,7 +9,7 @@ on:
 
 jobs:
   prepare:
-    timeout-minutes: 2
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.version.outputs.VERSION }}
@@ -107,19 +107,24 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: 'gradle'
 
-      - name: Generating self-signed certificate
-        run: |
-          openssl req \
-            -newkey rsa:2048 \
-            -new \
-            -nodes \
-            -x509 \
-            -days 3650 \
-            -keyout key.pem \
-            -out cert.pem \
-            -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: false
 
-      - name: Tests & Build Native Executable
+#      - name: Generating self-signed certificate
+#        run: |
+#          openssl req \
+#            -newkey rsa:2048 \
+#            -new \
+#            -nodes \
+#            -x509 \
+#            -days 3650 \
+#            -keyout key.pem \
+#            -out cert.pem \
+#            -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
+
+      - name: Build Native Executable
         run: |
           ./gradlew build -Dquarkus.package.jar.enabled=false \
             -Dquarkus.native.enabled=true \

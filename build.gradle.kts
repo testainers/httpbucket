@@ -36,7 +36,7 @@ dependencies {
 }
 
 group = "com.testainers"
-version = "0.3.3"
+version = "0.3.4"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
