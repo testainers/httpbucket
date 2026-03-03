@@ -92,7 +92,7 @@ jobs:
             -Dquarkus.native.compression.level=5
 
       - name: Upload Native Binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: native-executable-${{ matrix.arch }}
           path: build/*-runner
@@ -122,16 +122,25 @@ jobs:
             -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
 
       - name: Download AMD64 Binary
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: native-executable-amd64
           path: build/amd64
 
+      - name: Display structure of downloaded files amd64
+        run: ls -R build/amd64
+
       - name: Download ARM64 Binary
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: native-executable-arm64
           path: build/arm64
+
+      - name: Display structure of downloaded files arm64
+        run: ls -R build/arm64
+
+      - name: Display structure of downloaded files
+        run: ls -R
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
