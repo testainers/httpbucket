@@ -28,9 +28,9 @@ jobs:
             alpha) SUFFIX="A";;
             beta) SUFFIX="B";;
           esac
-          echo "DOCKER_TAG=$DOCKER_TAG" >> GITHUB_OUTPUT
+          echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_OUTPUT
           VERSION=$(grep 'version = ' build.gradle.kts | cut -f 2 -d "\"")$SUFFIX
-          echo "VERSION=$VERSION" >> GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Check if version is used
         run: |
