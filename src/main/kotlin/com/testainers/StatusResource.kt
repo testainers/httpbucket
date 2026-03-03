@@ -2,7 +2,9 @@ package com.testainers
 
 import io.vertx.core.http.HttpServerRequest
 import jakarta.ws.rs.*
-import jakarta.ws.rs.core.*
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
+import jakarta.ws.rs.core.UriInfo
 import org.eclipse.microprofile.openapi.annotations.media.Schema
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
 
@@ -86,7 +88,7 @@ class StatusResource(
         var status = code
         val responseBody = ResponseBody(request, uriInfo, body)
 
-        if (status < 200 || status > 599) {
+        if (status !in 200..599) {
             val message =
                 if (status in 100..199) {
                     "Informational responses are not supported: %d"

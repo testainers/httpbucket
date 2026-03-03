@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.1.21"
-    kotlin("plugin.allopen") version "2.1.21"
+    kotlin("jvm") version "2.3.10"
+    kotlin("plugin.allopen") version "2.3.10"
     id("io.quarkus")
 }
 
@@ -25,7 +25,6 @@ dependencies {
     implementation("io.quarkus:quarkus-smallrye-health")
     implementation("io.quarkus:quarkus-rest")
     implementation("io.quarkus:quarkus-rest-jackson")
-    implementation("io.quarkus:quarkus-container-image-docker")
     implementation("io.quarkus:quarkus-info")
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-arc")
@@ -37,7 +36,7 @@ dependencies {
 }
 
 group = "com.testainers"
-version = "0.2.0"
+version = "0.3.5"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -45,11 +44,6 @@ java {
 }
 
 tasks.withType<Test> {
-    systemProperty(
-        "java.util.logging.manager",
-        "org.jboss.logmanager.LogManager",
-    )
-
     testLogging {
         events(
             "PASSED",

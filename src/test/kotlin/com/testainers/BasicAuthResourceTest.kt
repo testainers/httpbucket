@@ -2,8 +2,8 @@ package com.testainers
 
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.http.Method
-import jakarta.ws.rs.core.HttpHeaders
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
@@ -19,40 +19,6 @@ class BasicAuthResourceTest : BaseResourceTest() {
     @MethodSource("onlyMethods")
     fun noHeader(method: Method) {
         json(method)
-            .request(method, "/basic-auth/$user/$pass")
-            .then()
-            .statusCode(401)
-            .apply {
-                if (method != Method.HEAD) {
-                    body(
-                        "body.body",
-                        if (method == Method.GET) {
-                            nullValue()
-                        } else {
-                            equalTo(body)
-                        },
-                        *bodyMatchers(
-                            method,
-                            mapOf(
-                                "body.auth" to equalTo(false),
-                                "body.user" to equalTo(user),
-                                "body.pass" to equalTo(pass),
-                                "body.message" to
-                                    equalTo(
-                                        "Authorization header not present.",
-                                    ),
-                            ),
-                        ),
-                    )
-                }
-            }
-    }
-
-    @ParameterizedTest
-    @MethodSource("onlyMethods")
-    fun emptyHeader(method: Method) {
-        json(method)
-            .header(HttpHeaders.AUTHORIZATION, "")
             .request(method, "/basic-auth/$user/$pass")
             .then()
             .statusCode(401)

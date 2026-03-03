@@ -1,7 +1,10 @@
 package com.testainers
 
+import io.quarkus.vertx.http.Uncompressed
 import jakarta.ws.rs.*
-import jakarta.ws.rs.core.*
+import jakarta.ws.rs.core.HttpHeaders
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.openapi.annotations.media.Content
 import org.eclipse.microprofile.openapi.annotations.media.Schema
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter
@@ -26,6 +29,7 @@ import org.jboss.resteasy.reactive.RestHeader
     APIResponse(responseCode = "500", description = "Invalid size: X."),
 )
 class LengthResource {
+    @Uncompressed
     @GET
     fun get(
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
@@ -40,6 +44,7 @@ class LengthResource {
         ) size: Int,
     ): Response = internal(accept, size)
 
+    @Uncompressed
     @POST
     fun post(
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
@@ -54,6 +59,7 @@ class LengthResource {
         ) size: Int,
     ): Response = internal(accept, size)
 
+    @Uncompressed
     @PUT
     fun put(
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
@@ -68,6 +74,7 @@ class LengthResource {
         ) size: Int,
     ): Response = internal(accept, size)
 
+    @Uncompressed
     @PATCH
     fun patch(
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
@@ -82,6 +89,7 @@ class LengthResource {
         ) size: Int,
     ): Response = internal(accept, size)
 
+    @Uncompressed
     @DELETE
     fun delete(
         @RestHeader(HttpHeaders.ACCEPT) accept: String,
@@ -100,7 +108,7 @@ class LengthResource {
         accept: String,
         size: Int,
     ): Response =
-        if (size < 1 || size > 2048) {
+        if (size !in 1..2048) {
             Response
                 .status(500)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)

@@ -2,44 +2,132 @@ name: CI Build
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - alpha
+      - beta
 
 jobs:
-  build:
-    name: Build
+  prepare:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: write
+    outputs:
+      VERSION: ${{ steps.version.outputs.VERSION }}
+      DOCKER_TAG: ${{ steps.version.outputs.DOCKER_TAG }}
     steps:
       - name: Code Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Get release attributes
+        id: version
+        run: |
+          SUFFIX=""
+          DOCKER_TAG=$GITHUB_REF_NAME
+          case $GITHUB_REF_NAME in
+            main) DOCKER_TAG="latest";;
+            alpha) SUFFIX="A";;
+            beta) SUFFIX="B";;
+          esac
+          echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_OUTPUT
+          VERSION=$(grep 'version = ' build.gradle.kts | cut -f 2 -d "\"")$SUFFIX
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if version is used
+        run: |
+          URL=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/tags/${{ steps.version.outputs.VERSION }}
+          CODE=$(curl -s -H "Authorization: Bearer ${{ github.token }}" -o /dev/null -w "%{http_code}" "$URL")
+          if [ "$CODE" != 404 ]; then
+            echo "Release '${{ steps.version.outputs.VERSION }}' already exists. ($CODE)"
+            exit 1
+          fi
+
+      - name: Setup ktlint
+        run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint
+          chmod a+x ktlint
+          sudo mv ktlint /usr/local/bin/
+
+      - name: Run linter
+        run: ktlint
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'adopt'
           java-version: '21'
 
-      - name: Get Gradle Version
+      - name: Generating self-signed certificate
         run: |
-          echo "TAGS=latest" >> $GITHUB_ENV
-          SUFFIX=""
-          VERSION=$(grep 'version =' build.gradle.kts | cut -f 2 -d '"')$SUFFIX
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          REPO=$(echo $GITHUB_REPOSITORY | cut -f 2 -d "/")
-          echo "REPO=$REPO" >> $GITHUB_ENV
-          echo "OWNER=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
+          openssl req \
+            -newkey rsa:2048 \
+            -new \
+            -nodes \
+            -x509 \
+            -days 2 \
+            -keyout key.pem \
+            -out cert.pem \
+            -subj "/CN=localhost"
 
-      - name: Check if version is used
+      - name: Tests
+        run: ./gradlew test
+
+      - name: Upload Jacoco Report
+        uses: actions/upload-artifact@v7
+        with:
+          name: jacoco-report
+          path: build/jacoco-report
+          if-no-files-found: error
+          retention-days: 1
+
+  build-native:
+    needs: prepare
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm-community'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: 'gradle'
+
+      - name: Build Native Executable
         run: |
-          URL=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/tags/${{ env.VERSION }}
-          echo "$URL"
-          CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
-          if [ "$CODE" != 404 ]; then
-            echo "Release '$VERSION' already exists. ($CODE)"
-            exit 1
-          fi
+          ./gradlew build -Dquarkus.package.jar.enabled=false \
+            -Dquarkus.native.enabled=true \
+            -Dquarkus.native.compression.level=5 \
+            -x test
+
+      - name: Upload Native Binary
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-executable-${{ matrix.arch }}
+          path: build/*-runner
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs:
+      - prepare
+      - build-native
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v6
 
       - name: Generating self-signed certificate
         run: |
@@ -53,31 +141,58 @@ jobs:
             -out cert.pem \
             -subj "/C=US/ST=SC/L=Hometown/O=IT/emailAddress=root@localhost/CN=localhost"
 
-      - name: Test & Build
-        run: |
-          ./gradlew build --no-daemon \
-            -Dquarkus.package.type=native \
-            -Dquarkus.native.container-build=true \
-            -Dquarkus.container-image.build=true \
-            -Dquarkus.container-image.push=true \
-            -Dquarkus.container-image.username=${{ env.OWNER }} \
-            -Dquarkus.container-image.password=${{ secrets.DOCKER_TOKEN }} \
-            -Dquarkus.container-image.group=${{ env.OWNER }} \
-            -Dquarkus.container-image.name=${{ env.REPO }} \
-            -Dquarkus.container-image.tag=${{ env.VERSION }} \
-            -Dquarkus.container-image.additional-tags=${{ env.TAGS }}
+      - name: Download Jacoco Report
+        uses: actions/download-artifact@v8
+        with:
+          name: jacoco-report
+          path: build/jacoco-report
+
+      - name: Download AMD64 Binary
+        uses: actions/download-artifact@v8
+        with:
+          name: native-executable-amd64
+          path: build/amd64
+
+      - name: Download ARM64 Binary
+        uses: actions/download-artifact@v8
+        with:
+          name: native-executable-arm64
+          path: build/arm64
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Docker Build & Push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: .
+          file: src/main/docker/Dockerfile.native-multi-arch
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ github.repository }}:${{ needs.prepare.outputs.VERSION }}
+            ${{ github.repository }}:${{ needs.prepare.outputs.DOCKER_TAG }}
 
       - name: Creating GitHub Tag
         uses: mathieudutour/github-tag-action@v6.2
         with:
-          custom_tag: ${{ env.VERSION }}
+          custom_tag: ${{ needs.prepare.outputs.VERSION }}
           tag_prefix: ''
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ env.VERSION }}
+          tag: ${{ needs.prepare.outputs.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Overwrite Coverage Theme
