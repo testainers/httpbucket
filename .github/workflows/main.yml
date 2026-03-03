@@ -105,6 +105,8 @@ jobs:
       - build-native
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Code checkout
         uses: actions/checkout@v6
