@@ -26,8 +26,7 @@ Thank you for your continued support!
 ## PIX
 
 Sua contribuição ajudará a impulsionar o desenvolvimento de ferramentas de
-qualidade para a comunidade de desenvolvedores Flutter e Dart. Qualquer quantia
-será apreciada.
+qualidade para a comunidade de desenvolvedores. Qualquer quantia será apreciada.
 Obrigado pelo seu apoio contínuo!
 
 [![PIX](helpers/pix.png)](https://nubank.com.br/pagar/2bt2q/RBr4Szfuwr)
@@ -92,5 +91,4 @@ openssl req \
 - /openapi
 - /swagger-ui
 - /health
-- /metrics
 - /info
